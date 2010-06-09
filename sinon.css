@@ -1,0 +1,22 @@
+body {
+    font: 1em/1.5 Arial,Geneva,sans-serif;
+    margin: 0 auto;
+    width: 600px;
+}
+
+dl {
+    margin: 0 0 2em;
+}
+
+dt {
+    font-size: 1.1em;
+}
+
+dt code {
+    background: #f8f8f8;
+    padding: 6px 12px;
+}
+
+dd {
+    margin: .8em 0 1.6em;
+}
