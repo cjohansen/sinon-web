@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Sinon.JS - Versatile standalone test spies, stubs and mocks for JavaScript</title>
+    <link rel="stylesheet" type="text/css" href="sinon.css">
+  </head>
+  <body>
+    <h1>Sinon.JS</h1>
+    <p class="payoff">
+      Standalone test spies, stubs and mocks for JavaScript. No dependencies,
+      works with any unit testing framework.
+    </p>
+    <p>
+      <a class="button" href="sinon-0.5.js">Download v0.5</a>
+      <span class="date">2010-06-09</span>
+    </p>
+    <p>
+      Sinon v0.5 ships with a mostly complete implementation of spies, stubs,
+      mocks as well as some higher level helpers, such as sandboxing features to
+      reduce the required amount of scaffolding. v0.5 also include the fake timers
+      implementation.
+    </p>
+    <p>
+      As of v0.5 there are no proper API docs, but design principles and most of the
+      <a href="http://cjohansen.no/en/javascript/javascript_test_spies_stubs_and_mocks">core</a>
+      <a href="http://cjohansen.no/en/javascript/test_spies_stubs_and_mocks_part_1_5">API</a>,
+      <a href="http://cjohansen.no/en/javascript/higer_level_stubbing_and_mocking_tools_in_sinon">higher level helpers</a>
+      and the <a href="http://cjohansen.no/en/javascript/faking_timers_and_dates_with_sinon">fake timers</a>
+      have recently been chronicled at <a href="http://cjohansen.no/en/">my blog</a>.
+    </p>
+    <h2>Public interface</h2>
+    <p>
+      Until proper docs are available, the following is a list of Sinon's public API
+      as of version 0.5. Most, if not all, of these are described in the above articles.
+    </p>
+    <h3>Test spies</h3>
+    <h4>Creating spies</h4>
+    <dl>
+      <dt><code>var spy = sinon.spy();</code></dt>
+      <dd>
+        Creates an anonymous function that records arguments, <code>this</code> value,
+        exceptions and return values for all calls.
+      </dd>
+      <dt><code>var spy = sinon.spy(myFunc);</code></dt>
+      <dd>Spies on the provided function</dd>
+      <dt><code>var spy = sinon.spy(object, "method");</code></dt>
+      <dd>
+        Creates a spy for <code>object.method</code> and replaces the original
+        method with the spy. The spy acts exactly like the original method in all cases.
+        The original method can be restored by calling <code>object.method.restore()</code>.
+        The returned spy is the function object which replaced the original method:
+        <code>spy === object.method</code>
+      </dd>
+      <dt><code>sinon.spy.create([func])</code></dt>
+      <dd>Create spy. Just like <code>sinon.spy();</code> and <code>sinon.spy(func);</code></dd>
+    </dl>
+    <h4>Behavior verification</h4>
+    <dl>
+      <dt><code>spy.callCount</code></dt>
+      <dd>The number of recorded calls.</dd>
+      <dt><code>spy.called</code></dt>
+      <dd><code>true</code> if the spy was called at least once</dd>
+      <dt><code>spy.calledOnce</code></dt>
+      <dd><code>true</code> if spy was called exactly once</dd>
+      <dt><code>spy.calledTwice</code></dt>
+      <dd><code>true</code> if the spy was called exactly twice</dd>
+      <dt><code>spy.calledThrice</code></dt>
+      <dd><code>true</code> if the spy was called exactly thrice</dd>
+      <dt><code>spy.calledBefore(anotherSpy);</code></dt>
+      <dd>Returns <code>true</code> if the spy was called before <code>anotherSpy</code></dd>
+      <dt><code>spy.calledAfter(anotherSpy);</code></dt>
+      <dd>Returns <code>true</code> if the spy was called after <code>anotherSpy</code></dd>
+      <dt><code>spy.calledOn(obj);</code></dt>
+      <dd>
+        Returns <code>true</code> if the spy was called at least once with <code>obj</code>
+        as <code>this</code>.
+      </dd>
+      <dt><code>spy.alwaysCalledOn(obj);</code></dt>
+      <dd>
+        Returns <code>true</code> if the spy was always called with <code>obj</code>
+        as <code>this</code>.
+      </dd>
+      <dt><code>spy.calledWith(arg1, arg2, ...);</code></dt>
+      <dd>
+        Returns <code>true</code> if spy was called at least once with the provided
+        arguments. Can be used for partial matching, Sinon only checks the provided
+        arguments against actual arguments, so a call that received the provided arguments
+        (in the same spots) and possibly others as well will return <code>true</code>.
+      </dd>
+      <dt><code>spy.alwaysCalledWith(arg1, arg2, ...);</code></dt>
+      <dd>
+        Returns <code>true</code> if spy was always called with the provided arguments
+        (and possibly others).
+      </dd>
+      <dt><code>spy.calledWithExactly(arg1, arg2, ...);</code></dt>
+      <dd>
+        Returns <code>true</code> if spy was called at least once with the provided arguments
+        and no others.
+      </dd>
+      <dt><code>spy.alwaysCalledWithExactly(arg1, arg2, ...);</code></dt>
+      <dd>
+        Returns <code>true</code> if spy was always called with the exact provided arguments.
+      </dd>
+      <dt><code>spy.threw();</code></dt>
+      <dd>Returns <code>true</code> if spy threw an exception at least once.</dd>
+      <dt><code>spy.threw("TypeError");</code></dt>
+      <dd>Returns <code>true</code> if spy threw an exception of the provided type at least once.</dd>
+      <dt><code>spy.threw(obj);</code></dt>
+      <dd>Returns <code>true</code> if spy threw the provided exception object at least once.</dd>
+      <dt><code>spy.alwaysThrew();</code></dt>
+      <dd>Returns <code>true</code> if spy always threw an exception.</dd>
+      <dt><code>spy.alwaysThrew("TypeError");</code></dt>
+      <dd>Returns <code>true</code> if spy always threw an exception of the provided type.</dd>
+      <dt><code>spy.alwaysThrew(obj);</code></dt>
+      <dd>Returns <code>true</code> if spy always threw the provided exception object.</dd>
+      <dt><code>spy.returned(obj);</code></dt>
+      <dd>
+        Returns <code>true</code> if spy returned the provided value at least once.
+        Uses deep comparison for objects and arrays.
+      </dd>
+      <dt><code>spy.alwaysReturned(obj);</code></dt>
+      <dd>Returns <code>true</code> if spy always returned the provided value.</dd>
+    </dl>
+    <h4>"Manual" behavior verification</h4>
+    <dl>
+      <dt><code>spy.thisValues</code></dt>
+      <dd>
+        Array of <code>this</code> objects, <code>spy.thisValues[0]</code> is the <code>this</code>
+        object for the first call.
+      </dd>
+      <dt><code>spy.args</code></dt>
+      <dd>
+        Array of arguments received, <code>spy.args[0]</code> is an array of arguments
+        recevied in the first call.
+      </dd>
+      <dt><code>spy.exceptions</code></dt>
+      <dd>Array of exception objects thrown.</dd>
+      <dt><code>spy.returnValues</code></dt>
+      <dd>Array of return values.</dd>
+    </dl>
+    <h4>Individual calls to spies</h4>
+    <dl>
+      <dt><code>var spyCall = spy.getCall(index)</code></dt>
+      <dd>Returns a specific call (0 is the first call)</dd>
+      <dt><code>spyCall.calledOn(obj);</code></dt>
+      <dd>Returns <code>true</code> if <code>obj</code> was <code>this</code> for this call.</dd>
+      <dt><code>spyCall.calledWith(arg1, arg2, ...);</code></dt>
+      <dd>Returns <code>true</code> if call received provided arguments (and possibly others).</dd>
+      <dt><code>spyCall.calledWithExactly(arg1, arg2, ...);</code></dt>
+      <dd>Returns <code>true</code> if call received provided arguments and no others.</dd>
+      <dt><code>spyCall.threw();</code></dt>
+      <dd>Returns <code>true</code> if call threw an exception.</dd>
+      <dt><code>spyCall.threw("TypeError");</code></dt>
+      <dd>Returns <code>true</code> if call threw exception of provided type.</dd>
+      <dt><code>spyCall.threw(obj);</code></dt>
+      <dd>Returns <code>true</code> if call threw provided exception object.</dd>
+    </dl>
+    <h4>Individual calls properties</h4>
+    <dl>
+      <dt><code>spyCall.thisObj</code></dt>
+      <dd>The call's <code>this</code> value.</dd>
+      <dt><code>spyCall.args</code></dt>
+      <dd>Array of received arguments.</dd>
+      <dt><code>spyCall.exception</code></dt>
+      <dd>Exception thrown, if any.</dd>
+      <dt><code>spyCall.returnValue</code></dt>
+      <dd>Return value.</dd>
+    </dl>
+    <h3>Test stubs</h3>
+    <dl>
+      <dt><code></code></dt>
+      <dd></dd>
+    </dl>
+    <h3>Mocks</h3>
+    <dl>
+      <dt><code></code></dt>
+      <dd></dd>
+    </dl>
+    <h3>Sinon test methods</h3>
+    <dl>
+      <dt><code></code></dt>
+      <dd></dd>
+    </dl>
+    <h3>Sinon  test cases</h3>
+    <dl>
+      <dt><code></code></dt>
+      <dd></dd>
+    </dl>
+    <h3>Fake timers and dates</h3>
+    <dl>
+      <dt><code></code></dt>
+      <dd></dd>
+    </dl>
+    <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
+    <p>
+      Copyright 2010, Christian Johansen. Released under the 
+      <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
+    </p>
+  </body>
+</html>
