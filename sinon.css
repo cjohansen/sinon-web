@@ -10,11 +10,12 @@ h1 {
     margin: 0;
 }
 
-.payoff {
-    font-size: 1.25em;
+a:hover,
+a:active {
+    text-decoration: none;
 }
 
-.button {
+.payoff {
     font-size: 1.25em;
 }
 
@@ -23,16 +24,31 @@ dl {
 }
 
 dt {
+    background: #f0f3f6;
+    border-top-left-radius: .5em;
+    -moz-border-radius-topleft: .5em;
+    -webkit-border-top-left-radius: .5em;
+    border-top-right-radius: .5em;
+    -moz-border-radius-topright: .5em;
+    -webkit-border-top-right-radius: .5em;
     font-size: 1.1em;
+    padding: 4px 12px;
 }
 
 dt code {
-    background: #f8f8f8;
-    padding: 6px 12px;
+    font-weight: bold;
 }
 
 dd {
-    margin: .8em 0 1.6em;
+    background: #f8fcff;
+    border-bottom-left-radius: .5em;
+    -moz-border-radius-bottomleft: .5em;
+    -webkit-border-bottom-left-radius: .5em;
+    border-bottom-right-radius: .5em;
+    -moz-border-radius-bottomright: .5em;
+    -webkit-border-bottom-right-radius: .5em;
+    margin: 0 0 1em;
+    padding: 12px 12px 12px 36px;
 }
 
 h3 {
@@ -61,4 +77,25 @@ h4 {
 
 .aside p {
     margin: 0 0 .2em;
+}
+
+#intro {
+    background: #f8fcff;
+    border: 2px solid #f0f0f0;
+    border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    margin: 0 -36px;
+    padding: 6px 48px;
+}
+
+.download a {
+    display: block;
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+.download span {
+    color: #666;
+    font-size: .8em;
 }
