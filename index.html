@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Versatile standalone test spies, stubs and mocks for JavaScript</title>
-    <link rel="stylesheet" type="text/css" href="sinon.css">
+    <link rel="stylesheet" type="text/css" href="sinon.css?0">
   </head>
   <body>
     <h1>Sinon.JS</h1>
@@ -235,8 +234,8 @@
         All the expectation methods returns the expectation, meaning you can chain them.
         Typical usage:
       </p>
-      <code><pre>sinon.mock(jQuery).expects("ajax").atLeast(2).atMost(5);
-      jQuery.ajax.verify();</pre></code>
+      <pre><code>sinon.mock(jQuery).expects("ajax").atLeast(2).atMost(5);
+      jQuery.ajax.verify();</code></pre>
       <dl>
         <dt><code>var expectation = sinon.expectation.create([methodName]);</code></dt>
         <dd>
@@ -288,5 +287,6 @@
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
+    <script type="text/javascript" src="sinon-web.js?0"></script>
   </body>
 </html>
