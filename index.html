@@ -13,28 +13,29 @@
         works with any unit testing framework.
       </p>
       <p class="download">
-        <a href="sinon-0.5.0.js">Download v0.5</a>
-        <span>2010-06-09</span>
+        <a href="sinon-0.6.0.js">Download v0.6.0</a>
+        <span>2010-08-10</span>
       </p>
     </div>
     <p>
-      Sinon v0.5 ships with a mostly complete implementation of spies, stubs,
+      Sinon v0.6.0 ships with a mostly complete implementation of spies, stubs,
       mocks as well as some higher level helpers, such as sandboxing features to
-      reduce the required amount of scaffolding. v0.5 also include the fake timers
-      implementation.
+      reduce the required amount of scaffolding. v0.6.0 also include fake timers
+      and XMLHttpRequest, along with a high-level API to test XHR objects.
     </p>
     <p>
-      As of v0.5 there are no proper API docs, but design principles and most of the
+      Currently, there are no proper API docs, but design principles and most of the
       <a href="http://cjohansen.no/en/javascript/javascript_test_spies_stubs_and_mocks">core</a>
       <a href="http://cjohansen.no/en/javascript/test_spies_stubs_and_mocks_part_1_5">API</a>,
-      <a href="http://cjohansen.no/en/javascript/higer_level_stubbing_and_mocking_tools_in_sinon">higher level helpers</a>
-      and the <a href="http://cjohansen.no/en/javascript/faking_timers_and_dates_with_sinon">fake timers</a>
-      have recently been chronicled at <a href="http://cjohansen.no/en/">my blog</a>.
+      <a href="http://cjohansen.no/en/javascript/higer_level_stubbing_and_mocking_tools_in_sinon">higher level helpers</a>,
+      <a href="http://cjohansen.no/en/javascript/faking_timers_and_dates_with_sinon">fake timers</a>
+      and <a href="http://cjohansen.no/en/javascript/sinon_js_0_6_0_fake_xmlhttprequest_and_improved_test_framework_integration">FakeXMLHttpRequest</a>
+      have recently been chronicled on <a href="http://cjohansen.no/en/">my blog</a>.
     </p>
     <h2>Public interface</h2>
     <p>
       Until proper docs are available, the following is a list of Sinon's public API
-      as of version 0.5. Most, if not all, of these are described in the above articles.
+      as of version 0.6.0. Most, if not all, of these are described in the above articles.
     </p>
     <div class="section">
       <h3>Test spies</h3>
@@ -237,7 +238,7 @@
         Typical usage:
       </p>
       <pre><code>sinon.mock(jQuery).expects("ajax").atLeast(2).atMost(5);
-      jQuery.ajax.verify();</code></pre>
+jQuery.ajax.verify();</code></pre>
       <dl>
         <dt><code>var expectation = sinon.expectation.create([methodName]);</code></dt>
         <dd>
@@ -271,16 +272,292 @@
       </dl>
     </div>
     <div class="section">
-      <h3>Sinon test methods</h3>
-      <p>Coming soon</p>
+      <h3>Fake timers</h3>
+      <p>
+        Fake timers is a non-asynchronous implementation
+        of <code>setTimeout</code> and friends that Sinon.JS can overwrite the
+        global functions to allow you to more easily test such code. Fake timers
+        provide a <code>clock</code> object to pass time, which can also be used
+        to control <code>Date</code> objects created through either <code>new
+        Date();</code> or <code>Date.now();</code> (if supported by the browser).
+      </p>
+      <dl>
+        <dt><code>var clock = sinon.useFakeTimers();</code></dt>
+        <dd>
+          Causes Sinon to replace the global <code>setTimeout</code>,
+          <code>clearTimeout</code>, <code>setInterval</code>
+          and <code>clearInterval</code> with a custom implementation which is
+          bound to the returned <code>clock</code> object.
+        </dd>
+        <dt><code>var clock = sinon.useFakeTimers(now);</code></dt>
+        <dd>
+          As above, but rather than starting the clock at the current timestamp,
+          start at the provided timestamp. Really only useful when also faking
+          the <code>Date</code> constructor.
+        </dd>
+        <dt><code>var clock = sinon.useFakeTimers(now, prop1, prop2, ...);</code></dt>
+        <dd>
+          Sets the clock start timestamp and names functions to fake. Possible
+          functions are setTimeout, clearTimeout, setInterval, clearInterval,
+          and Date.
+        </dd>
+        <dt><code>clock.tick(ms);</code></dt>
+        <dd>
+          Tick the clock ahead <code>ms</code> milliseconds. Causes all timers
+          scheduled within the affected time range to be called.
+        </dd>
+        <dt><code>clock.restore();</code></dt>
+        <dd>Restore the faked methods. Call in e.g. <code>tearDown</code>.</dd>
+      </dl>
     </div>
     <div class="section">
-      <h3>Sinon  test cases</h3>
-      <p>Coming soon</p>
+      <h3>Fake <code>XMLHttpRequest</code></h3>
+      <p>
+        Helps with testing requests made with XHR.
+      </p>
+      <dl>
+        <dt><code>var xhr = sinon.useFakeXMLHttpRequest();</code></dt>
+        <dd>
+          Causes Sinon to replace the native <code>XMLHttpRequest</code> object
+          in browsers that support it with a custom implementation which does
+          not send actual requests. In browsers that
+          support <code>ActiveXObject</code>, this constructor is replaced, and
+          fake objects are returned for XMLHTTP progIds. Other progIds, such as
+          XMLDOM are left untouched.
+        </dd>
+        <dt><code>xhr.onCreate = function (xhr) {};</code></dt>
+        <dd>
+          By assigning a function to the <code>onCreate</code> property of the
+          returned object from <code>useFakeXMLHttpRequest()</code> you can
+          subscribe to newly created <code>FakeXMLHttpRequest</code>
+          objects. See below for the fake xhr object API. Using this observer
+          means you can still reach objects created by
+          e.g. <code>jQuery.ajax</code> (or other abstractions/frameworks).
+        </dd>
+        <dt><code>xhr.restore();</code></dt>
+        <dd>Restore original function(s).</dd>
+      </dl>
+      <h4>Behavior verification of request objects</h4>
+      <dl>
+        <dt>String <code>request.url</code></dt>
+        <dt>String <code>request.method</code></dt>
+        <dt>Object <code>request.requestHeaders</code></dt>
+        <dt>int <code>request.status</code></dt>
+        <dt>String <code>request.statusText</code></dt>
+        <dd>Only populated if the <code>respond</code> method is called (see below).</dd>
+        <dt>boolean <code>request.async</code></dt>
+        <dt>String <code>request.username</code></dt>
+        <dt>String <code>request.password</code></dt>
+        <dt>Document <code>request.responseXML</code></dt>
+        <dd>
+          When using <code>respond</code> (see below), this property is
+          populated with a parsed document if response headers indicate as much
+          (see <a href="http://www.w3.org/TR/XMLHttpRequest/">the spec</a>).
+        </dd>
+        <dt>String <code>request.getResponseHeader(header);</code></dt>
+        <dt>Object <code>request.getAllResponseHeaders();</code></dt>
+      </dl>
+      <h4>Simulate server responses</h4>
+      <dl>
+        <dt><code>request.setResponseHeaders(object);</code></dt>
+        <dd>
+          Sets response headers (e.g. <code>{ "Content-Type": "text/html", /*
+          ... */ }</code>, updates the <code>readyState</code> property and
+          fires <code>onreadystatechange</code>.
+        </dd>
+        <dt><code>request.setResponseBody(body);</code></dt>
+        <dd>
+          Sets the respond body, updates the <code>readyState</code> property and
+          fires <code>onreadystatechange</code>. Additionally,
+          populates <code>responseXML</code> with a parsed document
+          if <a href="http://www.w3.org/TR/XMLHttpRequest/">response headers indicate as much</a>.
+        </dd>
+        <dt><code>request.respond(status, headers, body);</code></dt>
+        <dd>
+          Calls the above two methods and sets the <code>status</code> and
+          <code>statusText</code> properties.
+        </dd>
+      </dl>
     </div>
     <div class="section">
-      <h3>Fake timers and dates</h3>
-      <p>Coming soon</p>
+      <h3>Fake server</h3>
+      <p>
+        High-level API to manipulate <code>FakeXMLHttpRequest</code> instances.
+      </p>
+      <dl>
+        <dt><code>var server = sinon.fakeServer.create();</code></dt>
+        <dd>
+          Creates a new server. This function also calls <code>sinon.useFakeXMLHttpRequest()</code>.
+        </dd>
+        <dt><code>var server = sinon.fakeServerWithClock.create();</code></dt>
+        <dd>
+          Creates a server that also manages fake timers. This is useful when
+          testing XHR objects created with e.g. jQuery 1.3.x, which uses a timer
+          to poll the object for completion, rather than the usual <code>onreadystatechange</code>.
+        </dd>
+        <dt><code>server.respondWith(response);</code></dt>
+        <dd>
+          <code>response</code> is either a string - the response body, or an
+          array with status, headers and response body, e.g.
+          <code>[200, { "Content-Type": "text/html", "Content-Length": 2 },
+          "OK"]</code>. Default status is 200 and default headers are none.
+          Causes the server to respond to any request not matched by another
+          response with the provided data. The default catch-all response is
+          <code>[404, {} ""]</code>.
+        </dd>
+        <dt><code>server.respondWith(url, response);</code></dt>
+        <dd>
+          Responds to all requests to given URL, e.g. <code>/posts/1</code>.
+        </dd>
+        <dt><code>server.respondWith(method, url, response);</code></dt>
+        <dd>
+          Responds to all <code>method</code> requests to the given URL with the
+          given response. <code>method</code> is an HTTP verb.
+        </dd>
+        <dt><code>server.respondWith(urlRegExp, response);</code></dt>
+        <dd>
+          URL may be a regular expression, e.g. <code>/\/post/\d+</code>
+        </dd>
+        <dt><code>server.respondWith(method, urlRegExp, response);</code></dt>
+        <dt><code>server.respond();</code></dt>
+        <dd>
+          Causes all queued asynchronous requests to receive a response. If none
+          of the responses added through <code>respondWith</code> match, the
+          default response is <code>[404, {}, ""]</code>. Synchronous requests
+          are responded to immediately, so make sure to
+          call <code>respondWith</code> upfront.
+        </dd>
+        <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
+        <dd>
+          If set to <code>true</code>, server will find <code>_method</code>
+          parameter in POST body and recognize that as the actual
+          method. Supports a pattern common to Ruby on Rails applications. For
+          custom HTTP method faking,
+          override <code>server.getHTTPMethod(request)</code>.
+        </dd>
+        <dt><code>server.restore();</code></dt>
+        <dd>
+          Restores the native XHR constructor.
+        </dd>
+      </dl>
+    </div>
+    <div class="section">
+      <h3>Sandboxes</h3>
+      <p>
+        Sandboxes simplify working with fakes that need to be restore and/or
+        verified.
+      </p>
+      <dl>
+        <dt><code>var sandbox = sinon.sandbox.create();</code></dt>
+        <dt><code>sandbox.spy();</code></dt>
+        <dd>
+          Works exactly like <code>sinon.spy</code>, only also adds the returned
+          spy to the internal collection of fakes for easy restoring
+          through <code>sandbox.restore()</code>.
+        </dd>
+        <dt><code>sandbox.stub();</code></dt>
+        <dd>
+          Works exactly like <code>sinon.stub</code>, only also adds the returned
+          stub to the internal collection of fakes for easy restoring
+          through <code>sandbox.restore()</code>.
+        </dd>
+        <dt><code>sandbox.mock();</code></dt>
+        <dd>
+          Works exactly like <code>sinon.mock</code>, only also adds the returned
+          mock to the internal collection of fakes for easy restoring
+          through <code>sandbox.restore()</code>.
+        </dd>
+        <dt><code>sandbox.useFakeTimers();</code></dt>
+        <dd>
+          Fakes timers and binds the <code>clock</code> object to the sandbox
+          such that it too is restored when
+          calling <code>sandbox.restore()</code>. Access through <code>sandbox.clock</code>.
+        </dd>
+        <dt><code>sandbox.useFakeXMLHttpRequest();</code></dt>
+        <dd>
+          Fakes XHR and binds the resulting object to the sandbox such that it
+          too is restored when calling <code>sandbox.restore()</code>. Access
+          requests through <code>sandbox.requests</code>.
+        </dd>
+        <dt><code>sandbox.useFakeServer();</code></dt>
+        <dd>
+          Fakes XHR and binds a server object to the sandbox such that it
+          too is restored when calling <code>sandbox.restore()</code>. Access
+          requests through <code>sandbox.requests</code> and server through
+          <code>sandbox.server</code>.
+        </dd>
+        <dt><code>sandbox.restore();</code></dt>
+        <dd>Restores all fakes created through sandbox.</dd>
+      </dl>
+    </div>
+    <div class="section">
+      <h3>Test methods</h3>
+      <p>
+        Wrapping test methods in <code>sinon.test</code> allows Sinon to
+        automatically create and manage sandboxes for you. The function's
+        behavior can be configured through <code>sinon.config</code>.
+      </p>
+      <dl>
+        <dt><code>var wrappedFn = sinon.test(fn);</code></dt>
+        <dd>
+          The <code>wrappedFn</code> function works exactly like the original
+          one in all respect - in addition a sandbox object is created and
+          automatically restored when the function finishes a call. By default
+          the spy, stub and mock properties of the sandbox is bound to whatever
+          object the function is run on, so you can do <code>this.spy()</code>
+          (and stub, mock) and it works exactly like <code>sandbox.spy()</code>
+          (and stub, mock), except you don't need to manually <code>restore()</code>.
+        </dd>
+      </dl>
+      <h4>sinon.config</h4>
+      <p>
+        The configuration controls how Sinon binds properties when
+        using <code>sinon.test</code>. To emulate 0.5.0 binding, use this
+        configuration:
+      </p>
+      <pre>sinon.config = {
+  injectIntoThis: false,
+  injectInto: null,
+  properties: ["stub", "mock"]
+}</pre>
+      <dl>
+        <dt>Boolean <code>injectIntoThis</code></dt>
+        <dd>
+          Causes properties to be injected into the <code>this</code> object of
+          the test function. Default <code>true</code>.
+        </dd>
+        <dt>Object <code>injectInto</code></dt>
+        <dd>
+          Object to bind properties to. If this is <code>null</code> (default)
+          and <code>injectIntoThis</code> is <code>false</code> (not default),
+          the properties are passed as arguments to the test function instead.
+        </dd>
+        <dt>Array <code>properties</code></dt>
+        <dd>
+          Properties to expose. Default is all:
+          <code>["spy", "stub", "mock", "clock", "server",
+          "requests"]</code>. However, the last three properties are only bound
+          if the following to two configuration options are <code>true</code>
+          (which is not the default).
+        </dd>
+        <dt>Boolean <code>useFakeTimers</code></dt>
+        <dd>Set to <code>true</code> to always use fake timers. Default is <code>false</code>.</dd>
+        <dt>Boolean <code>useFakeXMLHttpRequest</code></dt>
+        <dd>Set to <code>true</code> to always use fake XHR and server. Default is <code>false</code>.</dd>
+      </dl>
+    </div>
+    <div class="section">
+      <h3>Test cases</h3>
+      <p>
+        If you need the behavior of <code>sinon.test</code> for more than one
+        test method in a test case, you can use <code>sinon.testCase</code>,
+        which behaves exactly like wrapping each test in <code>sinon.test</code>
+        with one exception: <code>setUp</code> and <code>tearDown</code> can
+        share fakes.
+      </p>
+      <dl>
+        <dt><code>var obj = sinon.testCase({});</code></dt>
+      </dl>
     </div>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
