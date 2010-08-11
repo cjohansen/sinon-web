@@ -343,11 +343,13 @@ jQuery.ajax.verify();</code></pre>
         <dt>String <code>request.method</code></dt>
         <dt>Object <code>request.requestHeaders</code></dt>
         <dt>int <code>request.status</code></dt>
+        <dd></dd>
         <dt>String <code>request.statusText</code></dt>
         <dd>Only populated if the <code>respond</code> method is called (see below).</dd>
         <dt>boolean <code>request.async</code></dt>
         <dt>String <code>request.username</code></dt>
         <dt>String <code>request.password</code></dt>
+        <dd></dd>
         <dt>Document <code>request.responseXML</code></dt>
         <dd>
           When using <code>respond</code> (see below), this property is
@@ -355,7 +357,9 @@ jQuery.ajax.verify();</code></pre>
           (see <a href="http://www.w3.org/TR/XMLHttpRequest/">the spec</a>).
         </dd>
         <dt>String <code>request.getResponseHeader(header);</code></dt>
+        <dd></dd>
         <dt>Object <code>request.getAllResponseHeaders();</code></dt>
+        <dd></dd>
       </dl>
       <h4>Simulate server responses</h4>
       <dl>
@@ -425,6 +429,7 @@ jQuery.ajax.verify();</code></pre>
           URL may be a regular expression, e.g. <code>/\/post/\d+</code>
         </dd>
         <dt><code>server.respondWith(method, urlRegExp, response);</code></dt>
+        <dd></dd>
         <dt><code>server.respond();</code></dt>
         <dd>
           Causes all queued asynchronous requests to receive a response. If none
@@ -461,6 +466,7 @@ jQuery.ajax.verify();</code></pre>
       </p>
       <dl>
         <dt><code>var sandbox = sinon.sandbox.create();</code></dt>
+        <dd></dd>
         <dt><code>sandbox.spy();</code></dt>
         <dd>
           Works exactly like <code>sinon.spy</code>, only also adds the returned

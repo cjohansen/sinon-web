@@ -35,6 +35,10 @@ dt {
     padding: 4px 12px;
 }
 
+dt + dt {
+    margin-top: -.6em;
+}
+
 dt code {
     font-weight: bold;
 }
