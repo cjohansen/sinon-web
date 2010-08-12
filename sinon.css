@@ -103,3 +103,8 @@ h4 {
     color: #666;
     font-size: .8em;
 }
+
+.download span a {
+    display: inline;
+    font-size: 1em;
+}
