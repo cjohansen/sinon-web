@@ -1,5 +1,5 @@
 /**
- * Sinon 0.6.0, 2010/08/10
+ * Sinon 0.6.2, 2010/08/12
  *
  * @author Christian Johansen (christian@cjohansen.no)
  *
