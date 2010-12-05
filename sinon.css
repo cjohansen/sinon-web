@@ -20,19 +20,23 @@ a:active {
 }
 
 dl {
-    margin: 0 0 2em;
+    margin: 0 -30px 2em;
 }
 
 dt {
-    background: #f0f3f6;
-    border-top-left-radius: .5em;
-    -moz-border-radius-topleft: .5em;
-    -webkit-border-top-left-radius: .5em;
-    border-top-right-radius: .5em;
-    -moz-border-radius-topright: .5em;
-    -webkit-border-top-right-radius: .5em;
+    /* background: #f0f3f6; */
+    /* border-top-left-radius: .5em; */
+    /* -moz-border-radius-topleft: .5em; */
+    /* -webkit-border-top-left-radius: .5em; */
+    /* border-top-right-radius: .5em; */
+    /* -moz-border-radius-topright: .5em; */
+    /* -webkit-border-top-right-radius: .5em; */
+    /* font-size: 1.1em; */
+    /* padding: 4px 12px; */
+
+    background: #eee;
     font-size: 1.1em;
-    padding: 4px 12px;
+    padding: 2px 30px 4px 30px;
 }
 
 dt + dt {
@@ -44,33 +48,55 @@ dt code {
 }
 
 dd {
-    background: #f8fcff;
-    border-bottom-left-radius: .5em;
-    -moz-border-radius-bottomleft: .5em;
-    -webkit-border-bottom-left-radius: .5em;
-    border-bottom-right-radius: .5em;
-    -moz-border-radius-bottomright: .5em;
-    -webkit-border-bottom-right-radius: .5em;
+    /* background: #f0fcff; */
+    /* border-bottom-left-radius: .5em; */
+    /* -moz-border-radius-bottomleft: .5em; */
+    /* -webkit-border-bottom-left-radius: .5em; */
+    /* border-bottom-right-radius: .5em; */
+    /* -moz-border-radius-bottomright: .5em; */
+    /* -webkit-border-bottom-right-radius: .5em; */
     margin: 0 0 1em;
-    padding: 12px 12px 12px 36px;
+    padding: 12px 30px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: Baskerville, Georgia, Times, serif;
+    font-weight: normal;
 }
 
 h3 {
-    background: #fff;
     font-size: 2em;
-    margin: 0 0 0 -24px;
-}
-
-h4 {
-    border-bottom: 1px solid #fcfcfc;
-    font-size: 1.5em;
     margin: 0 0 .5em;
 }
 
+h4 {
+    font-size: 1.5em;
+    margin: 1.5em 0 .5em;
+}
+
 .section {
-    border-left: 6px solid #fcfcfc;
-    margin: 0 0 2em;
-    padding: 0 0 0 18px;
+    background: #f8f8f8;
+    border: 2px solid #f0f0f0;
+    border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    margin: 0 -30px 2em;
+    padding: 15px 30px;
+    width: 700px;
+}
+
+.nav {
+    margin: 0 0 1em;
+    padding: 0;
+}
+
+.nav li {
+    display: inline;
+    list-style: none;
+    padding: 0 12px 0 0;
 }
 
 .aside {

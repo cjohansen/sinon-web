@@ -13,39 +13,75 @@
         works with any unit testing framework.
       </p>
       <p class="download">
-        <a href="releases/sinon-0.8.0.js">Download Sinon.JS 0.8.0</a>
-        <span>2010-10-30 - <a href="Changelog.txt">Changelog</a></span>
+        <a href="releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
+        <span>2010-12-12 - <a href="Changelog.txt">Changelog</a></span>
       </p>
     </div>
+    <h2>Features</h2>
+    <ul>
+      <li><a href="#spies">Test spies</a></li>
+      <li><a href="#stubs">Test stubs</a></li>
+      <li><a href="#mocks">Mocks</a></li>
+      <li><a href="#clock">Fake timers</a></li>
+      <li><a href="#server">Fake <code>XMLHttpRequest</code> and server</a></li>
+      <li><a href="#assertions">Assertions</a></li>
+      <li><a href="#sandbox">Sandboxing</a></li>
+    </ul>
+    <h2>Getting started with Sinon.JS</h2>
     <p>
-      Sinon v0.8 ships with a mostly complete implementation of spies, stubs,
-      mocks as well as some higher level helpers, such as sandboxing features to
-      reduce the required amount of scaffolding. v0.8 also include fake timers
-      and XMLHttpRequest, along with a high-level API to test XHR objects.
+      The core Sinon.JS API works well with any unit testing framework. However,
+      for automatic sandboxing, small adapters are provided for popular testing
+      frameworks.
     </p>
-    <h2>Using Sinon.JS with QUnit</h2>
+    <ul>
+      <li>
+        <a href="sinon-qunit/">Getting started</a> with
+        Sinon.JS and <a href="http://docs.jquery.com/Qunit">QUnit</a>.
+        (<a href="releases/sinon-qunit-1.0.0.js">Download</a>)
+      </li>
+      <li>
+        <a href="sinon-jstestdriver/">Getting started</a> with
+        Sinon.JS and <a href="http://code.google.com/p/js-test-driver/">JsTestDriver</a>.
+        (<a href="releases/sinon-jstestdriver-1.0.0.js">Download</a>)
+      </li>
+      <li>
+        <a href="sinon-nodeunit/">Getting started</a> with
+        Sinon.JS and <a href="http://caolanmcmahon.com/nodeunit.html">nodeunit</a>.
+        (<a href="releases/sinon-nodeunit-1.0.0.js">Download</a>).
+      </li>
+    </ul>
+    <h2>Blog posts</h2>
+    <ul>
+      <li><a href="http://cjohansen.no/en/javascript/javascript_test_spies_stubs_and_mocks">Core API, part 1</a></li>
+      <li><a href="http://cjohansen.no/en/javascript/test_spies_stubs_and_mocks_part_1_5">Core API, part 2</a></li>
+      <li><a href="http://cjohansen.no/en/javascript/higer_level_stubbing_and_mocking_tools_in_sinon">Higher-level helpers</a></li>
+      <li><a href="http://cjohansen.no/en/javascript/faking_timers_and_dates_with_sinon">Fake timers</a></li>
+      <li><a href="http://cjohansen.no/en/javascript/sinon_js_0_6_0_fake_xmlhttprequest_and_improved_test_framework_integration">FakeXMLHttpRequest</a></li>
+    </ul>
     <p>
-      <a href="releases/sinon-qunit-0.8.0.js">Download sinon-qunit</a> and
-      <a href="http://cjohansen.no/en/javascript/using-sinon-js-with-qunit">read this</a>.
+      I regurlary publish material on JavaScript and testing on
+      <a href="http://cjohansen.no/en/">my blog</a>. Many of the core ideas in
+      Sinon.JS are described in <a href="http://tddjs.com">my book on JavaScript
+      TDD</a>.
     </p>
+    <h2>Public API</h2>
     <p>
-      Currently, there are no proper API docs, but design principles and most of the
-      <a href="http://cjohansen.no/en/javascript/javascript_test_spies_stubs_and_mocks">core</a>
-      <a href="http://cjohansen.no/en/javascript/test_spies_stubs_and_mocks_part_1_5">API</a>,
-      <a href="http://cjohansen.no/en/javascript/higer_level_stubbing_and_mocking_tools_in_sinon">higher level helpers</a>,
-      <a href="http://cjohansen.no/en/javascript/faking_timers_and_dates_with_sinon">fake timers</a>
-      and <a href="http://cjohansen.no/en/javascript/sinon_js_0_6_0_fake_xmlhttprequest_and_improved_test_framework_integration">FakeXMLHttpRequest</a>
-      have recently been chronicled on <a href="http://cjohansen.no/en/">my blog</a>.
+      Below you will find the entire Sinon.JS public API. If you're using any of
+      the above test framework adapters, refer to their respective pages for the
+      full API with local adjustments.
     </p>
-    <h2>Public interface</h2>
-    <p>
-      Until proper docs are available, the following is a list of Sinon's public API
-      as of version 0.8.0. Most, if not all, of these are described in the above articles.
-    </p>
-    <div class="section">
+    <div class="section" id="spies">
       <h3>Test spies</h3>
-      <p>Test spies allow introspection on how a function is used throughout the system under test.</p>
-      <h4>Creating spies</h4>
+      <p>
+        Test spies allow introspection on how a function is used throughout the
+        system under test.
+      </p>
+      <ul class="nav">
+        <li><a href="#sinonspy">sinon.spy()</a></li>
+        <li><a href="#spyprops">spy interface</a></li>
+        <li><a href="#spycall">spy call interface</a></li>
+      </ul>
+      <h4 id="sinonspy">Creating spies: <code>sinon.spy()</code></h4>
       <dl>
         <dt><code>var spy = sinon.spy();</code></dt>
         <dd>
@@ -56,16 +92,21 @@
         <dd>Spies on the provided function</dd>
         <dt><code>var spy = sinon.spy(object, "method");</code></dt>
         <dd>
-          Creates a spy for <code>object.method</code> and replaces the original
-          method with the spy. The spy acts exactly like the original method in all cases.
-          The original method can be restored by calling <code>object.method.restore()</code>.
-          The returned spy is the function object which replaced the original method:
-          <code>spy === object.method</code>
+          Creates a <a href="#spyprops">spy</a> for <code>object.method</code>
+          and replaces the original method with the spy. The spy acts exactly
+          like the original method in all cases.  The original method can be
+          restored by calling <code>object.method.restore()</code>.  The
+          returned spy is the function object which replaced the original
+          method. <code>spy === object.method</code>.
         </dd>
-        <dt><code>sinon.spy.create([func])</code></dt>
-        <dd>Create spy. Just like <code>sinon.spy();</code> and <code>sinon.spy(func);</code></dd>
       </dl>
-      <h4>Behavior verification</h4>
+      <h4 id="spyprops">Spy interface</h4>
+      <p>
+        Spy objects are objects returned from <code>sinon.spy()</code>. When
+        spying on existing methods with <code>sinon.spy(object, method)</code>,
+        the following properties and methods are also available
+        on <code>object.method</code>.
+      </p>
       <dl>
         <dt><code>spy.callCount</code></dt>
         <dd>The number of recorded calls.</dd>
@@ -131,9 +172,17 @@
         </dd>
         <dt><code>spy.alwaysReturned(obj);</code></dt>
         <dd>Returns <code>true</code> if spy always returned the provided value.</dd>
-      </dl>
-      <h4>"Manual" behavior verification</h4>
-      <dl>
+        <dt><code>var spyCall = spy.getCall(n);</code></dt>
+        <dd>
+          Returns the <em>nth</em> <a href="#spycall">call</a>. Accessing
+          individual calls helps with more detailed behavior verification when
+          the spy is called more than once. Example:
+          <pre><code>sinon.spy(jQuery, "ajax");
+jQuery.ajax("/stuffs");
+var spyCall = jQuery.ajax.getCall(0);
+
+assertEquals("/stuffs", spyCall.args[0]);</code></pre>
+        </dd>
         <dt><code>spy.thisValues</code></dt>
         <dd>
           Array of <code>this</code> objects, <code>spy.thisValues[0]</code> is the <code>this</code>
@@ -149,10 +198,19 @@
         <dt><code>spy.returnValues</code></dt>
         <dd>Array of return values.</dd>
       </dl>
-      <h4>Individual calls to spies</h4>
+      <h4 id="spycall">Individual spy calls</h4>
       <dl>
-        <dt><code>var spyCall = spy.getCall(index)</code></dt>
-        <dd>Returns a specific call (0 is the first call)</dd>
+        <dt><code>var spyCall = spy.getCall(n)</code></dt>
+        <dd>
+          Returns the <em>nth</em> <a href="#spycall">call</a>. Accessing
+          individual calls helps with more detailed behavior verification when
+          the spy is called more than once. Example:
+          <pre><code>sinon.spy(jQuery, "ajax");
+jQuery.ajax("/stuffs");
+var spyCall = jQuery.ajax.getCall(0);
+
+assertEquals("/stuffs", spyCall.args[0]);</code></pre>
+        </dd>
         <dt><code>spyCall.calledOn(obj);</code></dt>
         <dd>Returns <code>true</code> if <code>obj</code> was <code>this</code> for this call.</dd>
         <dt><code>spyCall.calledWith(arg1, arg2, ...);</code></dt>
@@ -165,10 +223,7 @@
         <dd>Returns <code>true</code> if call threw exception of provided type.</dd>
         <dt><code>spyCall.threw(obj);</code></dt>
         <dd>Returns <code>true</code> if call threw provided exception object.</dd>
-      </dl>
-      <h4>Individual calls properties</h4>
-      <dl>
-        <dt><code>spyCall.thisObj</code></dt>
+        <dt><code>spyCall.thisValue</code></dt>
         <dd>The call's <code>this</code> value.</dd>
         <dt><code>spyCall.args</code></dt>
         <dd>Array of received arguments.</dd>
@@ -178,11 +233,12 @@
         <dd>Return value.</dd>
       </dl>
     </div>
-    <div class="section">
+    <div class="section" id="stubs">
       <h3>Test stubs</h3>
       <p>
-        Test stubs are functions with pre-programmed behavior. Additionally, they support
-        the spy interface for easy behavior verification (see above).
+        Test stubs are functions (spies) with pre-programmed behavior. They
+        support the full <a href="#spies">test spy interface</a> in addition to
+        the following methods which can be used to alter the stub's behavior.
       </p>
       <dl>
         <dt><code>var stub = sinon.stub();</code></dt>
@@ -191,12 +247,11 @@
         <dd>
           Replaces <code>object.method</code> with a stub function. The original function
           can be restored by calling <code>object.method.restore();</code> (or
-          <code>stub.restore();</code>).
+          <code>stub.restore();</code>). An exception is thrown if the property
+          is not already a function, to help avoid typos when stubbing methods.
         </dd>
         <dt><code>var stub = sinon.stub(obj);</code></dt>
         <dd>Stubs all the object's methods.</dd>
-        <dt><code>var stub = sinon.stub.create();</code></dt>
-        <dd>Creates a stub function.</dd>
         <dt><code>stub.returns(obj);</code></dt>
         <dd>Makes the stub return the provided value.</dd>
         <dt><code>stub.throws();</code></dt>
@@ -209,35 +264,42 @@
         <dd>
           Causes the stub to call the argument at the provided index as a callback
           function. <code>stub.callsArg(0);</code> causes the stub to call the
-          first argument as a callback. <strong>NB!</strong> This is likely to change,
-          suggestions for clearer naming is welcome.
+          first argument as a callback.
         </dd>
         <dt><code>stub.callsArgWith(index, arg1, arg2, ...);</code></dt>
-        <dd>Like above, but with arguments to pass to the callback. Also likely to change.</dd>
+        <dd>Like above, but with arguments to pass to the callback.</dd>
       </dl>
     </div>
-    <div class="section">
+    <div class="section" id="mocks">
       <h3>Mocks</h3>
+      <p>
+        Mocks are slightly different from spies and stubs in that
+        you <em>mock</em> and object, and then set an <em>expectation</em> on
+        one or more of its objects. <a href="#expectations">Expectations</a>
+        implement both the <a href="#spies">spies</a> and
+        <a href="#stubs">stubs</a> interfaces and additionally set pass criteria
+        upfront. Expectations are explained in more detail below.
+      </p>
       <dl>
         <dt><code>var mock = sinon.mock(obj);</code></dt>
         <dd>
           Creates a mock for the provided object. Does not change the object, but returns
-          a mock object to set expectations on the mocked object's methods.
+          a mock object to set expectations on the object's methods.
         </dd>
         <dt><code>var expectation = mock.expects("method");</code></dt>
         <dd>
           Overrides <code>obj.method</code> with a mock function and returns it.
-          See expectations below.
+          See <a href="#expectations">expectations</a> below.
         </dd>
         <dt><code>mock.restore();</code></dt>
         <dd>Restores all mocked methods.</dd>
         <dt><code>mock.verify();</code></dt>
         <dd>
-          Verifies all expectations on mock. If any expectation is not satiesfied, an exception
-          is thrown. Also restores the mocked methods.
+          Verifies all expectations on the mock. If any expectation is not
+          satiesfied, an exception is thrown. Also restores the mocked methods.
         </dd>
       </dl>
-      <h4>Expectations</h4>
+      <h4 id="expectations">Expectations</h4>
       <p>
         All the expectation methods returns the expectation, meaning you can chain them.
         Typical usage:
@@ -247,8 +309,9 @@ jQuery.ajax.verify();</code></pre>
       <dl>
         <dt><code>var expectation = sinon.expectation.create([methodName]);</code></dt>
         <dd>
-          Creates an expectation, basically an anonymous mock function. Method name is optional and
-          is used in exception messages to make them more readable.
+          Creates an expectation without a mock object, basically an anonymous
+          mock function. Method name is optional and is used in exception
+          messages to make them more readable.
         </dd>
         <dt><code>var expectation = sinon.mock();</code></dt>
         <dd>The same as the above.</dd>
@@ -276,35 +339,49 @@ jQuery.ajax.verify();</code></pre>
         <dd>Verifies the expectation and throws an exception if it's not met.</dd>
       </dl>
     </div>
-    <div class="section">
+    <div class="section" id="clock">
       <h3>Fake timers</h3>
       <p>
-        Fake timers is a non-asynchronous implementation
-        of <code>setTimeout</code> and friends that Sinon.JS can overwrite the
+        Fake timers is a non-asynchronous implementation of
+        <code>setTimeout</code> and friends that Sinon.JS can overwrite the
         global functions to allow you to more easily test such code. Fake timers
         provide a <code>clock</code> object to pass time, which can also be used
         to control <code>Date</code> objects created through either <code>new
         Date();</code> or <code>Date.now();</code> (if supported by the browser).
       </p>
+      <p>
+        When faking timers with IE you also need
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
+        loaded after sinon-1.0.0.js.
+      </p>
+      <p>
+        The fake timers can be used completely stand-alone by downloading
+        <a href="releases/sinon-timers-1.0.0.js">sinon-timers-1.0.0</a>. When
+        using the fake timers in IE you also need
+        <a href="releases/sinon-timers-ie-1.0.0.js">sinon-timers-ie-1.0.0</a>. Load
+        it after the first file.
+      </p>
       <dl>
         <dt><code>var clock = sinon.useFakeTimers();</code></dt>
         <dd>
-          Causes Sinon to replace the global <code>setTimeout</code>,
-          <code>clearTimeout</code>, <code>setInterval</code>
-          and <code>clearInterval</code> with a custom implementation which is
-          bound to the returned <code>clock</code> object.
+          <p>
+            Causes Sinon to replace the global <code>setTimeout</code>,
+            <code>clearTimeout</code>, <code>setInterval</code>,
+            <code>clearInterval</code> and <code>Date</code> with a custom
+            implementation which is bound to the returned <code>clock</code>
+            object.
+          </p>
         </dd>
         <dt><code>var clock = sinon.useFakeTimers(now);</code></dt>
         <dd>
           As above, but rather than starting the clock at the current timestamp,
-          start at the provided timestamp. Really only useful when also faking
-          the <code>Date</code> constructor.
+          start at the provided timestamp.
         </dd>
-        <dt><code>var clock = sinon.useFakeTimers(now, prop1, prop2, ...);</code></dt>
+        <dt><code>var clock = sinon.useFakeTimers([now, ]prop1, prop2, ...);</code></dt>
         <dd>
           Sets the clock start timestamp and names functions to fake. Possible
           functions are setTimeout, clearTimeout, setInterval, clearInterval,
-          and Date.
+          and Date. Can also be called without the timestamp.
         </dd>
         <dt><code>clock.tick(ms);</code></dt>
         <dd>
@@ -315,19 +392,34 @@ jQuery.ajax.verify();</code></pre>
         <dd>Restore the faked methods. Call in e.g. <code>tearDown</code>.</dd>
       </dl>
     </div>
-    <div class="section">
+    <div class="section" id="server">
       <h3>Fake <code>XMLHttpRequest</code></h3>
       <p>
+        Provides a fake implementation of <code>XMLHttpRequest</code> and
+        provides several interfaces for manipulating objects created by it. Also
+        fakes the native <code>XMLHttpRequest</code> and 
         Helps with testing requests made with XHR.
+      </p>
+      <p>
+        When faking XHR with IE you also need
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
+        loaded after sinon-1.0.0.js.
+      </p>
+      <p>
+        The fake server and XHR can be used completely stand-alone by
+        downloading <a href="releases/sinon-server-1.0.0.js">sinon-server-1.0.0</a>.
+        When using the fake server in IE you also need
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>. Load it after
+        the first file.
       </p>
       <dl>
         <dt><code>var xhr = sinon.useFakeXMLHttpRequest();</code></dt>
         <dd>
           Causes Sinon to replace the native <code>XMLHttpRequest</code> object
           in browsers that support it with a custom implementation which does
-          not send actual requests. In browsers that
-          support <code>ActiveXObject</code>, this constructor is replaced, and
-          fake objects are returned for XMLHTTP progIds. Other progIds, such as
+          not send actual requests. In browsers that support
+          <code>ActiveXObject</code>, this constructor is replaced, and fake
+          objects are returned for XMLHTTP progIds. Other progIds, such as
           XMLDOM are left untouched.
         </dd>
         <dt><code>xhr.onCreate = function (xhr) {};</code></dt>
@@ -389,7 +481,7 @@ jQuery.ajax.verify();</code></pre>
       </dl>
       <p>
         <strong>Note!</strong> To use fake timers successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-0.8.0.js">the IE
+        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
         addon</a>. It needs to stay in a separate file and it should be included
         after Sinon.JS. I'm working on a better solution.
       </p>
@@ -458,7 +550,7 @@ jQuery.ajax.verify();</code></pre>
       </dl>
       <p>
         <strong>Note!</strong> To use fake XHR and the server successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-0.8.0.js">the IE
+        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
         addon</a>. It needs to stay in a separate file and it should be included
         after Sinon.JS. I'm working on a better solution.
       </p>
@@ -514,7 +606,7 @@ jQuery.ajax.verify();</code></pre>
       </dl>
       <p>
         <strong>Note!</strong> To use fake XHR and the server successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-0.8.0.js">the IE
+        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
         addon</a>. It needs to stay in a separate file and it should be included
         after Sinon.JS. I'm working on a better solution.
       </p>
