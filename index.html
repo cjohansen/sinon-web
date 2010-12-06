@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Versatile standalone test spies, stubs and mocks for JavaScript</title>
-    <link rel="stylesheet" type="text/css" href="sinon.css?1">
+    <link rel="stylesheet" type="text/css" href="sinon.css?2">
   </head>
   <body>
     <h1>Sinon.JS</h1>
@@ -412,6 +412,13 @@ jQuery.ajax.verify();</code></pre>
         <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>. Load it after
         the first file.
       </p>
+      <ul class="nav">
+        <li><a href="#useFakeXMLHttpRequest">sinon.useFakeXMLHttpRequest</a></li>
+        <li><a href="#FakeXMLHttpRequest">FakeXMLHttpRequest</a></li>
+        <li><a href="#responses">Simulating responses</a></li>
+        <li><a href="#fakeServer">sinon.useFakeServer</a></li>
+      </ul>
+      <h4 id="useFakeXMLHttpRequest"><code>sinon.useFakeXMLHttpRequest</code></h4>
       <dl>
         <dt><code>var xhr = sinon.useFakeXMLHttpRequest();</code></dt>
         <dd>
@@ -419,8 +426,8 @@ jQuery.ajax.verify();</code></pre>
           in browsers that support it with a custom implementation which does
           not send actual requests. In browsers that support
           <code>ActiveXObject</code>, this constructor is replaced, and fake
-          objects are returned for XMLHTTP progIds. Other progIds, such as
-          XMLDOM are left untouched.
+          objects are returned for <code>XMLHTTP</code> progIds. Other progIds,
+          such as <code>XMLDOM</code> are left untouched.
         </dd>
         <dt><code>xhr.onCreate = function (xhr) {};</code></dt>
         <dd>
@@ -434,31 +441,63 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>xhr.restore();</code></dt>
         <dd>Restore original function(s).</dd>
       </dl>
-      <h4>Behavior verification of request objects</h4>
+      <h4 id="FakeXMLHttpRequest"><code>FakeXMLHttpRequest</code> interface</h4>
       <dl>
         <dt>String <code>request.url</code></dt>
+        <dd>
+          The URL set on the request object.
+        </dd>
         <dt>String <code>request.method</code></dt>
+        <dd>
+          The request method as a string.
+        </dd>
         <dt>Object <code>request.requestHeaders</code></dt>
+        <dd>
+          An object of all request headers, i.e.:
+          <pre><code>{
+    "Accept": "text/html, */*",
+    "Connection": "keep-alive"
+}</code></pre>
+        </dd>
         <dt>int <code>request.status</code></dt>
-        <dd></dd>
+        <dd>
+          The request's status code. Undefined if the request has not been
+          handled (see <a href="#respond"><code>respond</code></a> below).
+        </dd>
         <dt>String <code>request.statusText</code></dt>
-        <dd>Only populated if the <code>respond</code> method is called (see below).</dd>
+        <dd>
+          Only populated if the <a href="#respond"><code>respond</code></a>
+          method is called (see below).
+        </dd>
         <dt>boolean <code>request.async</code></dt>
+        <dd>
+          Whether or not the request is asynchronous.
+        </dd>
         <dt>String <code>request.username</code></dt>
+        <dd>
+          Username, if any.
+        </dd>
         <dt>String <code>request.password</code></dt>
-        <dd></dd>
+        <dd>
+          Password, if any.
+        </dd>
         <dt>Document <code>request.responseXML</code></dt>
         <dd>
-          When using <code>respond</code> (see below), this property is
+          When using <a href="#respond"><code>respond</code></a>, this property is
           populated with a parsed document if response headers indicate as much
           (see <a href="http://www.w3.org/TR/XMLHttpRequest/">the spec</a>).
         </dd>
         <dt>String <code>request.getResponseHeader(header);</code></dt>
-        <dd></dd>
+        <dd>
+          The value of the given response header, if the request has been
+          responded to (see <a href="#respond"><code>respond</code></a>).
+        </dd>
         <dt>Object <code>request.getAllResponseHeaders();</code></dt>
-        <dd></dd>
+        <dd>
+          All response headers as an object.
+        </dd>
       </dl>
-      <h4>Simulate server responses</h4>
+      <h4 id="responses">Simulating server responses</h4>
       <dl>
         <dt><code>request.setResponseHeaders(object);</code></dt>
         <dd>
@@ -473,21 +512,14 @@ jQuery.ajax.verify();</code></pre>
           populates <code>responseXML</code> with a parsed document
           if <a href="http://www.w3.org/TR/XMLHttpRequest/">response headers indicate as much</a>.
         </dd>
-        <dt><code>request.respond(status, headers, body);</code></dt>
+        <dt id="respond"><code>request.respond(status, headers, body);</code></dt>
         <dd>
           Calls the above two methods and sets the <code>status</code> and
-          <code>statusText</code> properties.
+          <code>statusText</code> properties. Status should be a number, the
+          status text is looked up from <code>sinon.FakeXMLHttpRequest.statusCodes</code>.
         </dd>
       </dl>
-      <p>
-        <strong>Note!</strong> To use fake timers successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
-        addon</a>. It needs to stay in a separate file and it should be included
-        after Sinon.JS. I'm working on a better solution.
-      </p>
-    </div>
-    <div class="section">
-      <h3>Fake server</h3>
+      <h4 id="fakeServer">Fake server</h4>
       <p>
         High-level API to manipulate <code>FakeXMLHttpRequest</code> instances.
       </p>
@@ -526,14 +558,17 @@ jQuery.ajax.verify();</code></pre>
           URL may be a regular expression, e.g. <code>/\/post/\d+</code>
         </dd>
         <dt><code>server.respondWith(method, urlRegExp, response);</code></dt>
-        <dd></dd>
+        <dd>
+          Responds to all <code>method</code> requests to URLs matching the
+          regular expression.
+        </dd>
         <dt><code>server.respond();</code></dt>
         <dd>
           Causes all queued asynchronous requests to receive a response. If none
           of the responses added through <code>respondWith</code> match, the
           default response is <code>[404, {}, ""]</code>. Synchronous requests
-          are responded to immediately, so make sure to
-          call <code>respondWith</code> upfront.
+          are responded to immediately, so make sure to call
+          <code>respondWith</code> upfront.
         </dd>
         <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
         <dd>
@@ -543,27 +578,220 @@ jQuery.ajax.verify();</code></pre>
           custom HTTP method faking,
           override <code>server.getHTTPMethod(request)</code>.
         </dd>
+        <dt><code>server.getHTTPMethod(request)</code></dt>
+        <dd>
+          Used internally to determine the HTTP method used with the provided
+          request. By default this method simply
+          returns <code>request.method</code>. When <code>server.fakeHTTPMethods</code>
+          is true, the method will return the value of the <code>_method</code>
+          parameter if the method is "POST". This method can be overrided to
+          provide custom behavior.
+        </dd>
         <dt><code>server.restore();</code></dt>
         <dd>
           Restores the native XHR constructor.
         </dd>
       </dl>
-      <p>
-        <strong>Note!</strong> To use fake XHR and the server successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
-        addon</a>. It needs to stay in a separate file and it should be included
-        after Sinon.JS. I'm working on a better solution.
-      </p>
     </div>
-    <div class="section">
-      <h3>Sandboxes</h3>
+    <div class="section" id="assertions">
+      <h3>Assertions</h3>
       <p>
-        Sandboxes simplify working with fakes that need to be restore and/or
-        verified.
+        Sinon.JS ships with a set of assertions that mirror most behavior
+        verification methods and properties on spies and stubs. The advantage of
+        using the assertions is that failed expectations on stubs and spies can
+        be expressed directly as assertion failures with detailed and helpful
+        error messages.
+      </p>
+      <p>
+        To make sure assertions integrate nicely with your test framework, you
+        should customize either <code>sinon.assert.fail</code> or
+        <code>sinon.assert.failException</code> and look into
+        <a href="#assert-expose"><code>sinon.assert.expose</code></a> and
+        <a href="#assert-pass"><code>sinon.assert.pass</code></a>.
+      </p>
+      <p>
+        The assertions can be used with either spies or stubs.
       </p>
       <dl>
+        <dt><code>sinon.assert.fail(message)</code></dt>
+        <dd>
+          Every assertion fails by calling this method. By default it throws an
+          error of type <code>sinon.assert.failException</code>. If your testing
+          framework looks for assertion errors by checking for a specific
+          exception, you can simply override the kind of exception thrown. If
+          that does not fit with your testing framework of choice, override
+          the <code>fail</code> method to do the right thing.
+        </dd>
+        <dt>String <code>sinon.assert.failException</code></dt>
+        <dd>
+          Defaults to "AssertError".
+        </dd>
+        <dt id="assert-pass"><code>sinon.assert.pass(assertion)</code></dt>
+        <dd>
+          Called every time an assertion passes. Default implementation does
+          nothing.
+        </dd>
+        <dt><code>sinon.assert.notCalled(spy)</code></dt>
+        <dd>
+          Passes if spy was never called.
+        </dd>
+        <dt><code>sinon.assert.called(spy)</code></dt>
+        <dd>
+          Passes if spy was called at least once.
+        </dd>
+        <dt><code>sinon.assert.calledOnce(spy)</code></dt>
+        <dd>
+          Passes if spy was called once and only once.
+        </dd>
+        <dt><code>sinon.assert.calledTwice()</code></dt>
+        <dd>
+          Passes if spy was called exactly twice.
+        </dd>
+        <dt><code>sinon.assert.calledThrice()</code></dt>
+        <dd>
+          Passes if spy was called exactly three times.
+        </dd>
+        <dt><code>sinon.assert.callCount(spy, num)</code></dt>
+        <dd>
+          Passes if the spy was called exactly <code>num</code> times.
+        </dd>
+        <dt><code>sinon.assert.callOrder(spy1, spy2, ...)</code></dt>
+        <dd>
+          Passes if the provided spies where called in the specified order.
+        </dd>
+        <dt><code>sinon.assert.calledOn(spy, obj)</code></dt>
+        <dd>
+          Passes if the spy was ever called with <code>obj</code> as
+          its <code>this</code> value.
+        </dd>
+        <dt><code>sinon.assert.alwaysCalledOn(spy, obj)</code></dt>
+        <dd>
+          Passes if the spy was always called with <code>obj</code> as
+          its <code>this</code> value.
+        </dd>
+        <dt><code>sinon.assert.calledWith(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was called with the provided arguments.
+        </dd>
+        <dt><code>sinon.assert.alwaysCalledWith(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was always called with the provided arguments.
+        </dd>
+        <dt><code>sinon.assert.calledWithExactly(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was called with the provided arguments and no others.
+        </dd>
+        <dt><code>sinon.assert.alwaysCalledWithExactly(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was always called with the provided arguments and no
+          others.
+        </dd>
+        <dt><code>sinon.assert.threw(spy, exception)</code></dt>
+        <dd>
+          Passes if the spy threw the given exception. The exception can be a
+          string denoting its type, or an actual object. If only one argument is
+          provided, the assertion passes if the spy ever threw any exception.
+        </dd>
+        <dt><code>sinon.assert.alwaysThrew(spy, exception)</code></dt>
+        <dd>
+          Like above, only required for all calls to the spy.
+        </dd>
+        <dt id="assert-expose"><code>sinon.assert.expose(object, options)</code></dt>
+        <dd>
+          <p>
+            Exposes assertions into another object, to better integrate with the
+            test framework. For instance, JsTestDriver uses global assertions, and
+            to make Sinon.JS assertions appear alongside them, you can do:
+          </p>
+          <pre><code>sinon.assert.expose(this);</code></pre>
+          <p>
+            This will give you <code>assertCalled(spy)</code>,
+            <code>assertCallOrder(spy1, spy2, ...)</code> and so on.
+          </p>
+          <p>
+            The method accepts an optional options object with two
+            options. <strong>prefix</strong> is a prefix to give assertions. By
+            default it is "assert", so <code>sinon.assert.called</code> becomes
+            <code>target.assertCalled</code>. By passing a blank string, the
+            exposed method will be <code>target.called</code>. The second
+            option, <strong>includeFail</strong> is true by default, and copies
+            over the <code>fail</code> and <code>failException</code>
+            properties.
+          </p>
+        </dd>
+      </dl>
+    </div>
+    <div class="section" id="sandbox">
+      <h3>Sandboxes</h3>
+      <p>
+        Sandboxes simplify working with fakes that need to be restored and/or
+        verified. If you're using fake timers, fake XHR or you are
+        stubbing/spying on globally accessible properties you should use a
+        sandbox to ease cleanup.
+      </p>
+      <ul class="nav">
+        <li><a href="#sinon-sandbox">sinon.sandbox</a></li>
+        <li><a href="#sinon-test">sinon.test</a></li>
+        <li><a href="#sinon-testCase">sinon.testCase</a></li>
+      </ul>
+      <dl id="sinon-sandbox">
         <dt><code>var sandbox = sinon.sandbox.create();</code></dt>
-        <dd></dd>
+        <dd>Creates a sandbox object.</dd>
+        <dt><code>var sandbox = sinon.sandbox.create(config);</code></dt>
+        <dd>
+          <p>
+            The <code>sinon.sandbox.create(config)</code> method is mostly an
+            integration feature, and as an end-user of Sinon.JS you will
+            probably not need it.
+          </p>
+          <p>
+            Creates a pre-configured sandbox object. The configuration can
+            instruct the sandbox to include fake timers, fake server, and how to
+            interact with these. The default configuration looks like:
+          </p>
+          <pre><code>sinon.defaultConfig = {
+    // ...
+    injectInto: null,
+    properties: ["spy", "stub", "mock", "clock", "server", "requests"],
+    useFakeTimers: true,
+    useFakeServer: true
+}</code></pre>
+          <dl>
+            <dt><code>injectInto</code></dt>
+            <dd>
+              The sandbox's methods can be injected into another object for
+              convenience. The <code>injectInto</code> configuration option can
+              name an object to add properties to. Usually, this is set by
+              <code>sinon.test</code> such that it is the <code>this</code>
+              value in a given test function.
+            </dd>
+            <dt><code>properties</code></dt>
+            <dd>
+              What properties to inject. Note that simply naming "server" here
+              is not sufficient to have a <code>server</code> property show up
+              in the target object, you also have to
+              set <code>useFakeServer</code> to true.
+            </dd>
+            <dt><code>useFakeTimers</code></dt>
+            <dd>
+              If <code>true</code>, the sandbox will have a <code>clock</code>
+              property. Can also be an array of timer properties to fake.
+            </dd>
+            <dt><code>UseFakeServer</code></dt>
+            <dd>
+              If <code>true</code>, <code>server</code>
+              and <code>requests</code> properties are added to the sandbox. Can
+              also be an object to use for fake server. The default one
+              is <code>sinon.fakeServer</code>, but if you're using jQuery 1.3.x
+              or some other library that does not set the
+              XHR's <code>onreadystatechange</code> handler, you might want to
+              do:
+              <pre><code>sinon.config = {
+    useFakeServer: sinon.fakeServerWithClock
+};</code></pre>
+            </dd>
+          </dl>
+        </dd>
         <dt><code>sandbox.spy();</code></dt>
         <dd>
           Works exactly like <code>sinon.spy</code>, only also adds the returned
@@ -586,7 +814,8 @@ jQuery.ajax.verify();</code></pre>
         <dd>
           Fakes timers and binds the <code>clock</code> object to the sandbox
           such that it too is restored when
-          calling <code>sandbox.restore()</code>. Access through <code>sandbox.clock</code>.
+          calling <code>sandbox.restore()</code>.
+          Access through <code>sandbox.clock</code>.
         </dd>
         <dt><code>sandbox.useFakeXMLHttpRequest();</code></dt>
         <dd>
@@ -604,17 +833,9 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>sandbox.restore();</code></dt>
         <dd>Restores all fakes created through sandbox.</dd>
       </dl>
+      <h4 id="sinon-test">Test methods</h4>
       <p>
-        <strong>Note!</strong> To use fake XHR and the server successfully in
-        Internet Explorer, you need <a href="releases/sinon-ie-1.0.0.js">the IE
-        addon</a>. It needs to stay in a separate file and it should be included
-        after Sinon.JS. I'm working on a better solution.
-      </p>
-    </div>
-    <div class="section">
-      <h3>Test methods</h3>
-      <p>
-        Wrapping test methods in <code>sinon.test</code> allows Sinon to
+        Wrapping test methods in <code>sinon.test</code> allows Sinon.JS to
         automatically create and manage sandboxes for you. The function's
         behavior can be configured through <code>sinon.config</code>.
       </p>
@@ -633,14 +854,28 @@ jQuery.ajax.verify();</code></pre>
       <h4>sinon.config</h4>
       <p>
         The configuration controls how Sinon binds properties when
-        using <code>sinon.test</code>. To emulate 0.5.0 binding, use this
-        configuration:
+        using <code>sinon.test</code>. The default configuration looks like:
+      </p>
+      <pre>{
+    injectIntoThis: true,
+    injectInto: null,
+    properties: ["spy", "stub", "mock", "clock", "server", "requests"],
+    useFakeTimers: true,
+    useFakeServer: true
+}</pre>
+      <p>
+        Simply set <code>sinon.config</code> to override any or all of these,
+        e.g.:
       </p>
       <pre>sinon.config = {
-  injectIntoThis: false,
-  injectInto: null,
-  properties: ["stub", "mock"]
+    useFakeTimers: false,
+    useFakeServer: false
 }</pre>
+      <p>
+        In this case, defaults are used for the non-existent
+        properties. Additionally, sandboxes and tests will not have automatic
+        access to the fake timers and fake server when using this configuration.
+      </p>
       <dl>
         <dt>Boolean <code>injectIntoThis</code></dt>
         <dd>
@@ -666,9 +901,7 @@ jQuery.ajax.verify();</code></pre>
         <dt>Boolean <code>useFakeXMLHttpRequest</code></dt>
         <dd>Set to <code>true</code> to always use fake XHR and server. Default is <code>false</code>.</dd>
       </dl>
-    </div>
-    <div class="section">
-      <h3>Test cases</h3>
+      <h4 id="sinon-testCase">Test cases</h4>
       <p>
         If you need the behavior of <code>sinon.test</code> for more than one
         test method in a test case, you can use <code>sinon.testCase</code>,
@@ -683,7 +916,7 @@ jQuery.ajax.verify();</code></pre>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
-        Copyright 2010, Christian Johansen. Released under the 
+        Copyright 2010 - 2011, Christian Johansen. Released under the 
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
