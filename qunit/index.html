@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Using Sinon.JS with QUnit</title>
+    <link rel="stylesheet" type="text/css" href="../sinon.css?2">
+  </head>
+  <body>
+    <h1>Sinon.JS: sinon-qunit</h1>
+    <div id="intro">
+      <p class="payoff">
+        QUnit adapter for <a href="../">Sinon.JS</a>. Automatic sandboxing and
+        mock verification with no scaffolding.
+      </p>
+      <p class="download">
+        <a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
+        <span>2010-12-12 - <a href="../Changelog.txt">Changelog</a></span>
+      </p>
+      <p class="download">
+        <a href="../releases/sinon-qunit-1.0.0.js">Download sinon-qunit 1.0.0</a>
+        <span>2010-12-06 - <a href="Changelog.txt">Changelog</a></span>
+      </p>
+    </div>
+    <h2>Features</h2>
+    <ul>
+      <li><a href="#spies">Test spies</a></li>
+      <li><a href="#stubs">Test stubs</a></li>
+      <li><a href="#mocks">Mocks</a></li>
+      <li><a href="#clock">Fake timers</a></li>
+      <li><a href="#server">Fake <code>XMLHttpRequest</code> and server</a></li>
+      <li><a href="#assertions">Assertions</a></li>
+    </ul>
+    <h2>Blog posts</h2>
+    <ul>
+      <li>
+        <a href="http://cjohansen.no/en/javascript/using_sinon_js_with_qunit">
+          Using Sinon.JS with QUnit
+        </a>
+      </li>
+    </ul>
+    <h2>Loading Sinon.JS</h2>
+    <p>
+      To set up a test case using QUnit and Sinon.JS, copy the below HTML
+      template:
+    </p>
+    <pre class="sh_html"><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;QUnit/Sinon.JS&lt;/title&gt;
+    &lt;link rel="stylesheet" href="qunit.css" type="text/css" media="screen"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1 id="qunit-header"&gt;QUnit/Sinon.JS Test&lt;/h1&gt;
+    &lt;h2 id="qunit-banner"&gt;&lt;/h2&gt;
+    &lt;h2 id="qunit-userAgent"&gt;&lt;/h2&gt;
+    &lt;ol id="qunit-tests"&gt;&lt;/ol&gt;
+    &lt;script type="text/javascript" src="jquery.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="qunit.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-1.0.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-ie-1.0.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-qunit-1.0.0.js"&gt;&lt;/script&gt;
+    &lt;!-- Source and test files go here --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    <p>
+      <strong>Note!</strong> You don't <strong>have to</strong> use sinon-qunit
+      to use Sinon.JS with QUnit, but this is the recommended approach.
+    </p>
+    <h2>Public API, QUnit style</h2>
+    <p>
+      The following is parts of the public API adjusted for idomatic sinon-qunit
+      usage. Relevant references to the <a href="../#api">public api</a> is
+      included.
+    </p>
+    <div class="section" id="spies">
+      <h3>Test spies</h3>
+      <h4 id="sinonspy">Creating spies: <code>this.spy()</code></h4>
+      <p>
+        When using sinon-qunit, <code>this.spy()</code> is the equivalent
+        of <code>sinon.spy()</code> only it's automatically sandboxed. Eeven
+        if you spy on global methods like <code>jQuery.ajax</code>, it will be
+        restored after the test runs.
+      </p>
+      <pre><code>test("Stubbing global environments": function () {
+    this.stub(jQuery, "ajax");
+    jQuery.ajax("/url", {});
+
+    ok(jQuery.ajax.called);
+});</code></pre>
+      <dl>
+        <dt><code>var spy = this.spy();</code></dt>
+        <dd>
+          Creates an anonymous function that records arguments, <code>this</code> value,
+          exceptions and return values for all calls.
+        </dd>
+        <dt><code>var spy = this.spy(myFunc);</code></dt>
+        <dd>Spies on the provided function</dd>
+        <dt><code>var spy = this.spy(object, "method");</code></dt>
+        <dd>
+          Creates a <a href="../#spyprops">spy</a> for <code>object.method</code>
+          and replaces the original method with the spy. The spy acts exactly
+          like the original method in all cases.  The original method can be
+          restored by calling <code>object.method.restore()</code>.  The
+          returned spy is the function object which replaced the original
+          method. <code>spy === object.method</code>.
+        </dd>
+      </dl>
+      <h4>Spy interface</h4>
+      <p>See the <a href="../#spyprops">full API</a>.</p>
+      <h4 id="spycall">Individual spy calls</h4>
+      <p>See the <a href="../#spyprops">full API</a>.</p>
+    </div>
+    <div class="section" id="mocks">
+      <h3>Mocks</h3>
+      <pre><code>test("Mocking jQuery.ajax": function () {
+    this.mock(jQuery).expects("ajax").once().withArgs("/url");
+    jQuery.ajax("/url", {});
+});</code></pre>
+      <p>
+        Mocks are automatically verified.
+      </p>
+      <dl>
+        <dt><code>var mock = this.mock(obj);</code></dt>
+        <dd>
+          Creates a mock for the provided object. Does not change the object, but returns
+          a mock object to set expectations on the object's methods.
+        </dd>
+        <dt><code>var expectation = mock.expects("method");</code></dt>
+        <dd>
+          Overrides <code>obj.method</code> with a mock function and returns it.
+          See <a href="#expectations">expectations</a> below.
+        </dd>
+        <dt><code>mock.restore();</code></dt>
+        <dd>Restores all mocked methods. Automatically called.</dd>
+        <dt><code>mock.verify();</code></dt>
+        <dd>
+          Verifies all expectations on the mock. If any expectation is not
+          satiesfied, an exception is thrown. Also restores the mocked
+          methods. Automatically called.
+        </dd>
+      </dl>
+      <h4>Expectations</h4>
+      <p>See the <a href="../#expectations">full API</a>.</p>
+    </div>
+    <div class="section" id="clock">
+      <h3>Fake timers</h3>
+      <p>
+        Fake timers are enabled by default. To disable them, include the
+        following before your tests:
+      </p>
+      <pre class="sh_javascript"><code>sinon.config = {
+    useFakeTimers: false
+};</code></pre>
+      <p>
+        Use <code>this.clock</code> to manipulate time.
+      </p>
+      <dl>
+        <dt><code>var clock = this.sandbox.useFakeTimers();</code></dt>
+        <dd>
+          Only necessary if timers where disabled as described
+          above. See <a href="../#clock">full API</a> for a more detailed
+          explanation.
+        </dd>
+        <dt><code>clock.tick(ms);</code></dt>
+        <dd>
+          Tick the clock ahead <code>ms</code> milliseconds. Causes all timers
+          scheduled within the affected time range to be called.
+        </dd>
+        <dt><code>clock.restore();</code></dt>
+        <dd>
+          Restore the faked methods. sinon-qunit sandboxes tests for you, so
+          normally you don't need this method.
+        </dd>
+      </dl>
+    </div>
+    <div class="section" id="server">
+      <h3>Fake <code>XMLHttpRequest</code></h3>
+      <p>
+        The fake XHR feature is not enabled by default. To enable it, include
+        the following before your tests:
+      </p>
+      <pre class="sh_javascript"><code>sinon.config = {
+    useFakeServer: true
+};</code></pre>
+      <h4 id="fakeServer">Fake server</h4>
+      <dl>
+        <dt><code>var server = this.sandbox.useFakeServer();</code></dt>
+        <dd>
+          Creates a new server. This function also calls <code>sinon.useFakeXMLHttpRequest()</code>.
+        </dd>
+      </dl>
+      <p>
+        Also see <a href="../#fakeServer">the full API</a>.
+      </p>
+      <h4 id="useFakeXMLHttpRequest"><code>sinon.useFakeXMLHttpRequest</code></h4>
+      <p>See <a href="../#useFakeXMLHttpRequest">the full API</a>.</p>
+      <h4 id="FakeXMLHttpRequest"><code>FakeXMLHttpRequest</code> interface</h4>
+      <p>See <a href="../#FakeXMLHttpRequest">the full API</a>.</p>
+    </div>
+    <div class="section" id="assertions">
+      <h3>Assertions</h3>
+      <p>
+        Assertions will show up in the number of assertions under each test, and
+        fails the way QUnit expect assertions to fail.
+      </p>
+      <p>See <a href="../#assertions">the full API</a> for a reference on assertions.</p>
+    </div>
+    <div class="aside">
+      <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
+      <p>
+        Copyright 2010 - 2011, Christian Johansen. Released under the 
+        <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
+      </p>
+    </div>
+    <script type="text/javascript" src="../sinon-web.js?0"></script>
+  </body>
+</html>

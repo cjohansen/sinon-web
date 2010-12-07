@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Using Sinon.JS with nodeunit</title>
+    <link rel="stylesheet" type="text/css" href="../sinon.css?2">
+  </head>
+  <body>
+    <h1>Sinon.JS: sinon-nodeunit</h1>
+    <div id="intro">
+      <p class="payoff">
+        nodeunit adapter for <a href="../">Sinon.JS</a>. Automatic sandboxing and
+        mock verification with no scaffolding.
+      </p>
+      <p class="download">
+        <a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
+        <span>2010-12-12 - <a href="../Changelog.txt">Changelog</a></span>
+      </p>
+      <p class="download">
+        <a href="../releases/sinon-nodeunit-1.0.0.js">Download sinon-nodeunit 1.0.0</a>
+        <span>2010-12-07 - <a href="Changelog.txt">Changelog</a></span>
+      </p>
+    </div>
+    <h2>Features</h2>
+    <ul>
+      <li><a href="#spies">Test spies</a></li>
+      <li><a href="#stubs">Test stubs</a></li>
+      <li><a href="#mocks">Mocks</a></li>
+      <li><a href="#clock">Fake timers</a></li>
+      <li><a href="#assertions">Assertions</a></li>
+    </ul>
+    <h2>Installing and loading Sinon.JS</h2>
+    <p>
+      You can install sinon-nodeunit using npm:
+    </p>
+    <pre><code>npm install sinon-nodeunit</code></pre>
+    <p>
+      Sinon.JS is a dependency of sinon-nodeunit. To use sinon-nodeunit, simply
+      add a <code>require</code> statement to your tests:
+    </p>
+    <pre class="sh_javascript"><code>require("sinon-nodeunit");</code></pre>
+    <p>
+      You don't need a reference to the module's exports. sinon-nodeunit has no
+      interface of its own, it simply adds Sinon.JS features to nodeunit.
+    </p>
+    <p>
+      <strong>Note!</strong> You don't <strong>have to</strong> use sinon-nodeunit
+      to use Sinon.JS with nodeunit, but this is the recommended approach.
+    </p>
+    <h2>Public API, nodeunit style</h2>
+    <p>
+      The following is parts of the public API adjusted for idomatic sinon-nodeunit
+      usage. Relevant references to the <a href="../#api">public api</a> is
+      included. When using Sinon.JS with nodeunit, you can access all the
+      features through the <code>test</code> object passed as the argument to
+      nodeunit's test functions:
+    </p>
+    <pre class="sh_javascript"><code>var someAPI = {
+    method: function () {
+    }
+};
+
+exports.testWithStub = function (test) {
+    test.stub(someAPI, "method").returns(42);
+
+    test.equal(42, someAPI.method());
+    test.done();
+};
+
+// someAPI.method is automatically restored after the test</code></pre>
+    <p>
+      <code>test</code> in the examples below refers to the object passed as
+      argument to nodeunit test functions.
+    </p>
+    <div class="section" id="spies">
+      <h3>Test spies</h3>
+      <h4 id="sinonspy">Creating spies: <code>test.spy()</code></h4>
+      <p>
+        When using sinon-nodeunit, <code>test.spy()</code> is the equivalent
+        of <code>sinon.spy()</code> only it's automatically sandboxed. Eeven
+        if you spy on global methods, they will be restored after the test runs.
+      </p>
+      <pre><code>var http = require("http");
+
+exports.testHttpServerStub = function (test) {
+    var fakeServer = {
+        // ...
+    };
+
+    test.stub(http, "createServer").return(fakeServer);
+    // Exercise with fake HTTP server
+
+    test.done();
+};</code></pre>
+      <dl>
+        <dt><code>var spy = test.spy();</code></dt>
+        <dd>
+          Creates an anonymous function that records arguments,
+          <code>this</code> value, exceptions and return values for all calls.
+        </dd>
+        <dt><code>var spy = test.spy(myFunc);</code></dt>
+        <dd>Spies on the provided function</dd>
+        <dt><code>var spy = test.spy(object, "method");</code></dt>
+        <dd>
+          Creates a <a href="../#spyprops">spy</a> for <code>object.method</code>
+          and replaces the original method with the spy. The spy acts exactly
+          like the original method in all cases. The original method can be
+          restored by calling <code>object.method.restore()</code>. The
+          returned spy is the function object which replaced the original
+          method. <code>spy === object.method</code>.
+        </dd>
+      </dl>
+      <h4>Spy interface</h4>
+      <p>See the <a href="../#spyprops">full API</a>.</p>
+      <h4 id="spycall">Individual spy calls</h4>
+      <p>See the <a href="../#spyprops">full API</a>.</p>
+    </div>
+    <div class="section" id="mocks">
+      <h3>Mocks</h3>
+      <pre><code>var http = require("http");
+
+exports.testHttpServerMock = function (test) {
+    test.mock(http).expects("createServer").once();
+    // Exercise with fake HTTP server
+
+    test.done();
+}</code></pre>
+      <p>
+        Mocks are automatically verified.
+      </p>
+      <dl>
+        <dt><code>var mock = test.mock(obj);</code></dt>
+        <dd>
+          Creates a mock for the provided object. Does not change the object,
+          but returns a mock object to set expectations on the object's methods.
+        </dd>
+        <dt><code>var expectation = mock.expects("method");</code></dt>
+        <dd>
+          Overrides <code>obj.method</code> with a mock function and returns it.
+          See <a href="#expectations">expectations</a> below.
+        </dd>
+        <dt><code>mock.restore();</code></dt>
+        <dd>Restores all mocked methods. Automatically called.</dd>
+        <dt><code>mock.verify();</code></dt>
+        <dd>
+          Verifies all expectations on the mock. If any expectation is not
+          satiesfied, an exception is thrown. Also restores the mocked
+          methods. Automatically called.
+        </dd>
+      </dl>
+      <h4>Expectations</h4>
+      <p>See the <a href="../#expectations">full API</a>.</p>
+    </div>
+    <div class="section" id="clock">
+      <h3>Fake timers</h3>
+      <p>
+        Fake timers are enabled by default. To disable them, include the
+        following before your tests:
+      </p>
+      <pre class="sh_javascript"><code>sinon.config = {
+    useFakeTimers: false
+};</code></pre>
+      <p>
+        Use <code>test.clock</code> to manipulate time.
+      </p>
+      <dl>
+        <dt><code>var clock = test.sandbox.useFakeTimers();</code></dt>
+        <dd>
+          Only necessary if timers where disabled as described
+          above. See <a href="../#clock">full API</a> for a more detailed
+          explanation.
+        </dd>
+        <dt><code>clock.tick(ms);</code></dt>
+        <dd>
+          Tick the clock ahead <code>ms</code> milliseconds. Causes all timers
+          scheduled within the affected time range to be called.
+        </dd>
+        <dt><code>clock.restore();</code></dt>
+        <dd>
+          Restore the faked methods. sinon-nodeunit sandboxes tests for you, so
+          normally you don't need this method.
+        </dd>
+      </dl>
+    </div>
+    <div class="section" id="assertions">
+      <h3>Assertions</h3>
+      <p>
+        Assertions will show up in the number of assertions under each test, and
+        fails the way nodeunit expect assertions to fail.
+      </p>
+      <p>
+        Assertions are available through the <code>test</code> object as well,
+        for instance:
+      </p>
+      <pre class="sh_javascript"><code>exports.testSinonAssertions = function (test) {
+    var spy = test.spy();
+
+    test.called(spy);
+    test.done();
+};</code></pre>
+      <p>
+        <code>test.called</code> is the same as <code>sinon.assert.called</code>
+        and so on.
+      </p>
+      <p>See <a href="../#assertions">the full API</a> for a reference on assertions.</p>
+    </div>
+    <div class="aside">
+      <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
+      <p>
+        Copyright 2010 - 2011, Christian Johansen. Released under the 
+        <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
+      </p>
+    </div>
+    <script type="text/javascript" src="../sinon-web.js?0"></script>
+  </body>
+</html>

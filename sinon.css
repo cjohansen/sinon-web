@@ -116,6 +116,7 @@ h4 {
     -moz-border-radius: 1em;
     -webkit-border-radius: 1em;
     margin: 0 -36px;
+    overflow: hidden;
     padding: 6px 48px;
 }
 
@@ -123,6 +124,11 @@ h4 {
     display: block;
     font-size: 1.5em;
     line-height: 1;
+}
+
+.download {
+    float: left;
+    width: 21em;
 }
 
 .download span {
