@@ -1,0 +1,2 @@
+== 0.1.0 / 2010-12-08
+* Initial release, monkey patched plugin for nodeunit
