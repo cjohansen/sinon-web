@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Using Sinon.JS with QUnit</title>
-    <link rel="stylesheet" type="text/css" href="../sinon.css?2">
+    <link rel="stylesheet" type="text/css" href="../design/css/sinon.min.css?3">
   </head>
   <body>
     <h1>Sinon.JS: sinon-qunit</h1>
@@ -14,11 +14,11 @@
       </p>
       <p class="download">
         <a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
-        <span>2010-12-12 - <a href="../Changelog.txt">Changelog</a></span>
+        <span>2010-12-08 - <a href="../Changelog.txt">Changelog</a></span>
       </p>
       <p class="download">
         <a href="../releases/sinon-qunit-1.0.0.js">Download sinon-qunit 1.0.0</a>
-        <span>2010-12-06 - <a href="Changelog.txt">Changelog</a></span>
+        <span>2010-12-08 - <a href="Changelog.txt">Changelog</a></span>
       </p>
     </div>
     <h2>Features</h2>
@@ -82,7 +82,7 @@
         if you spy on global methods like <code>jQuery.ajax</code>, it will be
         restored after the test runs.
       </p>
-      <pre><code>test("Stubbing global environments": function () {
+      <pre class="sh_javascript"><code>test("Stubbing global environments": function () {
     this.stub(jQuery, "ajax");
     jQuery.ajax("/url", {});
 
@@ -113,7 +113,7 @@
     </div>
     <div class="section" id="mocks">
       <h3>Mocks</h3>
-      <pre><code>test("Mocking jQuery.ajax": function () {
+      <pre class="sh_javascript"><code>test("Mocking jQuery.ajax": function () {
     this.mock(jQuery).expects("ajax").once().withArgs("/url");
     jQuery.ajax("/url", {});
 });</code></pre>
@@ -213,6 +213,6 @@
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
-    <script type="text/javascript" src="../sinon-web.js?0"></script>
+    <script type="text/javascript" src="../design/js/sinon-web.min.js?1"></script>
   </body>
 </html>

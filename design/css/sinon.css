@@ -140,3 +140,20 @@ h4 {
     display: inline;
     font-size: 1em;
 }
+
+/* Syntax highlighting */
+.comment { color: #c42222; }
+.multi-comment { font-weight: bold; }
+.single-comment {}
+.string, pre.sh_sourceCode span.sh_string { color: #eb4e08; }
+.reg-exp { color: #eb4e08; }
+.number {}
+.hex {}
+.octal {}
+.decimal {}
+.keyword, pre.sh_sourceCode span.sh_keyword { color: #050069; }
+.built-in { color: #228b22; }
+.punctuator { font-weight: bold; }
+.property,
+pre.sh_sourceCode span.sh_function,
+pre.sh_sourceCode span.sh_type { color: #0700ff; }

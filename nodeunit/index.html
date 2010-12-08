@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Using Sinon.JS with nodeunit</title>
-    <link rel="stylesheet" type="text/css" href="../sinon.css?2">
+    <link rel="stylesheet" type="text/css" href="../design/css/sinon.min.css?2">
   </head>
   <body>
     <h1>Sinon.JS: sinon-nodeunit</h1>
@@ -14,11 +14,7 @@
       </p>
       <p class="download">
         <a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
-        <span>2010-12-12 - <a href="../Changelog.txt">Changelog</a></span>
-      </p>
-      <p class="download">
-        <a href="../releases/sinon-nodeunit-1.0.0.js">Download sinon-nodeunit 1.0.0</a>
-        <span>2010-12-07 - <a href="Changelog.txt">Changelog</a></span>
+        <span>2010-12-08 - <a href="../Changelog.txt">Changelog</a></span>
       </p>
     </div>
     <h2>Features</h2>
@@ -33,7 +29,7 @@
     <p>
       You can install sinon-nodeunit using npm:
     </p>
-    <pre><code>npm install sinon-nodeunit</code></pre>
+    <pre class="sh_javascript"><code>npm install sinon-nodeunit</code></pre>
     <p>
       Sinon.JS is a dependency of sinon-nodeunit. To use sinon-nodeunit, simply
       add a <code>require</code> statement to your tests:
@@ -80,7 +76,7 @@ exports.testWithStub = function (test) {
         of <code>sinon.spy()</code> only it's automatically sandboxed. Eeven
         if you spy on global methods, they will be restored after the test runs.
       </p>
-      <pre><code>var http = require("http");
+      <pre class="sh_javascript"><code>var http = require("http");
 
 exports.testHttpServerStub = function (test) {
     var fakeServer = {
@@ -117,7 +113,7 @@ exports.testHttpServerStub = function (test) {
     </div>
     <div class="section" id="mocks">
       <h3>Mocks</h3>
-      <pre><code>var http = require("http");
+      <pre class="sh_javascript"><code>var http = require("http");
 
 exports.testHttpServerMock = function (test) {
     test.mock(http).expects("createServer").once();
@@ -211,6 +207,6 @@ exports.testHttpServerMock = function (test) {
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
-    <script type="text/javascript" src="../sinon-web.js?0"></script>
+    <script type="text/javascript" src="../design/js/sinon-web.min.js?1"></script>
   </body>
 </html>

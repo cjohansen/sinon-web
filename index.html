@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Versatile standalone test spies, stubs and mocks for JavaScript</title>
-    <link rel="stylesheet" type="text/css" href="sinon.css?2">
+    <link rel="stylesheet" type="text/css" href="design/css/sinon.min.css?3">
   </head>
   <body>
     <h1>Sinon.JS</h1>
@@ -169,7 +169,7 @@
           Returns the <em>nth</em> <a href="#spycall">call</a>. Accessing
           individual calls helps with more detailed behavior verification when
           the spy is called more than once. Example:
-          <pre><code>sinon.spy(jQuery, "ajax");
+          <pre class="sh_javascript"><code>sinon.spy(jQuery, "ajax");
 jQuery.ajax("/stuffs");
 var spyCall = jQuery.ajax.getCall(0);
 
@@ -197,7 +197,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           Returns the <em>nth</em> <a href="#spycall">call</a>. Accessing
           individual calls helps with more detailed behavior verification when
           the spy is called more than once. Example:
-          <pre><code>sinon.spy(jQuery, "ajax");
+          <pre class="sh_javascript"><code>sinon.spy(jQuery, "ajax");
 jQuery.ajax("/stuffs");
 var spyCall = jQuery.ajax.getCall(0);
 
@@ -296,7 +296,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         All the expectation methods returns the expectation, meaning you can chain them.
         Typical usage:
       </p>
-      <pre><code>sinon.mock(jQuery).expects("ajax").atLeast(2).atMost(5);
+      <pre class="sh_javascript"><code>sinon.mock(jQuery).expects("ajax").atLeast(2).atMost(5);
 jQuery.ajax.verify();</code></pre>
       <dl>
         <dt><code>var expectation = sinon.expectation.create([methodName]);</code></dt>
@@ -446,7 +446,7 @@ jQuery.ajax.verify();</code></pre>
         <dt>Object <code>request.requestHeaders</code></dt>
         <dd>
           An object of all request headers, i.e.:
-          <pre><code>{
+          <pre class="sh_javascript"><code>{
     "Accept": "text/html, */*",
     "Connection": "keep-alive"
 }</code></pre>
@@ -695,7 +695,7 @@ jQuery.ajax.verify();</code></pre>
             test framework. For instance, JsTestDriver uses global assertions, and
             to make Sinon.JS assertions appear alongside them, you can do:
           </p>
-          <pre><code>sinon.assert.expose(this);</code></pre>
+          <pre class="sh_javascript"><code>sinon.assert.expose(this);</code></pre>
           <p>
             This will give you <code>assertCalled(spy)</code>,
             <code>assertCallOrder(spy1, spy2, ...)</code> and so on.
@@ -741,7 +741,7 @@ jQuery.ajax.verify();</code></pre>
             instruct the sandbox to include fake timers, fake server, and how to
             interact with these. The default configuration looks like:
           </p>
-          <pre><code>sinon.defaultConfig = {
+          <pre class="sh_javascript"><code>sinon.defaultConfig = {
     // ...
     injectInto: null,
     properties: ["spy", "stub", "mock", "clock", "server", "requests"],
@@ -778,7 +778,7 @@ jQuery.ajax.verify();</code></pre>
               or some other library that does not set the
               XHR's <code>onreadystatechange</code> handler, you might want to
               do:
-              <pre><code>sinon.config = {
+              <pre class="sh_javascript"><code>sinon.config = {
     useFakeServer: sinon.fakeServerWithClock
 };</code></pre>
             </dd>
@@ -848,7 +848,7 @@ jQuery.ajax.verify();</code></pre>
         The configuration controls how Sinon binds properties when
         using <code>sinon.test</code>. The default configuration looks like:
       </p>
-      <pre>{
+      <pre class="sh_javascript">{
     injectIntoThis: true,
     injectInto: null,
     properties: ["spy", "stub", "mock", "clock", "server", "requests"],
@@ -859,7 +859,7 @@ jQuery.ajax.verify();</code></pre>
         Simply set <code>sinon.config</code> to override any or all of these,
         e.g.:
       </p>
-      <pre>sinon.config = {
+      <pre class="sh_javascript">sinon.config = {
     useFakeTimers: false,
     useFakeServer: false
 }</pre>
@@ -912,6 +912,6 @@ jQuery.ajax.verify();</code></pre>
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
-    <script type="text/javascript" src="sinon-web.js?0"></script>
+    <script type="text/javascript" src="design/js/sinon-web.min.js?1"></script>
   </body>
 </html>
