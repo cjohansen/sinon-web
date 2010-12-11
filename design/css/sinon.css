@@ -1,8 +1,10 @@
+/* General stuff */
 body {
     background: #fff;
-    font: 1em/1.5 Arial,Geneva,sans-serif;
+    font: 1em/1.5 Arial, Geneva, sans-serif;
     margin: 0 auto;
-    width: 700px;
+    padding: 1em 0 0;
+    width: 800px;
 }
 
 h1 {
@@ -10,61 +12,12 @@ h1 {
     margin: 0;
 }
 
-a:hover,
-a:active {
-    text-decoration: none;
-}
-
-.payoff {
-    font-size: 1.25em;
-}
-
-dl {
-    margin: 0 -30px 2em;
-}
-
-dt {
-    /* background: #f0f3f6; */
-    /* border-top-left-radius: .5em; */
-    /* -moz-border-radius-topleft: .5em; */
-    /* -webkit-border-top-left-radius: .5em; */
-    /* border-top-right-radius: .5em; */
-    /* -moz-border-radius-topright: .5em; */
-    /* -webkit-border-top-right-radius: .5em; */
-    /* font-size: 1.1em; */
-    /* padding: 4px 12px; */
-
-    background: #eee;
-    font-size: 1.1em;
-    padding: 2px 30px 4px 30px;
-}
-
-dt + dt {
-    margin-top: -.6em;
-}
-
-dt code {
-    font-weight: bold;
-}
-
-dd {
-    /* background: #f0fcff; */
-    /* border-bottom-left-radius: .5em; */
-    /* -moz-border-radius-bottomleft: .5em; */
-    /* -webkit-border-bottom-left-radius: .5em; */
-    /* border-bottom-right-radius: .5em; */
-    /* -moz-border-radius-bottomright: .5em; */
-    /* -webkit-border-bottom-right-radius: .5em; */
-    margin: 0 0 1em;
-    padding: 12px 30px;
-}
-
-h1,
 h2,
 h3,
 h4 {
     font-family: Baskerville, Georgia, Times, serif;
     font-weight: normal;
+    margin: 0 0 .5em;
 }
 
 h3 {
@@ -77,83 +30,363 @@ h4 {
     margin: 1.5em 0 .5em;
 }
 
+code {
+    font-size: 1.3em;
+}
+
+pre code {
+    font-size: 1em;
+}
+
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+a:link,
+a:visited {
+    color: #00f;
+}
+
+pre,
+p {
+    margin: 0 0 1em;
+}
+
+/* h1 works as a page header on "normal" pages */
+h1 a {
+    color: #00f;
+    display: block;
+    font-size: .33em;
+}
+
+h1 a:before {
+    color: #000;
+    content: " ← ";
+    width: 2.5em;
+}
+
+/* Syntax highlighting */
+pre.sh_sourceCode span.sh_string { color: #eb4e08; }
+pre.sh_sourceCode span.sh_predef_var,
+pre.sh_sourceCode span.sh_keyword { font-weight: bold; }
+pre.sh_sourceCode span.sh_function,
+pre.sh_sourceCode span.sh_type { color: #0700ff; }
+
+/* Buttons */
+.button {
+    background: #ddd;
+
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        from(#fff),
+        to(#ddd)
+    );
+
+    background: -moz-linear-gradient(
+        top center,
+        #fff,
+        #ddd
+    );
+
+    border: 1px solid #aaa;
+    border-radius: 12px;
+    -moz-border-radius: 24px;
+    -webkit-border-radius: 24px;
+    box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+    display: inline-block;
+    margin: 0 0 .5em;
+}
+
+.button:hover {
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        from(#cdcdcd),
+        to(#ececec)
+    );
+
+    background: -moz-linear-gradient(
+        top center,
+        #cdcdcd,
+        #ececec
+    );
+
+    border-color: #999;
+}
+
+.button a {
+    color: #333;
+    display: block;
+    font-size: 1.5em;
+    font-weight: normal;
+    padding: 2px 24px;
+    text-decoration: none;
+}
+
+.button a:hover {
+    color: #111;
+}
+
+/* Front page blurb */
+.payoff {
+    background: #f8fcff;
+
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        from(#f8fcff),
+        to(#fafafa),
+        color-stop(0.8, #f2f9ff)
+    );
+
+    border: 2px solid #ddd;
+    border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    margin: 2em -36px;
+    overflow: hidden;
+    padding: 6px 48px;
+}
+
+.payoff p {
+    font-size: 1.25em;
+}
+
+.download {
+    float: left;
+    margin-right: 2%;
+    width: 47%;
+}
+
+.download p {
+    font-size: .8em;
+    padding-left: 25px;
+}
+
+/* Examples */
+.examples {
+    margin: 0 0 1em;
+    overflow: hidden;
+}
+
+.examples p {
+    font-size: 0.8em;
+    margin: -1em 0 2em;
+}
+
+.examples code {
+    font-size: 1em;
+}
+
+.examples .active a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.examples pre {
+
+}
+
+/*
+.examples .stubs,
+.examples .mocks {
+    float: left;
+    margin-right: 20px;
+    width: 390px;
+}
+
+.examples .mocks {
+    margin-right: 0;
+}
+*/
+
+/* Support + docs intro */
+.browsers,
+.docs-intro {
+    margin-bottom: 2em;
+}
+
+.browsers {
+    float: left;
+    width: 500px;
+}
+
+.browsers ul {
+    margin: 0 0 1em;
+    overflow: hidden;
+    padding: 0;
+}
+
+.browsers li {
+    float: left;
+    font-size: .75em;
+    list-style: none;
+    margin: 0 1.5em 1em 0;
+    padding: 0;
+    text-align: center;
+    width: 32px;
+}
+
+.browsers li span {
+    background: url(../images/firefox-32x32.png);
+    display: block;
+    height: 0;
+    overflow: hidden;
+    padding-top: 32px;
+    text-indent: -1000em;
+    width: 32px;
+}
+
+.browsers .ie span {
+    background: url(../images/ie-32x32.png);
+}
+
+.browsers .chrome span {
+    background: url(../images/chrome-32x32.png);
+}
+
+.browsers .safari span {
+    background: url(../images/safari-32x32.png);
+}
+
+.browsers .opera span {
+    background: url(../images/opera-32x32.png);
+}
+
+.browsers .mobile-safari span {
+    background: url(../images/mobile-safari-32x32.png);
+}
+
+.browsers .android-browser span {
+    background: url(../images/android-32x32.png);
+}
+
+.browsers .node-js {
+    width: 125px;
+}
+
+.browsers .node-js span {
+    background: url(../images/nodejs-125x32.png);
+    width: 125px;
+}
+
+.docs-intro {
+    float: right;
+    width: 270px;
+}
+
+.docs-intro ul {
+    margin: 0 0 1em 15px;
+    padding: 0;
+}
+
+.browsers h2,
+.docs-intro h2 {
+    font-size: 1.5em;
+}
+
+/* Navigational lists */
+ul.nav {
+    margin: 0 0 1em;
+    padding: 0;
+}
+
+ul.nav li {
+    display: inline;
+    list-style: none;
+    padding: 0 1em 0 0;
+}
+
+/* Docs */
+.section pre {
+    background: #f8f6f4;
+    padding: 18px;
+}
+
+/* API reference */
 .section {
+    margin: 0 0 2em;
+}
+
+.section h2 {
+    border-bottom: 2px solid #ccc;
+    font-size: 2.5em;
+    position: relative;
+}
+
+.section h3 {
+    font-size: 2em;
+    position: relative;
+}
+
+.section dl {
     background: #f8f8f8;
     border: 2px solid #f0f0f0;
     border-radius: 1em;
     -moz-border-radius: 1em;
     -webkit-border-radius: 1em;
-    margin: 0 -30px 2em;
+    margin: 1.5em 0;
     padding: 15px 30px;
-    width: 700px;
 }
 
-.nav {
-    margin: 0 0 1em;
+.section dl dl {
+    background: none;
+    border: none;
+    margin: 0 2.3em 1em;
     padding: 0;
 }
 
-.nav li {
-    display: inline;
-    list-style: none;
-    padding: 0 12px 0 0;
+.section dt {
+    border-bottom: 1px solid #ccc;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0 0 .5em;
+    padding: 0 0 .1em;
 }
 
+.section dd {
+    margin: 0 0 2em;
+    padding: 0;
+}
+
+h2 .api,
+h3 .api {
+    bottom: 6px;
+    font-size: .4em;
+    position: absolute;
+    right: 0;
+}
+
+.api:after {
+    background: #fff;
+    color: #000;
+    content: " → ";
+}
+
+/* Footer */
 .aside {
-    border-top: 6px solid #fcfcfc;
+    border-top: 3px solid #ccc;
+    clear: both;
     font-size: .9em;
+    margin: 2em 0 0;
     padding: 1em 0;
+    position: relative;
 }
 
 .aside p {
     margin: 0 0 .2em;
 }
 
-#intro {
-    background: #f8fcff;
-    border: 2px solid #f0f0f0;
-    border-radius: 1em;
-    -moz-border-radius: 1em;
-    -webkit-border-radius: 1em;
-    margin: 0 -36px;
-    overflow: hidden;
-    padding: 6px 48px;
+.aside .tweet {
+    position: absolute;
+    right: -18px;
+    top: 1em;
 }
-
-.download a {
-    display: block;
-    font-size: 1.5em;
-    line-height: 1;
-}
-
-.download {
-    float: left;
-    width: 21em;
-}
-
-.download span {
-    color: #666;
-    font-size: .8em;
-}
-
-.download span a {
-    display: inline;
-    font-size: 1em;
-}
-
-/* Syntax highlighting */
-.comment { color: #c42222; }
-.multi-comment { font-weight: bold; }
-.single-comment {}
-.string, pre.sh_sourceCode span.sh_string { color: #eb4e08; }
-.reg-exp { color: #eb4e08; }
-.number {}
-.hex {}
-.octal {}
-.decimal {}
-.keyword, pre.sh_sourceCode span.sh_keyword { color: #050069; }
-.built-in { color: #228b22; }
-.punctuator { font-weight: bold; }
-.property,
-pre.sh_sourceCode span.sh_function,
-pre.sh_sourceCode span.sh_type { color: #0700ff; }

@@ -2,212 +2,287 @@
 <html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Using Sinon.JS with nodeunit</title>
-    <link rel="stylesheet" type="text/css" href="../design/css/sinon.min.css?2">
+    <title>Sinon.JS/nodeunit</title>
+    <link rel="stylesheet" type="text/css" href="/sinon/design/css/sinon.min.css?5">
   </head>
   <body>
-    <h1>Sinon.JS: sinon-nodeunit</h1>
-    <div id="intro">
-      <p class="payoff">
-        nodeunit adapter for <a href="../">Sinon.JS</a>. Automatic sandboxing and
+    <h1><a href="../">Sinon.JS</a></h1>
+    <div class="payoff">
+      <h1>sinon-nodeunit</h1>
+      <p>
+        nodeunit adapter for <a href="../"Sinon.JS</a>. Automatic sandboxing and
         mock verification with no scaffolding.
       </p>
-      <p class="download">
-        <a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a>
-        <span>2010-12-08 - <a href="../Changelog.txt">Changelog</a></span>
-      </p>
+      <div class="download">
+        <div class="button"><a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a></div>
+        <p>
+          2010-12-08 -
+          <a href="../Changelog.txt">Changelog</a> -
+          <a href="https://github.com/cjohansen/Sinon.JS">Source code</a>
+        </p>
+      </div>
     </div>
-    <p><a href="https://github.com/cjohansen/sinon-nodeunit">Source on GitHub</a></p>
-    <h2>Features</h2>
-    <ul>
+    <ul class="nav">
       <li><a href="#spies">Test spies</a></li>
       <li><a href="#stubs">Test stubs</a></li>
       <li><a href="#mocks">Mocks</a></li>
       <li><a href="#clock">Fake timers</a></li>
       <li><a href="#assertions">Assertions</a></li>
     </ul>
-    <h2>Installing and loading Sinon.JS</h2>
     <p>
-      You can install sinon-nodeunit using npm:
+      This page contains light introduction to the topics Sinon.JS implements as
+      well as some examples, all in light of the sinon-nodeunit adapter. It is
+      currently very basic, but will hopefully improve in the not-so-distant
+      future. See <a href="../docs/api/">the full API reference</a> for a complete
+      reference of Sinon.JS features.
     </p>
-    <pre class="sh_sh"><code>$ npm install sinon-nodeunit</code></pre>
-    <p>
-      Sinon.JS is a dependency of sinon-nodeunit. To use sinon-nodeunit, simply
-      add a <code>require</code> statement to your tests:
-    </p>
-    <pre class="sh_javascript"><code>require("sinon-nodeunit");</code></pre>
-    <p>
-      You don't need a reference to the module's exports. sinon-nodeunit has no
-      interface of its own, it simply adds Sinon.JS features to nodeunit.
-    </p>
-    <p>
-      <strong>Note!</strong> You don't <strong>have to</strong> use sinon-nodeunit
-      to use Sinon.JS with nodeunit, but this is the recommended approach.
-    </p>
-    <h2>Public API, nodeunit style</h2>
-    <p>
-      The following is parts of the public API adjusted for idomatic sinon-nodeunit
-      usage. Relevant references to the <a href="../#api">public api</a> is
-      included. When using Sinon.JS with nodeunit, you can access all the
-      features through the <code>test</code> object passed as the argument to
-      nodeunit's test functions:
-    </p>
-    <pre class="sh_javascript"><code>var someAPI = {
-    method: function () {
-    }
-};
-
-exports.testWithStub = function (test) {
-    test.stub(someAPI, "method").returns(42);
-
-    test.equal(42, someAPI.method());
-    test.done();
-};
-
-// someAPI.method is automatically restored after the test</code></pre>
-    <p>
-      <code>test</code> in the examples below refers to the object passed as
-      argument to nodeunit test functions.
-    </p>
+    <div class="section">
+      <h2>Installing and loading Sinon.JS</h2>
+      <p>
+        You can install sinon-nodeunit using npm:
+      </p>
+      <pre class="sh_sh"><code>$ npm install sinon-nodeunit</code></pre>
+      <p>
+        Sinon.JS is a dependency of sinon-nodeunit. To use sinon-nodeunit, simply
+        add a <code>require</code> statement to your tests:
+      </p>
+      <pre class="sh_javascript"><code>require("sinon-nodeunit");</code></pre>
+      <p>
+        You don't need a reference to the module's exports. sinon-nodeunit has no
+        interface of its own, it simply adds Sinon.JS features to nodeunit.
+      </p>
+      <p>
+        <strong>Note!</strong> You don't <strong>have to</strong> use sinon-nodeunit
+        to use Sinon.JS with nodeunit, but this is the recommended approach.
+      </p>
+    </div>
     <div class="section" id="spies">
-      <h3>Test spies</h3>
-      <h4 id="sinonspy">Creating spies: <code>test.spy()</code></h4>
+      <h2>Test spies <a class="api" href="../docs/api/#spies">API reference</a></h2>
       <p>
-        When using sinon-nodeunit, <code>test.spy()</code> is the equivalent
-        of <code>sinon.spy()</code> only it's automatically sandboxed. Eeven
-        if you spy on global methods, they will be restored after the test runs.
+        A test spy is a function that records arguments, return value, the value
+        of <code>this</code> and exception thrown (if any) for all its calls. A
+        test spy can be an anonymous function or it can wrap an existing
+        function.
       </p>
-      <pre class="sh_javascript"><code>var http = require("http");
+      <p>
+        Test spies are useful to test both callbacks and how certain
+        functions/methods are used throughout the system under test.
+      </p>
+      <h3>Anonymous spies: <code>test.spy()</code></h3>
+      <p>
+        Calling <code>test.spy</code> with no arguments creates an anonymous
+        spy. The following test is taken from Morgan Roderick's
+        <a href="https://github.com/mroderick/PubSubJS/blob/master/test/test-pubsub.js">PubSubJS</a>
+        and shows how anonymous spies are useful for testing callbacks.
+      </p>
+      <pre class="sh_javascript"><code>exports["test should call all subscribers exactly once"] = function (test) {
+    var message = getUniqueString();
 
-exports.testHttpServerStub = function (test) {
-    var fakeServer = {
-        // ...
-    };
+    var spy1 = test.spy();
+    PubSub.subscribe(message, spy1);
 
-    test.stub(http, "createServer").return(fakeServer);
-    // Exercise with fake HTTP server
+    var spy2 = test.spy();
+    PubSub.subscribe(message, spy2);
 
+    PubSub.publishSync(message, "my payload");
+
+    test.ok(spy1.calledOnce, "first subscriber called once");
+    test.ok(spy2.calledOnce, "second subscriber called once");        
     test.done();
 };</code></pre>
-      <dl>
-        <dt><code>var spy = test.spy();</code></dt>
-        <dd>
-          Creates an anonymous function that records arguments,
-          <code>this</code> value, exceptions and return values for all calls.
-        </dd>
-        <dt><code>var spy = test.spy(myFunc);</code></dt>
-        <dd>Spies on the provided function</dd>
-        <dt><code>var spy = test.spy(object, "method");</code></dt>
-        <dd>
-          Creates a <a href="../#spyprops">spy</a> for <code>object.method</code>
-          and replaces the original method with the spy. The spy acts exactly
-          like the original method in all cases. The original method can be
-          restored by calling <code>object.method.restore()</code>. The
-          returned spy is the function object which replaced the original
-          method. <code>spy === object.method</code>.
-        </dd>
-      </dl>
-      <h4>Spy interface</h4>
-      <p>See the <a href="../#spyprops">full API</a>.</p>
-      <h4 id="spycall">Individual spy calls</h4>
-      <p>See the <a href="../#spyprops">full API</a>.</p>
-    </div>
-    <div class="section" id="mocks">
-      <h3>Mocks</h3>
-      <pre class="sh_javascript"><code>var http = require("http");
-
-exports.testHttpServerMock = function (test) {
-    test.mock(http).expects("createServer").once();
-    // Exercise with fake HTTP server
-
-    test.done();
-}</code></pre>
+      <h3>Spying on existing methods</h3>
       <p>
-        Mocks are automatically verified.
+        <code>test.spy</code> can also spy on existing functions. When doing
+        so, the original function will behave just as normal (including when
+        used as a constructor) but you will have access to data about all
+        calls.
       </p>
-      <dl>
-        <dt><code>var mock = test.mock(obj);</code></dt>
-        <dd>
-          Creates a mock for the provided object. Does not change the object,
-          but returns a mock object to set expectations on the object's methods.
-        </dd>
-        <dt><code>var expectation = mock.expects("method");</code></dt>
-        <dd>
-          Overrides <code>obj.method</code> with a mock function and returns it.
-          See <a href="#expectations">expectations</a> below.
-        </dd>
-        <dt><code>mock.restore();</code></dt>
-        <dd>Restores all mocked methods. Automatically called.</dd>
-        <dt><code>mock.verify();</code></dt>
-        <dd>
-          Verifies all expectations on the mock. If any expectation is not
-          satiesfied, an exception is thrown. Also restores the mocked
-          methods. Automatically called.
-        </dd>
-      </dl>
-      <h4>Expectations</h4>
-      <p>See the <a href="../#expectations">full API</a>.</p>
-    </div>
-    <div class="section" id="clock">
-      <h3>Fake timers</h3>
+      <h3 id="spyprops">Spy interface</h3>
       <p>
-        Fake timers are enabled by default. To disable them, include the
-        following before your tests:
-      </p>
-      <pre class="sh_javascript"><code>sinon.config = {
-    useFakeTimers: false
-};</code></pre>
-      <p>
-        Use <code>test.clock</code> to manipulate time.
-      </p>
-      <dl>
-        <dt><code>var clock = test.sandbox.useFakeTimers();</code></dt>
-        <dd>
-          Only necessary if timers where disabled as described
-          above. See <a href="../#clock">full API</a> for a more detailed
-          explanation.
-        </dd>
-        <dt><code>clock.tick(ms);</code></dt>
-        <dd>
-          Tick the clock ahead <code>ms</code> milliseconds. Causes all timers
-          scheduled within the affected time range to be called.
-        </dd>
-        <dt><code>clock.restore();</code></dt>
-        <dd>
-          Restore the faked methods. sinon-nodeunit sandboxes tests for you, so
-          normally you don't need this method.
-        </dd>
-      </dl>
-    </div>
-    <div class="section" id="assertions">
-      <h3>Assertions</h3>
-      <p>
-        Assertions will show up in the number of assertions under each test, and
-        fails the way nodeunit expect assertions to fail.
+        Spies provide a rich interface to inspect their usage. The above
+        examples showed the <code>calledOnce</code> boolean property as well as
+        the <code>getCall</code> method and the returned
+        object's <code>args</code> property. There are three ways of inspecting
+        call data.
       </p>
       <p>
-        Assertions are available through the <code>test</code> object as well,
-        for instance:
+        The preferred approach is to use the spy's <code>calledWith</code>
+        method (and friends) because it keeps your test from being too specific
+        about which call did what and so on. It will return <code>true</code> if
+        the spy was ever called with the provided arguments.
       </p>
-      <pre class="sh_javascript"><code>exports.testSinonAssertions = function (test) {
+      <pre class="sh_javascript"><code>exports["test should call subscribers with message"] = function (test) {
+    var message = getUniqueString();
     var spy = test.spy();
 
-    test.called(spy);
+    PubSub.subscribe(message, spy);        
+    PubSub.publishSync(message, "some payload");
+
+    test.ok(spy.calledWith(message));
     test.done();
 };</code></pre>
       <p>
-        <code>test.called</code> is the same as <code>sinon.assert.called</code>
-        and so on.
+        If you want to be specific, you can directly check the first argument of
+        the first call. There are two ways of achieving this:
       </p>
-      <p>See <a href="../#assertions">the full API</a> for a reference on assertions.</p>
+      <pre class="sh_javascript"><code>exports["test should call subscribers with message"] = function (test) {
+    var message = getUniqueString();
+    var spy = test.spy();
+
+    PubSub.subscribe(message, spy);        
+    PubSub.publishSync(message, "some payload");
+
+    test.equals(spy.args[0][0], message);
+    test.done();
+};</code></pre>
+      <pre class="sh_javascript"><code>exports["test should call subscribers with message"] = function (test) {
+    var message = getUniqueString();
+    var spy = test.spy();
+
+    PubSub.subscribe(message, spy);        
+    PubSub.publishSync(message, "some payload");
+
+    test.equals(spy.getCall(0).args[0], message);
+    test.done();
+};</code></pre>
+      <p>
+        The first example uses the two-dimensional <code>args</code> array
+        directly on the spy, while the second example fetches the first call
+        object and then accesses it's <code>args</code> array. Which one to use
+        is a matter of preference, but the recommended approach is going with
+        <code>spy.calledWith(arg1, arg2, ...)</code> unless there's a need to
+        make the tests highly specific.
+      </p>
+    </div>
+    <div class="section" id="stubs">
+      <h2>Test stubs <a class="api" href="../docs/api/#stubs">API reference</a></h2>
+      <p>
+        Test stubs are functions (spies) with pre-programmed behavior. They
+        support the full <a href="#spies">test spy interface</a> in addition to
+        methods which can be used to alter the stub's behavior.
+      </p>
+      <p>
+        As spies, stubs can be either anonymous, or wrap existing
+        functions. When wrapping an existing function with a stub, the original
+        function is not called.
+      </p>
+      <p>
+        The following example is yet another test from Morgan Roderick's
+        PubSubJS which shows how to create an anonymous stub that throws an
+        exception when called.
+      </p>
+      <pre class="sh_javascript"><code>exports["test should call all subscribers, even if there are exceptions"] = function (test) {
+    var message = getUniqueString();
+    var error = getUniqueString();
+    var stub = test.stub().throws();
+    var spy1 = test.spy();
+    var spy2 = test.spy();
+
+    PubSub.subscribe(message, stub);
+    PubSub.subscribe(message, spy1);
+    PubSub.subscribe(message, spy2);
+
+    PubSub.publishSync(message, undefined);
+
+    test.ok(spy1.called);
+    test.ok(spy2.called);
+    test.ok(stub.calledBefore(spy1));
+    test.done();
+};</code></pre>
+      <p>
+        Note how the stub also implements the spy interface. The test verifies
+        that all callbacks where called, and also that the exception throwing
+        stub was called before one of the other callbacks.
+      </p>
+    </div>
+    <div class="section" id="mocks">
+      <h2>Mocks <a class="api" href="../docs/api/#mocks">API reference</a></h2>
+      <p>
+        Mocks are slightly different from spies and stubs in that
+        you <em>mock</em> an object, and then set an <em>expectation</em> on
+        one or more of its methods. <a href="#expectations">Expectations</a>
+        implement both the <a href="#spies">spies</a> and
+        <a href="#stubs">stubs</a> interfaces and additionally set pass criteria
+        upfront.
+      </p>
+      <p>
+        To see how mocks look like in Sinon.JS, here's one of the PubSubJS tests
+        again, this time using a method as callback and using mocks to verify
+        its behavior:
+      </p>
+      <pre class="sh_javascript"><code>exports["test should call all subscribers when exceptions"] = function (test) {
+    var myAPI = { method: function () {} };
+
+    var spy = test.spy();
+    var mock = test.mock(myAPI);
+    mock.expects("method").once().throws();
+
+    PubSub.subscribe("message", myAPI.method);
+    PubSub.subscribe("message", spy);
+    PubSub.publishSync("message", undefined);
+
+    mock.verify();
+    test.ok(spy.calledOnce);
+    test.done();
+};</code></pre>
+    </div>
+    <div class="section" id="clock">
+      <h2>Fake timers <a class="api" href="../docs/api/#clock">API reference</a></h2>
+      <p>
+        Fake timers is a synchronous implementation of <code>setTimeout</code>
+        and friends that Sinon.JS can overwrite the global functions with to
+        allow you to more easily test code using them. Fake timers provide
+        a <code>clock</code> object to pass time, which can also be used to
+        control <code>Date</code> objects created through either <code>new
+        Date();</code> or <code>Date.now();</code> (if supported by the
+        browser).
+      </p>
+      <pre class="sh_javascript timers"><code>exports["test should animate element over 500ms"] = function (test) {
+    var clock = test.sandbox.useFakeTimers();
+    var el = jQuery("&lt;div>&lt;/div>");
+    el.appendTo(document.body);
+
+    el.animate({ height: "200px", width: "200px" });
+    clock.tick(510);
+
+    test.equals("200px", el.css("height"));
+    test.equals("200px", el.css("width"));
+    test.done();
+};</code></pre>
+    </div>
+    </div>
+    <div class="section" id="assertions">
+      <h2>Assertions <a class="api" href="../docs/api/#assertions">API reference</a></h2>
+      <p>
+        Sinon.JS ships with a set of assertions that mirror most behavior
+        verification methods and properties on spies and stubs. The advantage of
+        using the assertions is that failed expectations on stubs and spies can
+        be expressed directly as assertion failures with detailed and helpful
+        error messages.
+      </p>
+      <p>
+        The assertions can be used with either spies or stubs.
+      </p>
+      <pre class="sh_javascript mocks"><code>exports["test should call subscribers with message"] = function () {
+    var message = getUniqueString();
+    var spy = test.spy();
+
+    PubSub.subscribe(message, spy);        
+    PubSub.publishSync(message, "some payload");
+
+    sinon.assert.calledOnce(spy);
+    sinon.assert.calledWith(spy, message);
+};</code></pre>
+    </div>
     </div>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
-        Copyright 2010 - 2011, Christian Johansen. Released under the 
+        Copyright 2010 - 2011,
+        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the 
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
-    <script type="text/javascript" src="../design/js/sinon-web.min.js?1"></script>
+    <script type="text/javascript" src="/sinon/design/js/sinon-web.min.js?3"></script>
   </body>
 </html>

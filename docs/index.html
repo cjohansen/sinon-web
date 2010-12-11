@@ -2,33 +2,11 @@
 <html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Sinon.JS/QUnit</title>
+    <title>Sinon.JS - Documentation</title>
     <link rel="stylesheet" type="text/css" href="/sinon/design/css/sinon.min.css?5">
   </head>
   <body>
-    <h1><a href="../">Sinon.JS</a></h1>
-    <div class="payoff">
-      <h1>sinon-qunit</h1>
-      <p>
-        Sinon.JS adapter for QUnit. Provides seamless integration.
-      </p>
-      <div class="download">
-        <div class="button"><a href="../releases/sinon-qunit-1.0.0.js">Download sinon-qunit 1.0.0</a></div>
-        <p>
-          2010-12-08 -
-          <a href="Changelog.txt">Changelog</a> -
-          <a href="https://github.com/cjohansen/sinon-qunit">Source code</a>
-        </p>
-      </div>
-      <div class="download">
-        <div class="button"><a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a></div>
-        <p>
-          2010-12-08 -
-          <a href="../Changelog.txt">Changelog</a> -
-          <a href="https://github.com/cjohansen/Sinon.JS">Source code</a>
-        </p>
-      </div>
-    </div>
+    <h1><a href="../">Sinon.JS</a> Documentation</h1>
     <ul class="nav">
       <li><a href="#spies">Test spies</a></li>
       <li><a href="#stubs">Test stubs</a></li>
@@ -36,47 +14,16 @@
       <li><a href="#clock">Fake timers</a></li>
       <li><a href="#server">Fake <code>XHR</code> and server</a></li>
       <li><a href="#assertions">Assertions</a></li>
+      <li><a href="#sandbox">Sandboxing</a></li>
     </ul>
     <p>
       This page contains light introduction to the topics Sinon.JS implements as
-      well as some examples, all in light of the sinon-qunit plugin. It is
-      currently very basic, but will hopefully improve in the not-so-distant
-      future. See <a href="../docs/api/">the full API reference</a> for a complete
-      reference of Sinon.JS features.
+      well as some examples. It is currently very basic, but will hopefully
+      improve in the not-so-distant future. See <a href="api/">the full API
+      reference</a> for a complete reference of Sinon.JS features.
     </p>
-    <div class="section">
-      <h2>Loading Sinon.JS</h2>
-      <p>
-        To set up a test case using QUnit and Sinon.JS, copy the below HTML
-        template:
-      </p>
-      <pre class="sh_html"><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-          "http://www.w3.org/TR/html4/strict.dtd"&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;QUnit/Sinon.JS&lt;/title&gt;
-    &lt;link rel="stylesheet" href="qunit.css" type="text/css" media="screen"&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1 id="qunit-header"&gt;QUnit/Sinon.JS Test&lt;/h1&gt;
-    &lt;h2 id="qunit-banner"&gt;&lt;/h2&gt;
-    &lt;h2 id="qunit-userAgent"&gt;&lt;/h2&gt;
-    &lt;ol id="qunit-tests"&gt;&lt;/ol&gt;
-    &lt;script type="text/javascript" src="jquery.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="qunit.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-1.0.0.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-ie-1.0.0.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-qunit-1.0.0.js"&gt;&lt;/script&gt;
-    &lt;!-- Source and test files go here --&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-      <p>
-        <strong>Note!</strong> You don't <strong>have to</strong> use sinon-qunit
-        to use Sinon.JS with QUnit, but this is the recommended approach.
-      </p>
-    </div>
     <div class="section" id="spies">
-      <h2>Test spies <a class="api" href="../docs/api/#spies">API reference</a></h2>
+      <h2>Test spies <a class="api" href="api/#spies">API reference</a></h2>
       <p>
         A test spy is a function that records arguments, return value, the value
         of <code>this</code> and exception thrown (if any) for all its calls. A
@@ -87,47 +34,51 @@
         Test spies are useful to test both callbacks and how certain
         functions/methods are used throughout the system under test.
       </p>
-      <h3>Anonymous spies: <code>this.spy()</code></h3>
+      <h3>Anonymous spies: <code>sinon.spy()</code></h3>
       <p>
-        Calling <code>this.spy</code> with no arguments creates an anonymous
+        Calling <code>sinon.spy</code> with no arguments creates an anonymous
         spy. The following test is taken from Morgan Roderick's
         <a href="https://github.com/mroderick/PubSubJS/blob/master/test/test-pubsub.js">PubSubJS</a>
         and shows how anonymous spies are useful for testing callbacks.
       </p>
-      <pre class="sh_javascript"><code>test("should call all subscribers for a message exactly once", function () {
+      <pre class="sh_javascript"><code>"test should call all subscribers for a message exactly once": function () {
     var message = getUniqueString();
 
-    var spy1 = this.spy();
+    var spy1 = sinon.spy();
     PubSub.subscribe(message, spy1);
 
-    var spy2 = this.spy();
+    var spy2 = sinon.spy();
     PubSub.subscribe(message, spy2);
 
     PubSub.publishSync(message, "my payload");
 
-    ok(spy1.calledOnce, "first subscriber called once");
-    ok(spy2.calledOnce, "second subscriber called once");        
-});</code></pre>
+    assert("first subscriber called once", spy1.calledOnce);
+    assert("second subscriber called once", spy2.calledOnce);        
+}</code></pre>
       <h3>Spying on existing methods</h3>
       <p>
-        <code>this.spy</code> can also spy on existing functions. When doing
+        <code>sinon.spy</code> can also spy on existing functions. When doing
         so, the original function will behave just as normal (including when
         used as a constructor) but you will have access to data about all
         calls. The following is a slightly contrived example:
       </p>
-      <pre class="sh_javascript"><code>test("should inspect jQuery.getJSON's
-      usage of jQuery.ajax", function () {
-    this.spy(jQuery, "ajax");
-    jQuery.getJSON("/some/resource");
+      <pre class="sh_javascript"><code>{
+    setUp: function () {
+        sinon.spy(jQuery, "ajax");
+    },
 
-    ok(jQuery.ajax.calledOnce);
-    equals(jQuery.ajax.getCall(0).args[0].url, "/some/resource");
-    equals(jQuery.ajax.getCall(0).args[0].dataType, "json");
-});</code></pre>
-      <p>
-        With sinon-qunit, the <code>jQuery.ajax</code> method will be
-        automatically restored/"unspied" after the test.
-      </p>
+    tearDown: function () {
+        jQuery.ajax.restore(); // Unwraps the spy
+    },
+
+    "test should inspect jQuery.getJSON's usage of jQuery.ajax": function () {
+        jQuery.getJSON("/some/resource");
+
+        assert(jQuery.ajax.calledOnce);
+        assertEquals("/some/resource", jQuery.ajax.getCall(0).args[0].url);
+        assertEquals("json", jQuery.ajax.getCall(0).args[0].dataType);
+    }
+}</code></pre>
       <h3 id="spyprops">Spy interface</h3>
       <p>
         Spies provide a rich interface to inspect their usage. The above
@@ -142,37 +93,37 @@
         about which call did what and so on. It will return <code>true</code> if
         the spy was ever called with the provided arguments.
       </p>
-      <pre class="sh_javascript"><code>test("should call subscribers with message as first argument", function () {
+      <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);        
     PubSub.publishSync(message, "some payload");
 
-    ok(spy.calledWith(message));
-});</code></pre>
+    assert(spy.calledWith(message));
+}</code></pre>
       <p>
         If you want to be specific, you can directly check the first argument of
         the first call. There are two ways of achieving this:
       </p>
-      <pre class="sh_javascript"><code>test("should call subscribers with message as first argument", function () {
+      <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);        
     PubSub.publishSync(message, "some payload");
 
-    equals(spy.args[0][0], message);
-});</code></pre>
-      <pre class="sh_javascript"><code>test("should call subscribers with message as first argument", function () {
+    assertEquals(message, spy.args[0][0]);
+}</code></pre>
+      <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);        
     PubSub.publishSync(message, "some payload");
 
-    equals(spy.getCall(0).args[0], message);
-});</code></pre>
+    assertEquals(message, spy.getCall(0).args[0]);
+}</code></pre>
       <p>
         The first example uses the two-dimensional <code>args</code> array
         directly on the spy, while the second example fetches the first call
@@ -183,7 +134,7 @@
       </p>
     </div>
     <div class="section" id="stubs">
-      <h2>Test stubs <a class="api" href="../docs/api/#stubs">API reference</a></h2>
+      <h2>Test stubs <a class="api" href="api/#stubs">API reference</a></h2>
       <p>
         Test stubs are functions (spies) with pre-programmed behavior. They
         support the full <a href="#spies">test spy interface</a> in addition to
@@ -199,12 +150,12 @@
         PubSubJS which shows how to create an anonymous stub that throws an
         exception when called.
       </p>
-      <pre class="sh_javascript"><code>test("should call all subscribers, even if there are exceptions", function () {
+      <pre class="sh_javascript"><code>"test should call all subscribers, even if there are exceptions" : function(){
     var message = getUniqueString();
     var error = getUniqueString();
-    var stub = this.stub().throws();
-    var spy1 = this.spy();
-    var spy2 = this.spy();
+    var stub = sinon.stub().throws();
+    var spy1 = sinon.spy();
+    var spy2 = sinon.spy();
 
     PubSub.subscribe(message, stub);
     PubSub.subscribe(message, spy1);
@@ -212,10 +163,10 @@
 
     PubSub.publishSync(message, undefined);
 
-    ok(spy1.called);
-    ok(spy2.called);
-    ok(stub.calledBefore(spy1));
-});</code></pre>
+    assert(spy1.called);
+    assert(spy2.called);
+    assert(stub.calledBefore(spy1));
+}</code></pre>
       <p>
         Note how the stub also implements the spy interface. The test verifies
         that all callbacks where called, and also that the exception throwing
@@ -223,7 +174,7 @@
       </p>
     </div>
     <div class="section" id="mocks">
-      <h2>Mocks <a class="api" href="../docs/api/#mocks">API reference</a></h2>
+      <h2>Mocks <a class="api" href="api/#mocks">API reference</a></h2>
       <p>
         Mocks are slightly different from spies and stubs in that
         you <em>mock</em> an object, and then set an <em>expectation</em> on
@@ -237,11 +188,11 @@
         again, this time using a method as callback and using mocks to verify
         its behavior:
       </p>
-      <pre class="sh_javascript"><code>test("should call all subscribers when exceptions", function () {
+      <pre class="sh_javascript"><code>"test should call all subscribers when exceptions": function () {
     var myAPI = { method: function () {} };
 
-    var spy = this.spy();
-    var mock = this.mock(myAPI);
+    var spy = sinon.spy();
+    var mock = sinon.mock(myAPI);
     mock.expects("method").once().throws();
 
     PubSub.subscribe("message", myAPI.method);
@@ -249,11 +200,11 @@
     PubSub.publishSync("message", undefined);
 
     mock.verify();
-    ok(spy.calledOnce);
-});</code></pre>
+    assert(spy.calledOnce);
+}</code></pre>
     </div>
     <div class="section" id="clock">
-      <h2>Fake timers <a class="api" href="../docs/api/#clock">API reference</a></h2>
+      <h2>Fake timers <a class="api" href="api/#clock">API reference</a></h2>
       <p>
         Fake timers is a synchronous implementation of <code>setTimeout</code>
         and friends that Sinon.JS can overwrite the global functions with to
@@ -265,30 +216,39 @@
       </p>
       <p>
         When faking timers with IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
         loaded after sinon-1.0.0.js.
       </p>
       <p>
         The fake timers can be used completely stand-alone by downloading
-        <a href="../releases/sinon-timers-1.0.0.js">sinon-timers-1.0.0</a>. When
+        <a href="releases/sinon-timers-1.0.0.js">sinon-timers-1.0.0</a>. When
         using the fake timers in IE you also need
-        <a href="../releases/sinon-timers-ie-1.0.0.js">sinon-timers-ie-1.0.0</a>. Load
+        <a href="releases/sinon-timers-ie-1.0.0.js">sinon-timers-ie-1.0.0</a>. Load
         it after the first file.
       </p>
-      <pre class="sh_javascript timers"><code>test("should animate element over 500ms", function () {
-    var clock = this.sandbox.useFakeTimers();
-    var el = jQuery("&lt;div>&lt;/div>");
-    el.appendTo(document.body);
+      <pre class="sh_javascript timers"><code>{
+    setUp: function () {
+        this.clock = sinon.useFakeTimers();
+    },
 
-    el.animate({ height: "200px", width: "200px" });
-    clock.tick(510);
+    tearDown: function () {
+        this.clock.restore();
+    },
 
-    equals("200px", el.css("height"));
-    equals("200px", el.css("width"));
-});</code></pre>
+    "test should animate element over 500ms" : function(){
+        var el = jQuery("&lt;div>&lt;/div>");
+        el.appendTo(document.body);
+
+        el.animate({ height: "200px", width: "200px" });
+        this.clock.tick(510);
+
+        assertEquals("200px", el.css("height"));
+        assertEquals("200px", el.css("width"));
+    }
+}</code></pre>
     </div>
     <div class="section" id="server">
-      <h2>Fake <code>XMLHttpRequest</code> <a class="api" href="../docs/api/#server">API reference</a></h2>
+      <h2>Fake <code>XMLHttpRequest</code> <a class="api" href="api/#server">API reference</a></h2>
       <p>
         Provides a fake implementation of <code>XMLHttpRequest</code> and
         provides several interfaces for manipulating objects created by it. Also
@@ -299,52 +259,68 @@
       </p>
       <p>
         When faking XHR with IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
         loaded after sinon-1.0.0.js.
       </p>
       <p>
         The fake server and XHR can be used completely stand-alone by
-        downloading <a href="../releases/sinon-server-1.0.0.js">sinon-server-1.0.0</a>.
+        downloading <a href="releases/sinon-server-1.0.0.js">sinon-server-1.0.0</a>.
         When using the fake server in IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>. Load it after
+        <a href="releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>. Load it after
         the first file.
       </p>
-      <pre class="sh_javascript timers"><code>test("should fetch comments from server", function () {
-    var xhr = this.sandbox.useFakeXMLHttpRequest();
-    var requests = this.requests = [];
+      <pre class="sh_javascript timers"><code>{
+    setUp: function () {
+        this.xhr = sinon.useFakeXMLHttpRequest();
+        var requests = this.requests = [];
 
-    xhr.onCreate = function (request) {
-        requests.push(request);
-    };
+        this.xhr.onCreate = function (xhr) {
+            requests.push(xhr);
+        };
+    },
 
-    var callback = this.spy();
-    myLib.getCommentsFor("/some/article", callback);
-    equals(1, this.requests.length);
+    tearDown: function () {
+        this.xhr.restore();
+    },
 
-    requests[0].respond(200, { "Content-Type": "application/json" },
-                             '[{ id: 12, comment: "Hey there" }]');
-    ok(callback.calledWith([{ id: 12, comment: "Hey there" }]));
-});</code></pre>
+    "test should fetch comments from server" : function () {
+        var callback = sinon.spy();
+        myLib.getCommentsFor("/some/article", callback);
+        assertEquals(1, this.requests.length);
+
+        this.requests[0].respond(200, { "Content-Type": "application/json" },
+                                 '[{ id: 12, comment: "Hey there" }]');
+        assert(callback.calledWith([{ id: 12, comment: "Hey there" }]));
+    }
+}</code></pre>
       <h3 id="fakeServer">Fake server</h3>
       <p>
         High-level API to manipulate <code>FakeXMLHttpRequest</code> instances.
       </p>
-      <pre id="server_example" class="sh_javascript timers"><code>test("should fetch comments from server", function () {
-    var server = this.sandbox.useFakeServer();
+      <pre id="server_example" class="sh_javascript timers"><code>{
+    setUp: function () {
+        this.server = sinon.useFakeServer();
+    },
 
-    server.respondWith("GET", "/some/article/comments.json",
-                       [200, { "Content-Type": "application/json" },
-                        '[{ id: 12, comment: "Hey there" }]']);
+    tearDown: function () {
+        this.server.restore();
+    },
 
-    var callback = this.spy();
-    myLib.getCommentsFor("/some/article", callback);
-    server.respond();
+    "test should fetch comments from server" : function () {
+        this.server.respondWith("GET", "/some/article/comments.json",
+                                [200, { "Content-Type": "application/json" },
+                                 '[{ id: 12, comment: "Hey there" }]']);
 
-    ok(callback.calledWith([{ id: 12, comment: "Hey there" }]));
-});</code></pre>
+        var callback = sinon.spy();
+        myLib.getCommentsFor("/some/article", callback);
+        this.server.respond();
+
+        assert(callback.calledWith([{ id: 12, comment: "Hey there" }]));
+    }
+}</code></pre>
     </div>
     <div class="section" id="assertions">
-      <h2>Assertions <a class="api" href="../docs/api/#assertions">API reference</a></h2>
+      <h2>Assertions <a class="api" href="api/#assertions">API reference</a></h2>
       <p>
         Sinon.JS ships with a set of assertions that mirror most behavior
         verification methods and properties on spies and stubs. The advantage of
@@ -353,19 +329,41 @@
         error messages.
       </p>
       <p>
+        To make sure assertions integrate nicely with your test framework, you
+        should customize either <code>sinon.assert.fail</code> or
+        <code>sinon.assert.failException</code> and look into
+        <a href="api/#assert-expose"><code>sinon.assert.expose</code></a> and
+        <a href="api/#assert-pass"><code>sinon.assert.pass</code></a>.
+      </p>
+      <p>
         The assertions can be used with either spies or stubs.
       </p>
-      <pre class="sh_javascript mocks"><code>test("should call subscribers with message as first argument", function () {
+      <pre class="sh_javascript mocks"><code>"test should call subscribers with message as first argument" : function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);        
     PubSub.publishSync(message, "some payload");
 
     sinon.assert.calledOnce(spy);
     sinon.assert.calledWith(spy, message);
-});</code></pre>
+}</code></pre>
     </div>
+    <div class="section" id="sandbox">
+      <h2>Sandboxes <a class="api" href="api/#sandbox">API reference</a></h2>
+      <p>
+        Sandboxes simplify working with fakes that need to be restored and/or
+        verified. If you're using fake timers, fake XHR or you are
+        stubbing/spying on globally accessible properties you should use a
+        sandbox to ease cleanup.
+      </p>
+      <pre class="sh_javascript"><code>"test using sinon.test sandbox": sinon.test(function () {
+    var myAPI = { method: function () {} };
+    sinon.mock(myAPI).expects("method").once();
+
+    PubSub.subscribe("message", myAPI.method);
+    PubSub.publishSync("message", undefined);
+})</code></pre>
     </div>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
