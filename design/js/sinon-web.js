@@ -15,7 +15,7 @@ _gaq.push(["_trackPageview"]);
 })();
 
 try {
-    cj.highlight("/sinon/design/js/shjs/");
+    cj.highlight("/design/js/shjs/");
 } catch (e) {}
 
 (function () {
