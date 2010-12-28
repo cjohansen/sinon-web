@@ -20,7 +20,7 @@
       <h2>Test spies</h2>
       <p>
         Test spies allow introspection on how a function is used throughout the
-        system under test. <a href="../guides/#spies">Introduction and examples</a>.
+        system under test. <a href="../#spies">Introduction and examples</a>.
       </p>
       <ul class="nav">
         <li><a href="#sinonspy">sinon.spy()</a></li>
@@ -189,7 +189,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         Test stubs are functions (spies) with pre-programmed behavior. They
         support the full <a href="#spies">test spy interface</a> in addition to
         the following methods which can be used to alter the stub's behavior.
-        <a href="../guides/#stubs">Introduction and examples</a>.
+        <a href="../#stubs">Introduction and examples</a>.
       </p>
       <dl>
         <dt><code>var stub = sinon.stub();</code></dt>
@@ -230,7 +230,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         implement both the <a href="#spies">spies</a> and
         <a href="#stubs">stubs</a> interfaces and additionally set pass criteria
         upfront. Expectations are explained in more detail below.
-        <a href="../guides/#mocks">Introduction and examples</a>.
+        <a href="../#mocks">Introduction and examples</a>.
       </p>
       <dl>
         <dt><code>var mock = sinon.mock(obj);</code></dt>
@@ -300,7 +300,7 @@ jQuery.ajax.verify();</code></pre>
         provide a <code>clock</code> object to pass time, which can also be used
         to control <code>Date</code> objects created through either <code>new
         Date();</code> or <code>Date.now();</code> (if supported by the
-        browser). <a href="../guides/#clock">Introduction and examples</a>.
+        browser). <a href="../#clock">Introduction and examples</a>.
       </p>
       <p>
         When faking timers with IE you also need
@@ -352,7 +352,7 @@ jQuery.ajax.verify();</code></pre>
         provides several interfaces for manipulating objects created by it. Also
         fakes the native <code>XMLHttpRequest</code> and 
         Helps with testing requests made with XHR.
-        <a href="../guides/#server">Introduction and examples</a>.
+        <a href="../#server">Introduction and examples</a>.
       </p>
       <p>
         When faking XHR with IE you also need
@@ -557,7 +557,7 @@ jQuery.ajax.verify();</code></pre>
         using the assertions is that failed expectations on stubs and spies can
         be expressed directly as assertion failures with detailed and helpful
         error messages.
-        <a href="../guides/#assertions">Introduction and examples</a>.
+        <a href="../#assertions">Introduction and examples</a>.
       </p>
       <p>
         To make sure assertions integrate nicely with your test framework, you
@@ -685,7 +685,7 @@ jQuery.ajax.verify();</code></pre>
         verified. If you're using fake timers, fake XHR or you are
         stubbing/spying on globally accessible properties you should use a
         sandbox to ease cleanup.
-        <a href="../guides/#sandboxes">Introduction and examples</a>.
+        <a href="../#sandboxes">Introduction and examples</a>.
       </p>
       <ul class="nav">
         <li><a href="#sinon-sandbox">sinon.sandbox</a></li>
