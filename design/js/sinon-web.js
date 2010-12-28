@@ -2,7 +2,7 @@
  * @depend shjs/shjs.js
  */
 var _gaq = _gaq || [];
-_gaq.push(["_setAccount", "UA-236272-6"]);
+_gaq.push(["_setAccount", "UA-20456066-1"]);
 _gaq.push(["_trackPageview"]);
 
 (function() {
