@@ -142,9 +142,19 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           arguments recevied in the first call.
         </dd>
         <dt><code>spy.exceptions</code></dt>
-        <dd>Array of exception objects thrown.</dd>
+        <dd>
+          Array of exception objects thrown, <code>spy.exceptions[0]</code> is
+          the exception thrown by the first call. If the call did not throw an
+          error, the value at the call's location in <code>.exceptions</code>
+          will be 'undefined'.
+        </dd>
         <dt><code>spy.returnValues</code></dt>
-        <dd>Array of return values.</dd>
+        <dd>
+          Array of return values, <code>spy.returnValues[0]</code> is the return
+          value of the first call. If the call did not explicitly return a
+          value, the value at the call's location in <code>.returnValues</code>
+          will be 'undefined'.
+        </dd>
       </dl>
       <h3 id="spycall">Individual spy calls</h3>
       <dl>
