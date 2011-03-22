@@ -211,6 +211,12 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           <code>stub.restore();</code>). An exception is thrown if the property
           is not already a function, to help avoid typos when stubbing methods.
         </dd>
+        <dt><code>var stub = sinon.stub(object, "method", func);</code></dt>
+        <dd>
+          Replaces <code>object.method</code> with a <code>func</code>, wrapped
+          in a <code>spy</code>. As usual, <code>object.method.restore();</code>
+          can be used to restore the original method.
+        </dd>
         <dt><code>var stub = sinon.stub(obj);</code></dt>
         <dd>Stubs all the object's methods.</dd>
         <dt><code>stub.returns(obj);</code></dt>
