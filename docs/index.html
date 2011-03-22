@@ -355,11 +355,14 @@
         Sandboxes simplify working with fakes that need to be restored and/or
         verified. If you're using fake timers, fake XHR or you are
         stubbing/spying on globally accessible properties you should use a
-        sandbox to ease cleanup.
+        sandbox to ease cleanup. By default the spy, stub and mock properties of
+        the sandbox is bound to whatever object the function is run on, so if you
+        don't want to manually restore(), you have to use this.spy() instead of
+        sinon.spy() (and stub, mock).
       </p>
       <pre class="sh_javascript"><code>"test using sinon.test sandbox": sinon.test(function () {
     var myAPI = { method: function () {} };
-    sinon.mock(myAPI).expects("method").once();
+    this.mock(myAPI).expects("method").once();
 
     PubSub.subscribe("message", myAPI.method);
     PubSub.publishSync("message", undefined);
