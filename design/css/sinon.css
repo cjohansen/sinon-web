@@ -293,6 +293,10 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
     font-size: 1.5em;
 }
 
+.docs-intro h3 {
+    font-size: 1.2em;
+}
+
 /* Navigational lists */
 ul.nav {
     margin: 0 0 1em;

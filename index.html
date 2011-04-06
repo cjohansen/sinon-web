@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Versatile standalone test spies, stubs and mocks for JavaScript</title>
-    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?5">
+    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?6">
   </head>
   <body>
     <div class="payoff">
@@ -46,6 +46,7 @@
 
     assertTrue(spy.called);
 }</code></pre>
+        <p><a href="docs/#spies">Spy documentation</a></p>
       </div>
       <div id="stub_example">
         <p>
@@ -64,6 +65,7 @@
     assertTrue(stub.called);
     assertTrue(spy.called);
 }</code></pre>
+        <p><a href="docs/#stubs">Stub documentation</a></p>
       </div>
       <div id="mock_example">
         <p>
@@ -81,8 +83,10 @@
 
     mock.verify();
 }</code></pre>
+        <p><a href="docs/#mocks">Mock documentation</a></p>
       </div>
-      <pre id="timers_example" class="sh_javascript"><code>{
+      <div id="timers_example">
+        <pre class="sh_javascript"><code>{
     setUp: function () {
         this.clock = sinon.useFakeTimers();
     },
@@ -102,7 +106,10 @@
         assertEquals("200px", el.css("width"));
     }
 }</code></pre>
-      <pre id="xhr_example" class="sh_javascript"><code>{
+        <p><a href="docs/#clock">Timers documentation</a></p>
+      </div>
+      <div id="xhr_example">
+        <pre class="sh_javascript"><code>{
     setUp: function () {
         this.xhr = sinon.useFakeXMLHttpRequest();
         var requests = this.requests = [];
@@ -126,7 +133,10 @@
         assert(callback.calledWith([{ id: 12, comment: "Hey there" }]));
     }
 }</code></pre>
-      <pre id="server_example" class="sh_javascript"><code>{
+        <p><a href="docs/#server">Fake XHR/server documentation</a></p>
+      </div>
+      <div id="server_example">
+        <pre class="sh_javascript"><code>{
     setUp: function () {
         this.server = sinon.useFakeServer();
     },
@@ -147,6 +157,8 @@
         assert(callback.calledWith([{ id: 12, comment: "Hey there" }]));
     }
 }</code></pre>
+        <p><a href="docs/#server">Fake XHR/server documentation</a></p>
+      </div>
       <div id="sandbox_example">
         <p>
           Example is a modified test from Morgan Roderick's
@@ -159,6 +171,7 @@
     PubSub.subscribe("message", myAPI.method);
     PubSub.publishSync("message", undefined);
 })</code></pre>
+        <p><a href="docs/#sandbox">Sandbox documentation</a></p>
       </div>
       <div id="assertion_example">
         <p>
@@ -175,6 +188,7 @@
     sinon.assert.calledOnce(spy);
     sinon.assert.calledWith(spy, message);
 }</code></pre>
+        <p><a href="docs/#assertions">Assertions documentation</a></p>
       </div>
     </div>
     <div class="browsers">
@@ -197,8 +211,9 @@
     </div>
     <div class="docs-intro">
       <h2>Documentation</h2>
+      <p><a href="docs/">Sinon.JS 1.0.0 documentation</a></p>
+      <h3>Test framework adapters</h3>
       <ul>
-        <li><a href="docs/">Standalone - for any test framework</a></li>
         <li><a href="qunit/">Sinon.JS and QUnit</a></li>
         <li><a href="nodeunit/">Sinon.JS and nodeunit</a></li>
       </ul>
