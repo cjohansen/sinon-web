@@ -8,16 +8,21 @@ body {
 }
 
 h1 {
-    font: 4em/1.5 Georgia;
+    font: 4em/1.5 Ubuntu, Georgia;
+    font-weight: normal;
     margin: 0;
 }
 
 h2,
 h3,
 h4 {
-    font-family: Baskerville, Georgia, Times, serif;
+    font-family: Ubuntu, Baskerville, Georgia, Times, serif;
     font-weight: normal;
     margin: 0 0 .5em;
+}
+
+.front h2 {
+    border-bottom: 2px solid #f0f0f0;
 }
 
 h3 {
@@ -177,8 +182,12 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
 }
 
 .examples p {
-    font-size: 0.8em;
-    margin: -1em 0 2em;
+    font-size: 0.9em;
+    margin: 0 0 1em;
+}
+
+.examples pre + p {
+    margin-top: 0;
 }
 
 .examples code {
@@ -214,9 +223,9 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
     margin-bottom: 2em;
 }
 
-.browsers {
-    float: left;
-    width: 500px;
+.sidebar {
+    float: right;
+    width: 250px;
 }
 
 .browsers ul {
@@ -279,8 +288,8 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
 }
 
 .docs-intro {
-    float: right;
-    width: 270px;
+    float: left;
+    width: 520px;
 }
 
 .docs-intro ul {
@@ -369,11 +378,11 @@ h3 .api {
     right: 0;
 }
 
-.api:after {
-    background: #fff;
-    color: #000;
-    content: " → ";
-}
+/* .api:after { */
+/*     background: #fff; */
+/*     color: #000; */
+/*     content: " → "; */
+/* } */
 
 /* Footer */
 .aside {
