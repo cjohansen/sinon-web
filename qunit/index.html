@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS/QUnit</title>
-    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?5">
+    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?7">
   </head>
   <body>
     <h1><a href="../">Sinon.JS</a></h1>
@@ -13,7 +13,7 @@
         Sinon.JS adapter for QUnit. Provides seamless integration.
       </p>
       <div class="download">
-        <div class="button"><a href="../releases/sinon-qunit-1.0.0.js">Download sinon-qunit 1.0.0</a></div>
+        <div class="button"><a href="../releases/sinon-qunit-1.1.0.js">Download sinon-qunit 1.1.0</a></div>
         <p>
           2010-12-08 -
           <a href="Changelog.txt">Changelog</a> -
@@ -21,7 +21,7 @@
         </p>
       </div>
       <div class="download">
-        <div class="button"><a href="../releases/sinon-1.0.0.js">Download Sinon.JS 1.0.0</a></div>
+        <div class="button"><a href="../releases/sinon-1.1.0.js">Download Sinon.JS 1.1.0</a></div>
         <p>
           2010-12-08 -
           <a href="../Changelog.txt">Changelog</a> -
@@ -41,7 +41,7 @@
       This page contains light introduction to the topics Sinon.JS implements as
       well as some examples, all in light of the sinon-qunit plugin. It is
       currently very basic, but will hopefully improve in the not-so-distant
-      future. See <a href="../docs/api/">the full API reference</a> for a complete
+      future. See <a href="../docs/">the full API reference</a> for a complete
       reference of Sinon.JS features.
     </p>
     <div class="section">
@@ -64,9 +64,9 @@
     &lt;ol id="qunit-tests"&gt;&lt;/ol&gt;
     &lt;script type="text/javascript" src="jquery.js"&gt;&lt;/script&gt;
     &lt;script type="text/javascript" src="qunit.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-1.0.0.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-ie-1.0.0.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-qunit-1.0.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-1.1.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-ie-1.1.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-qunit-1.1.0.js"&gt;&lt;/script&gt;
     &lt;!-- Source and test files go here --&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -76,7 +76,7 @@
       </p>
     </div>
     <div class="section" id="spies">
-      <h2>Test spies <a class="api" href="../docs/api/#spies">API reference</a></h2>
+      <h2>Test spies <a class="api" href="../docs/#spies">API reference</a></h2>
       <p>
         A test spy is a function that records arguments, return value, the value
         of <code>this</code> and exception thrown (if any) for all its calls. A
@@ -183,7 +183,7 @@
       </p>
     </div>
     <div class="section" id="stubs">
-      <h2>Test stubs <a class="api" href="../docs/api/#stubs">API reference</a></h2>
+      <h2>Test stubs <a class="api" href="../docs/#stubs">API reference</a></h2>
       <p>
         Test stubs are functions (spies) with pre-programmed behavior. They
         support the full <a href="#spies">test spy interface</a> in addition to
@@ -223,7 +223,7 @@
       </p>
     </div>
     <div class="section" id="mocks">
-      <h2>Mocks <a class="api" href="../docs/api/#mocks">API reference</a></h2>
+      <h2>Mocks <a class="api" href="../docs/#mocks">API reference</a></h2>
       <p>
         Mocks are slightly different from spies and stubs in that
         you <em>mock</em> an object, and then set an <em>expectation</em> on
@@ -253,7 +253,7 @@
 });</code></pre>
     </div>
     <div class="section" id="clock">
-      <h2>Fake timers <a class="api" href="../docs/api/#clock">API reference</a></h2>
+      <h2>Fake timers <a class="api" href="../docs/#clock">API reference</a></h2>
       <p>
         Fake timers is a synchronous implementation of <code>setTimeout</code>
         and friends that Sinon.JS can overwrite the global functions with to
@@ -265,14 +265,14 @@
       </p>
       <p>
         When faking timers with IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
-        loaded after sinon-1.0.0.js.
+        <a href="../releases/sinon-ie-1.1.0.js">sinon-ie-1.1.0</a>, which should be
+        loaded after sinon-1.1.0.js.
       </p>
       <p>
         The fake timers can be used completely stand-alone by downloading
-        <a href="../releases/sinon-timers-1.0.0.js">sinon-timers-1.0.0</a>. When
+        <a href="../releases/sinon-timers-1.1.0.js">sinon-timers-1.1.0</a>. When
         using the fake timers in IE you also need
-        <a href="../releases/sinon-timers-ie-1.0.0.js">sinon-timers-ie-1.0.0</a>. Load
+        <a href="../releases/sinon-timers-ie-1.1.0.js">sinon-timers-ie-1.1.0</a>. Load
         it after the first file.
       </p>
       <pre class="sh_javascript timers"><code>test("should animate element over 500ms", function () {
@@ -288,7 +288,7 @@
 });</code></pre>
     </div>
     <div class="section" id="server">
-      <h2>Fake <code>XMLHttpRequest</code> <a class="api" href="../docs/api/#server">API reference</a></h2>
+      <h2>Fake <code>XMLHttpRequest</code> <a class="api" href="../docs/#server">API reference</a></h2>
       <p>
         Provides a fake implementation of <code>XMLHttpRequest</code> and
         provides several interfaces for manipulating objects created by it. Also
@@ -299,14 +299,14 @@
       </p>
       <p>
         When faking XHR with IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>, which should be
-        loaded after sinon-1.0.0.js.
+        <a href="../releases/sinon-ie-1.1.0.js">sinon-ie-1.1.0</a>, which should be
+        loaded after sinon-1.1.0.js.
       </p>
       <p>
         The fake server and XHR can be used completely stand-alone by
-        downloading <a href="../releases/sinon-server-1.0.0.js">sinon-server-1.0.0</a>.
+        downloading <a href="../releases/sinon-server-1.1.0.js">sinon-server-1.1.0</a>.
         When using the fake server in IE you also need
-        <a href="../releases/sinon-ie-1.0.0.js">sinon-ie-1.0.0</a>. Load it after
+        <a href="../releases/sinon-ie-1.1.0.js">sinon-ie-1.1.0</a>. Load it after
         the first file.
       </p>
       <pre class="sh_javascript timers"><code>test("should fetch comments from server", function () {
@@ -344,7 +344,7 @@
 });</code></pre>
     </div>
     <div class="section" id="assertions">
-      <h2>Assertions <a class="api" href="../docs/api/#assertions">API reference</a></h2>
+      <h2>Assertions <a class="api" href="../docs/#assertions">API reference</a></h2>
       <p>
         Sinon.JS ships with a set of assertions that mirror most behavior
         verification methods and properties on spies and stubs. The advantage of

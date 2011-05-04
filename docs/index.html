@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Documentation</title>
-    <link rel="stylesheet" type="text/css" href="/design/css/sinon.css?5">
+    <link rel="stylesheet" type="text/css" href="/design/css/sinon.mincss?7">
   </head>
   <body>
     <h1><a href="../">Sinon.JS</a> Documentation</h1>
@@ -95,7 +95,6 @@
           returned spy is the function object which replaced the original
           method. <code>spy === object.method</code>.
         </dd>
-
       </dl>
       <h3 id="spyprops">Spy API</h3>
       <p>
@@ -158,6 +157,25 @@
         on <code>object.method</code>.
       </p>
       <dl>
+        <dt>spy.withArgs(arg1[, arg2, ...]);</dt>
+        <dd>
+          Creates a spy that only records calls when the received arguments
+          matches those passed to <code>withArgs</code>. This is useful to be
+          more expressive in your assertions, where you can access the spy with
+          the same call:
+          <pre class="sh_javascript"><code>"test should call method once with each argument": function () {
+    var object = { method: function () {} };
+    var spy = sinon.spy(object, method);
+    spy.withArgs(42);
+    spy.withArgs(1);
+
+    object.method(42);
+    object.method(1);
+
+    assert(spy.withArgs(42).calledOnce);
+    assert(spy.withArgs(1).calledOnce);
+}</code></pre>
+        </dd>
         <dt><code>spy.callCount</code></dt>
         <dd>The number of recorded calls.</dd>
         <dt><code>spy.called</code></dt>
@@ -372,6 +390,22 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         </dd>
         <dt><code>var stub = sinon.stub(obj);</code></dt>
         <dd>Stubs all the object's methods.</dd>
+        <dt>stub.withArgs(arg1[, arg2, ...]);</dt>
+        <dd>
+          Stubs the method only for the provided arguments. This is useful to be
+          more expressive in your assertions, where you can access the spy with
+          the same call. It is also useful to create a stub that can act
+          differently in response to different arguments:
+          <pre class="sh_javascript"><code>"test should stub method differently based on arguments": function () {
+    var callback = sinon.stub();
+    callback.withArgs(42).returns(1);
+    callback.withArgs(1).throws("TypeError");
+
+    callback(); // No return value, no exception
+    callback(42); // Returns 1
+    callback(1); // Throws TypeError
+}</code></pre>
+        </dd>
         <dt><code>stub.returns(obj);</code></dt>
         <dd>Makes the stub return the provided value.</dd>
         <dt><code>stub.throws();</code></dt>
@@ -388,6 +422,29 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         </dd>
         <dt><code>stub.callsArgWith(index, arg1, arg2, ...);</code></dt>
         <dd>Like above, but with arguments to pass to the callback.</dd>
+        <dt>stub.yields([arg1, arg2, ...])</dt>
+        <dd>
+          Almost like <code>callsArg</code>. Causes the stub to call the first
+          callback it receives with the provided arguments (if any). If a method
+          accepts more than one callback, you need to use <code>callsArg</code>
+          to have the stub invoke other callbacks than the first one.
+        </dd>
+        <dt><code>stub.yieldsTo(property[, arg1, arg2, ...])</code></dt>
+        <dd>
+          Causes the spy to invoke a callback passed as a property of an object
+          to the spy. Like <code>yields</code>, <code>yieldsTo</code> grabs the
+          first matching argument, finds the callback and calls it with the
+          (optional) arguments:
+          <pre class="sh_javascript"><code>"test should fake successful ajax request": function () {
+    sinon.stub(jQuery, "ajax").yieldsTo("success", [1, 2, 3]);
+
+    jQuery.ajax({
+        success: function (data) {
+            assertEquals([1, 2, 3], data);
+        }
+    });
+}</code></pre>
+        </dd>
       </dl>
     </div>
     <div class="section" id="mocks">
@@ -579,7 +636,7 @@ jQuery.ajax.verify();</code></pre>
         <li><a href="#useFakeXMLHttpRequest">sinon.useFakeXMLHttpRequest</a></li>
         <li><a href="#FakeXMLHttpRequest">FakeXMLHttpRequest</a></li>
         <li><a href="#responses">Simulating responses</a></li>
-        <li><a href="#fakeServer">sinon.useFakeServer</a></li>
+        <li><a href="#fakeServer">Fake server</a></li>
       </ul>
       <p>
         Provides a fake implementation of <code>XMLHttpRequest</code> and
@@ -727,6 +784,13 @@ jQuery.ajax.verify();</code></pre>
           <code>statusText</code> properties. Status should be a number, the
           status text is looked up from <code>sinon.FakeXMLHttpRequest.statusCodes</code>.
         </dd>
+        <dt id="auto-respond"><code>request.autoRespond(ms);</code></dt>
+        <dd>
+          Causes the server to automatically respond to incoming requests after
+          a timeout. The default timeout is 10ms but you can control it through
+          the <code>ms</code> argument. Note that this feature is intended to
+          help during mockup development, and is not suitable for use in tests.
+        </dd>
       </dl>
       <h3 id="fakeServer">Fake server</h3>
       <p>
@@ -766,13 +830,20 @@ jQuery.ajax.verify();</code></pre>
         </dd>
         <dt><code>server.respondWith(response);</code></dt>
         <dd>
-          <code>response</code> is either a string - the response body, or an
-          array with status, headers and response body, e.g.
-          <code>[200, { "Content-Type": "text/html", "Content-Length": 2 },
-          "OK"]</code>. Default status is 200 and default headers are none.
-          Causes the server to respond to any request not matched by another
-          response with the provided data. The default catch-all response is
-          <code>[404, {} ""]</code>.
+          <p>
+            <code>response</code> is either a string - the response body, an array
+            with status, headers and response body, e.g.
+            <code>[200, { "Content-Type": "text/html", "Content-Length": 2 },
+            "OK"]</code> or a function. Default status is 200 and default headers
+            are none. Causes the server to respond to any request not matched by
+            another response with the provided data. The default catch-all
+            response is <code>[404, {} ""]</code>.
+          </p>
+          <p>
+            When the response is a function, it will be passed the request
+            object. You must manually call <a href="#respond">respond</a> on it
+            to complete the request.
+          </p>
         </dd>
         <dt><code>server.respondWith(url, response);</code></dt>
         <dd>
@@ -786,6 +857,11 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>server.respondWith(urlRegExp, response);</code></dt>
         <dd>
           URL may be a regular expression, e.g. <code>/\/post/\d+</code>
+          If the response is a function, it will be passed any capture groups
+          from the regular expression along with the XMLHttpRequest object:
+          <pre class="sh_javascript"><code>server.respondWith(/\/todo-items\/(\d+)/, function (xhr, id) {
+    xhr.respond(200, { "Content-Type": "application/json" }, '[{ "id": ' + id + ' }]');
+});</code></pre>
         </dd>
         <dt><code>server.respondWith(method, urlRegExp, response);</code></dt>
         <dd>
