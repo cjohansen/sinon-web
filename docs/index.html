@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Documentation</title>
-    <link rel="stylesheet" type="text/css" href="/design/css/sinon.mincss?7">
+    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?7">
   </head>
   <body>
     <h1><a href="../">Sinon.JS</a> Documentation</h1>
@@ -377,9 +377,9 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>Creates an anonymous stub function.</dd>
         <dt><code>var stub = sinon.stub(object, "method");</code></dt>
         <dd>
-          Replaces <code>object.method</code> with a stub function. The original function
-          can be restored by calling <code>object.method.restore();</code> (or
-          <code>stub.restore();</code>). An exception is thrown if the property
+          Replaces <code>object.method</code> with a stub function. The original
+          function can be restored by calling <code>object.method.restore();</code>
+          (or <code>stub.restore();</code>). An exception is thrown if the property
           is not already a function, to help avoid typos when stubbing methods.
         </dd>
         <dt><code>var stub = sinon.stub(object, "method", func);</code></dt>
@@ -1128,9 +1128,12 @@ jQuery.ajax.verify();</code></pre>
         </dd>
         <dt><code>sandbox.stub();</code></dt>
         <dd>
-          Works exactly like <code>sinon.stub</code>, only also adds the returned
-          stub to the internal collection of fakes for easy restoring
-          through <code>sandbox.restore()</code>.
+          Works almost exactly like <code>sinon.stub</code>, only also adds the
+          returned stub to the internal collection of fakes for easy restoring
+          through <code>sandbox.restore()</code>. The sandbox <code>stub</code>
+          method can also be used to stub any kind of property. This is useful
+          if you need to override an object's property for the duration of a
+          test, and have it restored when the test completes.
         </dd>
         <dt><code>sandbox.mock();</code></dt>
         <dd>
