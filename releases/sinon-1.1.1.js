@@ -1,5 +1,5 @@
 /**
- * Sinon.JS 1.1.0, 2011/05/05
+ * Sinon.JS 1.1.1, 2011/05/17
  *
  * @author Christian Johansen (christian@cjohansen.no)
  *
@@ -588,8 +588,9 @@ if (typeof module == "object" && typeof require == "function") {
         module.exports = spy;
     } else {
         sinon.spy = spy;
-        sinon.spyCall = spyCall;
     }
+
+    sinon.spyCall = spyCall;
 }(typeof sinon == "object" && sinon || null));
 
 /**
