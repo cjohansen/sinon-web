@@ -160,12 +160,12 @@
         <dt>spy.withArgs(arg1[, arg2, ...]);</dt>
         <dd>
           Creates a spy that only records calls when the received arguments
-          matches those passed to <code>withArgs</code>. This is useful to be
+          matche those passed to <code>withArgs</code>. This is useful to be
           more expressive in your assertions, where you can access the spy with
           the same call:
           <pre class="sh_javascript"><code>"test should call method once with each argument": function () {
     var object = { method: function () {} };
-    var spy = sinon.spy(object, method);
+    var spy = sinon.spy(object, "method");
     spy.withArgs(42);
     spy.withArgs(1);
 
