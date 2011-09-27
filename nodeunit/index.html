@@ -14,9 +14,9 @@
         mock verification with no scaffolding.
       </p>
       <div class="download">
-        <div class="button"><a href="../releases/sinon-1.1.1.js">Download Sinon.JS 1.1.1</a></div>
+        <div class="button"><a href="../releases/sinon-1.2.0.js">Download Sinon.JS 1.2.0</a></div>
         <p>
-          2011-05-17 -
+          2011-09-27 -
           <a href="../Changelog.txt">Changelog</a> -
           <a href="https://github.com/cjohansen/Sinon.JS">Source code</a>
         </p>
@@ -87,7 +87,7 @@
     PubSub.publishSync(message, "my payload");
 
     test.ok(spy1.calledOnce, "first subscriber called once");
-    test.ok(spy2.calledOnce, "second subscriber called once");        
+    test.ok(spy2.calledOnce, "second subscriber called once");
     test.done();
 };</code></pre>
       <h3>Spying on existing methods</h3>
@@ -115,7 +115,7 @@
     var message = getUniqueString();
     var spy = test.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     test.ok(spy.calledWith(message));
@@ -129,7 +129,7 @@
     var message = getUniqueString();
     var spy = test.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     test.equals(spy.args[0][0], message);
@@ -139,7 +139,7 @@
     var message = getUniqueString();
     var spy = test.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     test.equals(spy.getCall(0).args[0], message);
@@ -267,7 +267,7 @@
     var message = getUniqueString();
     var spy = test.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     sinon.assert.calledOnce(spy);
@@ -279,7 +279,7 @@
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
         Copyright 2010 - 2011,
-        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the 
+        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>

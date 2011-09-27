@@ -13,9 +13,9 @@
         works with any unit testing framework.
       </p>
       <div class="download">
-        <div class="button"><a href="releases/sinon-1.1.1.js">Download Sinon.JS 1.1.1</a></div>
+        <div class="button"><a href="releases/sinon-1.2.0.js">Download Sinon.JS 1.2.0</a></div>
         <p>
-          2011-05-17 -
+          2011-09-27 -
           <a href="Changelog.txt">Changelog</a> -
           <a href="https://github.com/cjohansen/Sinon.JS">Source code</a> -
           <a href="docs/">Documentation</a>
@@ -183,7 +183,7 @@
     var message = getUniqueString();
     var spy = sinon.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     sinon.assert.calledOnce(spy);
@@ -195,7 +195,7 @@
     <div class="docs-intro">
       <h2>Documentation</h2>
       <ul>
-        <li><a href="docs/">Sinon.JS 1.1.1 documentation</a></li>
+        <li><a href="docs/">Sinon.JS 1.2.0 documentation</a></li>
         <li><a href="http://cjohansen.no/talks/2011/xp-meetup/">105 slides on Sinon.JS</a></li>
       </ul>
       <p><a href="http://cjohansen.no/en/sinon_js/sinon_js_1_1_0_out_now">What's new in 1.1.0?</a></p>
@@ -254,10 +254,10 @@
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
         Copyright 2010 - 2011,
-        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the 
+        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
-      <p class="tweet"><a href="http://twitter.com/share" data-lang="en" data-via="cjno" class="twitter-share-button">Tweet this</a></p> 
+      <p class="tweet"><a href="http://twitter.com/share" data-lang="en" data-via="cjno" class="twitter-share-button">Tweet this</a></p>
     </div>
     <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
     <script type="text/javascript" src="/design/js/sinon-web.min.js?4"></script>

@@ -21,9 +21,9 @@
         </p>
       </div>
       <div class="download">
-        <div class="button"><a href="../releases/sinon-1.1.1.js">Download Sinon.JS 1.1.1</a></div>
+        <div class="button"><a href="../releases/sinon-1.2.0.js">Download Sinon.JS 1.2.0</a></div>
         <p>
-          2010-12-08 -
+          2011-09-27 -
           <a href="../Changelog.txt">Changelog</a> -
           <a href="https://github.com/cjohansen/Sinon.JS">Source code</a>
         </p>
@@ -64,8 +64,8 @@
     &lt;ol id="qunit-tests"&gt;&lt;/ol&gt;
     &lt;script type="text/javascript" src="jquery.js"&gt;&lt;/script&gt;
     &lt;script type="text/javascript" src="qunit.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-1.1.1.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="sinon-ie-1.1.1.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-1.2.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="sinon-ie-1.2.0.js"&gt;&lt;/script&gt;
     &lt;script type="text/javascript" src="sinon-qunit-1.0.0.js"&gt;&lt;/script&gt;
     &lt;!-- Source and test files go here --&gt;
   &lt;/body&gt;
@@ -106,7 +106,7 @@
     PubSub.publishSync(message, "my payload");
 
     ok(spy1.calledOnce, "first subscriber called once");
-    ok(spy2.calledOnce, "second subscriber called once");        
+    ok(spy2.calledOnce, "second subscriber called once");
 });</code></pre>
       <h3>Spying on existing methods</h3>
       <p>
@@ -146,7 +146,7 @@
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     ok(spy.calledWith(message));
@@ -159,7 +159,7 @@
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     equals(spy.args[0][0], message);
@@ -168,7 +168,7 @@
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     equals(spy.getCall(0).args[0], message);
@@ -265,14 +265,14 @@
       </p>
       <p>
         When faking timers with IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>, which should be
-        loaded after sinon-1.1.1.js.
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
+        loaded after sinon-1.2.0.js.
       </p>
       <p>
         The fake timers can be used completely stand-alone by downloading
-        <a href="../releases/sinon-timers-1.1.1.js">sinon-timers-1.1.1</a>. When
+        <a href="../releases/sinon-timers-1.2.0.js">sinon-timers-1.2.0</a>. When
         using the fake timers in IE you also need
-        <a href="../releases/sinon-timers-ie-1.1.1.js">sinon-timers-ie-1.1.1</a>. Load
+        <a href="../releases/sinon-timers-ie-1.2.0.js">sinon-timers-ie-1.2.0</a>. Load
         it after the first file.
       </p>
       <pre class="sh_javascript timers"><code>test("should animate element over 500ms", function () {
@@ -299,14 +299,14 @@
       </p>
       <p>
         When faking XHR with IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>, which should be
-        loaded after sinon-1.1.1.js.
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
+        loaded after sinon-1.2.0.js.
       </p>
       <p>
         The fake server and XHR can be used completely stand-alone by
-        downloading <a href="../releases/sinon-server-1.1.1.js">sinon-server-1.1.1</a>.
+        downloading <a href="../releases/sinon-server-1.2.0.js">sinon-server-1.2.0</a>.
         When using the fake server in IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>. Load it after
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>. Load it after
         the first file.
       </p>
       <pre class="sh_javascript timers"><code>test("should fetch comments from server", function () {
@@ -359,7 +359,7 @@
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     sinon.assert.calledOnce(spy);
@@ -371,7 +371,7 @@
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
         Copyright 2010 - 2011,
-        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the 
+        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>

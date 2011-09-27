@@ -114,7 +114,7 @@
     var message = getUniqueString();
     var spy = sinon.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     assert(spy.calledWith(message));
@@ -127,7 +127,7 @@
     var message = getUniqueString();
     var spy = sinon.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     assertEquals(message, spy.args[0][0]);
@@ -136,7 +136,7 @@
     var message = getUniqueString();
     var spy = sinon.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     assertEquals(message, spy.getCall(0).args[0]);
@@ -220,6 +220,24 @@
         <dt><code>spy.alwaysCalledWithExactly(arg1, arg2, ...);</code></dt>
         <dd>
           Returns <code>true</code> if spy was always called with the exact provided arguments.
+        </dd>
+        <dt><code>spy.calledWithNew();</code></dt>
+        <dd>
+          Returns <code>true</code> if spy/stub was called the <code>new</code>
+          operator. Beware that this is inferred based on the value of
+          the <code>this</code> object and the spy
+          function's <code>prototype</code>, so it may give false positives if
+          you actively return the right kind of object.
+        </dd>
+        <dt><code>spy.notCalledWith(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if the spy/stub was called at least once
+          with arguments not matching the provided ones.
+        </dd>
+        <dt><code>spy.neverCalledWith(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if the spy/stub was never called with
+          the provided arguments.
         </dd>
         <dt><code>spy.threw();</code></dt>
         <dd>Returns <code>true</code> if spy threw an exception at least once.</dd>
@@ -568,14 +586,14 @@ jQuery.ajax.verify();</code></pre>
       </p>
       <p>
         When faking timers with IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>, which should be
-        loaded after sinon-1.1.1.js.
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
+        loaded after sinon-1.2.0.js.
       </p>
       <p>
         The fake timers can be used completely stand-alone by downloading
-        <a href="../releases/sinon-timers-1.1.1.js">sinon-timers-1.1.1</a>. When
+        <a href="../releases/sinon-timers-1.2.0.js">sinon-timers-1.2.0</a>. When
         using the fake timers in IE you also need
-        <a href="../releases/sinon-timers-ie-1.1.1.js">sinon-timers-ie-1.1.1</a>.
+        <a href="../releases/sinon-timers-ie-1.2.0.js">sinon-timers-ie-1.2.0</a>.
         Load it after the first file.
       </p>
       <pre class="sh_javascript timers"><code>{
@@ -648,14 +666,14 @@ jQuery.ajax.verify();</code></pre>
       </p>
       <p>
         When faking XHR with IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>, which should be
-        loaded after sinon-1.1.1.js.
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
+        loaded after sinon-1.2.0.js.
       </p>
       <p>
         The fake server and XHR can be used completely stand-alone by
-        downloading <a href="../releases/sinon-server-1.1.1.js">sinon-server-1.1.1</a>.
+        downloading <a href="../releases/sinon-server-1.2.0.js">sinon-server-1.2.0</a>.
         When using the fake server in IE you also need
-        <a href="../releases/sinon-ie-1.1.1.js">sinon-ie-1.1.1</a>. Load it after
+        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>. Load it after
         the first file.
       </p>
       <pre class="sh_javascript timers"><code>{
@@ -924,7 +942,7 @@ jQuery.ajax.verify();</code></pre>
     var message = getUniqueString();
     var spy = sinon.spy();
 
-    PubSub.subscribe(message, spy);        
+    PubSub.subscribe(message, spy);
     PubSub.publishSync(message, "some payload");
 
     sinon.assert.calledOnce(spy);
@@ -995,6 +1013,10 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>sinon.assert.alwaysCalledWith(spy, arg1, arg2, ...)</code></dt>
         <dd>
           Passes if the spy was always called with the provided arguments.
+        </dd>
+        <dt><code>sinon.assert.neverCalledWith(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was never called with the provided arguments.
         </dd>
         <dt><code>sinon.assert.calledWithExactly(spy, arg1, arg2, ...)</code></dt>
         <dd>
@@ -1269,7 +1291,7 @@ jQuery.ajax.verify();</code></pre>
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
         Copyright 2010 - 2011,
-        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the 
+        <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
     </div>
