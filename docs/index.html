@@ -1128,7 +1128,7 @@ jQuery.ajax.verify();</code></pre>
               If <code>true</code>, the sandbox will have a <code>clock</code>
               property. Can also be an array of timer properties to fake.
             </dd>
-            <dt><code>UseFakeServer</code></dt>
+            <dt><code>useFakeServer</code></dt>
             <dd>
               <p>
                 If <code>true</code>, <code>server</code> and
@@ -1248,13 +1248,18 @@ jQuery.ajax.verify();</code></pre>
           Properties to expose. Default is all:
           <code>["spy", "stub", "mock", "clock", "server",
           "requests"]</code>. However, the last three properties are only bound
-          if the following to two configuration options are <code>true</code>
-          (which is not the default).
+          if the following two configuration options are <code>true</code>
+          (which is the default).
         </dd>
         <dt>Boolean <code>useFakeTimers</code></dt>
-        <dd>Set to <code>true</code> to always use fake timers. Default is <code>false</code>.</dd>
-        <dt>Boolean <code>useFakeXMLHttpRequest</code></dt>
-        <dd>Set to <code>true</code> to always use fake XHR and server. Default is <code>false</code>.</dd>
+        <dd>
+          Causes timers to be faked and allows <code>clock</code> property to
+          be exposed. Default is <code>true</code>.</dd>
+        <dt>Boolean <code>useFakeServer</code></dt>
+        <dd>
+          Causes fake XHR and server to be created and allows
+          <code>server</code> and <code>requests</code> properties to be
+          exposed. Default is <code>true</code>.</dd>
       </dl>
       <h3 id="sinon-testCase">Test cases</h3>
       <p>
