@@ -426,6 +426,11 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         </dd>
         <dt><code>stub.returns(obj);</code></dt>
         <dd>Makes the stub return the provided value.</dd>
+        <dt><code>stub.returnsArg(index);</code></dt>
+        <dd>
+          Causes the stub to return the argument at the provided index.
+          <code>stub.returnsArg(0);</code> causes the stub to return the first argument.
+        </dd>
         <dt><code>stub.throws();</code></dt>
         <dd>Causes the stub to throw an exception (<code>Error</code>).</dd>
         <dt><code>stub.throws("TypeError");</code></dt>
