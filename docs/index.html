@@ -900,6 +900,8 @@ jQuery.ajax.verify();</code></pre>
           default response is <code>[404, {}, ""]</code>. Synchronous requests
           are responded to immediately, so make sure to call
           <code>respondWith</code> upfront.
+          Passing arguments to this method is equivalent to calling <code>respondWith</code>
+          with these arguments and then call this method.
         </dd>
         <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
         <dd>
