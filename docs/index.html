@@ -186,6 +186,14 @@
         <dd><code>true</code> if the spy was called exactly twice</dd>
         <dt><code>spy.calledThrice</code></dt>
         <dd><code>true</code> if the spy was called exactly thrice</dd>
+        <dt><code>spy.firstCall</code></dt>
+        <dd>The first call</dd>
+        <dt><code>spy.secondCall</code></dt>
+        <dd>The second call</dd>
+        <dt><code>spy.thirdCall</code></dt>
+        <dd>The third call</dd>
+        <dt><code>spy.lastCall</code></dt>
+        <dd>The last call</dd>
         <dt><code>spy.calledBefore(anotherSpy);</code></dt>
         <dd>Returns <code>true</code> if the spy was called before <code>anotherSpy</code></dd>
         <dt><code>spy.calledAfter(anotherSpy);</code></dt>
@@ -468,6 +476,55 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
     });
 }</code></pre>
         </dd>
+        <dt><code>spy.yield([arg1, arg2, ...])</code></dt>
+        <dd>
+          Invoke callbacks passed to the <code>spy</code> with the given
+          arguments. If the spy was never called with a function argument,
+          <code>yield</code> throws an error. Also aliased as
+          <code>invokeCallback</code>.
+        </dd>
+        <dt><code>spy.yieldTo(callback, [arg1, arg2, ...])</code></dt>
+        <dd>
+          Invokes callbacks passed as a property of an object to the
+          spy. Like <code>yield</code>, <code>yieldTo</code> grabs the first
+          matching argument, finds the callback and calls it with the (optional)
+          arguments:
+          <pre class="sh_javascript"><code>"calling callbacks": function () {
+    var callback = sinon.stub();
+    callback({
+        "success": function () {
+            console.log("Success!");
+        },
+        "failure": function () {
+            console.log("Oh noes!");
+        }
+    });
+
+    callback.yieldTo("failure"); // Logs "Oh noes!"
+}</code></pre>
+        </dd>
+        <dt><code>spy.callArg(argNum)</code></dt>
+        <dd>
+          Like <code>yield</code>, but with an explicit argument number
+          specifying which callback to call. Useful if a function is called with
+          more than one callback, and simply calling the first callback is not
+          desired.
+          <pre class="sh_javascript"><code>"calling the last callback": function () {
+    var callback = sinon.stub();
+    callback(function () {
+        console.log("Success!");
+    },
+    function () {
+        console.log("Oh noes!");
+    });
+
+    callback.callArg(1); // Logs "Oh noes!"
+}</code></pre>
+        </dd>
+        <dt><code>spy.callArgWith(argNum, [arg1, arg2, ...])</code></dt>
+        <dd>
+          Like <code>callArg</code>, but with arguments.
+        </dd>
       </dl>
     </div>
     <div class="section" id="mocks">
@@ -591,14 +648,14 @@ jQuery.ajax.verify();</code></pre>
       </p>
       <p>
         When faking timers with IE you also need
-        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
-        loaded after sinon-1.2.0.js.
+        <a href="../releases/sinon-ie-1.3.0.js">sinon-ie-1.3.0</a>, which should be
+        loaded after sinon-1.3.0.js.
       </p>
       <p>
         The fake timers can be used completely stand-alone by downloading
-        <a href="../releases/sinon-timers-1.2.0.js">sinon-timers-1.2.0</a>. When
+        <a href="../releases/sinon-timers-1.3.0.js">sinon-timers-1.3.0</a>. When
         using the fake timers in IE you also need
-        <a href="../releases/sinon-timers-ie-1.2.0.js">sinon-timers-ie-1.2.0</a>.
+        <a href="../releases/sinon-timers-ie-1.3.0.js">sinon-timers-ie-1.3.0</a>.
         Load it after the first file.
       </p>
       <pre class="sh_javascript timers"><code>{
@@ -671,14 +728,14 @@ jQuery.ajax.verify();</code></pre>
       </p>
       <p>
         When faking XHR with IE you also need
-        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>, which should be
-        loaded after sinon-1.2.0.js.
+        <a href="../releases/sinon-ie-1.3.0.js">sinon-ie-1.3.0</a>, which should be
+        loaded after sinon-1.3.0.js.
       </p>
       <p>
         The fake server and XHR can be used completely stand-alone by
-        downloading <a href="../releases/sinon-server-1.2.0.js">sinon-server-1.2.0</a>.
+        downloading <a href="../releases/sinon-server-1.3.0.js">sinon-server-1.3.0</a>.
         When using the fake server in IE you also need
-        <a href="../releases/sinon-ie-1.2.0.js">sinon-ie-1.2.0</a>. Load it after
+        <a href="../releases/sinon-ie-1.3.0.js">sinon-ie-1.3.0</a>. Load it after
         the first file.
       </p>
       <pre class="sh_javascript timers"><code>{
@@ -786,6 +843,28 @@ jQuery.ajax.verify();</code></pre>
         <dt>Object <code>request.getAllResponseHeaders();</code></dt>
         <dd>
           All response headers as an object.
+        </dd>
+      </dl>
+      <h3 id="filtered-requests">Filtered requests</h3>
+      <p>
+        When using Sinon.JS for mockups or partial integration/functional
+        testing, you might want to fake some requests, while allowing others to
+        go throught to the backend server. With
+        filtered <code>FakeXMLHttpRequest</code>s (new in Sinon 1.3.0), you can.
+      </p>
+      <dl>
+        <dt><code>FakeXMLHttpRequest.useFilters</code> (default <code>false</code>)</dt>
+        <dd>
+          When set to <code>true</code>, Sinon will check added filters if
+          certain requests should be "unfaked".
+        </dd>
+        <dt><code>FakeXMLHttpRequest.addFilter(fn)</code></dt>
+        <dd>
+          Add a filter that will decide whether or not to fake a request. The
+          filter will be called when <code>xhr.open</code> is called, with the
+          exact same arguments (<code>method</code>, <code>url</code>,
+          <code>async</code>, <code>username</code>, <code>password</code>). If
+          the filter returns truthy, the request will not be faked.
         </dd>
       </dl>
       <h3 id="responses">Simulating server responses</h3>
@@ -899,9 +978,9 @@ jQuery.ajax.verify();</code></pre>
           of the responses added through <code>respondWith</code> match, the
           default response is <code>[404, {}, ""]</code>. Synchronous requests
           are responded to immediately, so make sure to call
-          <code>respondWith</code> upfront.
-          Passing arguments to this method is equivalent to calling <code>respondWith</code>
-          with these arguments and then call this method.
+          <code>respondWith</code> upfront. If called with arguments,
+          <code>respondWith</code> will be called with those arguments before
+          responding to requests.
         </dd>
         <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
         <dd>
@@ -1290,19 +1369,30 @@ jQuery.ajax.verify();</code></pre>
       <dl>
         <dt><code>sinon.format(object)</code></dt>
         <dd>
-          Formats an object for pretty printing in error messages. The default
-          implementation currently only coerces the object to a string, and is
-          not very helpful. However, this method is provided as a hook - until
-          Sinon.JS ships a good default implementation, feel free to add your
-          own implementation here if you need better visualization of
-          e.g. objects. The method should return a string.
+          Formats an object for pretty printing in error messages. Sinon < 1.3.0
+          defaulted to  coercing objects to strings. As of 1.3.0, Sinon uses
+          <a href="https://busterjs.org/docs/buster-format/">buster-format</a>
+          by default, or
+          Node's <a href="http://nodejs.org/docs/v0.6.6/api/util.html">util</a>
+          module. Feel free to override this method with your own implementation
+          if you prefer different visualization of e.g. objects. The method
+          should return a string.
+        </dd>
+        <dt><code>sinon.log(string)</code></dt>
+        <dd>
+          Logs internal errors, helpful for debugging. By default this property
+          is a noop function, set it to something that prints warnings in your
+          environment for more help, e.g. (if you are using JsTestDriver):
+          <pre><code>sinon.log = function (message) {
+    jstestdriver.console.log(message);
+};</code></pre>
         </dd>
       </dl>
     </div>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>
       <p>
-        Copyright 2010 - 2011,
+        Copyright 2010 - 2012,
         <a href="http://cjohansen.no/">Christian Johansen</a>. Released under the
         <a href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
       </p>
