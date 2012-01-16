@@ -139,7 +139,7 @@
       <div id="server_example">
         <pre class="sh_javascript"><code>{
     setUp: function () {
-        this.server = sinon.useFakeServer();
+        this.server = sinon.fakeServer.create();
     },
 
     tearDown: function () {
