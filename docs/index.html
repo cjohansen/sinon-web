@@ -758,7 +758,7 @@ jQuery.ajax.verify();</code></pre>
         assertEquals(1, this.requests.length);
 
         this.requests[0].respond(200, { "Content-Type": "application/json" },
-                                 '[{ id: 12, comment: "Hey there" }]');
+                                 '[{ "id": 12, "comment": "Hey there" }]');
         assert(callback.calledWith([{ id: 12, comment: "Hey there" }]));
     }
 }</code></pre>
@@ -912,7 +912,7 @@ jQuery.ajax.verify();</code></pre>
     "test should fetch comments from server" : function () {
         this.server.respondWith("GET", "/some/article/comments.json",
                                 [200, { "Content-Type": "application/json" },
-                                 '[{ id: 12, comment: "Hey there" }]']);
+                                 '[{ "id": 12, "comment": "Hey there" }]']);
 
         var callback = sinon.spy();
         myLib.getCommentsFor("/some/article", callback);
