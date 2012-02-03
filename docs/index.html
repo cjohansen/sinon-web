@@ -472,7 +472,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>
           Like above but with an additional parameter to pass the <code>this</code> context.
         </dd>
-        <dt><code>stub.yieldsTo(property[, arg1, arg2, ...])</code></dt>
+        <dt><code>stub.yieldsTo(property, [arg1, arg2, ...])</code></dt>
         <dd>
           Causes the spy to invoke a callback passed as a property of an object
           to the spy. Like <code>yields</code>, <code>yieldsTo</code> grabs the
