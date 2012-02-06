@@ -455,8 +455,16 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           function. <code>stub.callsArg(0);</code> causes the stub to call the
           first argument as a callback.
         </dd>
+        <dt><code>stub.callsArgOn(index, context);</code></dt>
+        <dd>
+          Like above but with an additional parameter to pass the <code>this</code> context.
+        </dd>
         <dt><code>stub.callsArgWith(index, arg1, arg2, ...);</code></dt>
-        <dd>Like above, but with arguments to pass to the callback.</dd>
+        <dd>Like <code>callsArg</code>, but with arguments to pass to the callback.</dd>
+        <dt><code>stub.callsArgOnWith(index, context, arg1, arg2, ...);</code></dt>
+        <dd>
+          Like above but with an additional parameter to pass the <code>this</code> context.
+        </dd>
         <dt>stub.yields([arg1, arg2, ...])</dt>
         <dd>
           Almost like <code>callsArg</code>. Causes the stub to call the first
@@ -464,12 +472,21 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           accepts more than one callback, you need to use <code>callsArg</code>
           to have the stub invoke other callbacks than the first one.
         </dd>
-        <dt><code>stub.yieldsTo(property[, arg1, arg2, ...])</code></dt>
+        <dt>stub.yieldsOn(context, [arg1, arg2, ...])</dt>
+        <dd>
+          Like above but with an additional parameter to pass the <code>this</code> context.
+        </dd>
+        <dt><code>stub.yieldsTo(property, [arg1, arg2, ...])</code></dt>
         <dd>
           Causes the spy to invoke a callback passed as a property of an object
           to the spy. Like <code>yields</code>, <code>yieldsTo</code> grabs the
           first matching argument, finds the callback and calls it with the
           (optional) arguments:
+        <dt><code>stub.yieldsToOn(property, context, [arg1, arg2, ...])</code></dt>
+        </dd>
+        <dd>
+          Like above but with an additional parameter to pass the <code>this</code> context.
+        </dd>
           <pre class="sh_javascript"><code>"test should fake successful ajax request": function () {
     sinon.stub(jQuery, "ajax").yieldsTo("success", [1, 2, 3]);
 
