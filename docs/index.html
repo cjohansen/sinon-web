@@ -14,6 +14,7 @@
       <li><a href="#clock">Fake timers</a></li>
       <li><a href="#server">Fake <code>XHR</code> and server</a></li>
       <li><a href="#assertions">Assertions</a></li>
+      <li><a href="#matchers">Matchers</a></li>
       <li><a href="#sandbox">Sandboxing</a></li>
       <li><a href="#utils">Utils</a></li>
     </ul>
@@ -263,6 +264,8 @@
         <dd>
           Returns <code>true</code> if spy returned the provided value at least once.
           Uses deep comparison for objects and arrays.
+          Use <code>spy.returned(sinon.match.same(obj))</code> for strict
+          comparison (see <a href="#matchers">matchers</a>).
         </dd>
         <dt><code>spy.alwaysReturned(obj);</code></dt>
         <dd>Returns <code>true</code> if spy always returned the provided value.</dd>
@@ -1168,6 +1171,82 @@ jQuery.ajax.verify();</code></pre>
           </p>
         </dd>
       </dl>
+    </div>
+    <div class="section" id="matchers">
+      <h2>Matchers <a class="api" href="#sinon-match-api">API reference</a></h2>
+      <ul class="nav">
+        <li><a href="#sinon-match-api">Matcher API</a></li>
+        <li><a href="#sinon-match">Custom matchers</a></li>
+      </ul>
+      <p>
+        Matchers can be passed as arguments to <code>spy.calledWith</code>,
+        <code>spy.returned</code> and the corresponding
+        <code>sinon.assert</code> functions as well as
+        <code>spy.withArgs</code>. Matchers allow to be either
+        more fuzzy or more specific about the expected value.
+      </p>
+      <pre class="sh_javascript"><code>"test should stub method differently based on argument types": function () {
+    var callback = sinon.stub();
+    callback.withArgs(sinon.match.string).returns(true);
+    callback.withArgs(sinon.match.number).throws("TypeError");
+
+    callback("abc"); // Returns true
+    callback(123); // Throws TypeError
+}</code></pre>
+      <h3 id="sinon-match-api">Matchers API</h3>
+      <dl>
+        <dt><code>sinon.match.any</code></dt>
+        <dd>Matches anything.</dd>
+        <dt><code>sinon.match.same(ref)</code></dt>
+        <dd>Requires the value to strictly equal <code>ref</code>.</dd>
+        <dt><code>sinon.match.typeOf(type)</code></dt>
+        <dd>Requires the value to be of the given type, where <code>type</code> can be one of
+          <code>&quot;undefined&quot;</code>,
+          <code>&quot;null&quot;</code>,
+          <code>&quot;boolean&quot;</code>,
+          <code>&quot;number&quot;</code>,
+          <code>&quot;string&quot;</code>,
+          <code>&quot;object&quot;</code>,
+          <code>&quot;function&quot;</code>,
+          <code>&quot;array&quot;</code>,
+          <code>&quot;regexp&quot;</code> or
+          <code>&quot;date&quot;</code>.
+        </dd>
+        <dt><code>sinon.match.instanceOf(type)</code></dt>
+        <dd>Requires the value to be an instance of the given type.</dd>
+        <dt><code>sinon.match.re(expression)</code></dt>
+        <dd>Requires the value to be of type string and match the given regular expression.</dd>
+        <dt><code>sinon.match.like(expectation)</code></dt>
+        <dd>Requires the value to be an object and have at least the smae properties as <code>expectation</code>. This supports nested matchers.</dd>
+        <dt><code>sinon.match.bool</code></dt>
+        <dd>Requires the value to be a boolean.</dd>
+        <dt><code>sinon.match.number</code></dt>
+        <dd>Requires the value to be a number.</dd>
+        <dt><code>sinon.match.string</code></dt>
+        <dd>Requires the value to be a string.</dd>
+        <dt><code>sinon.match.object</code></dt>
+        <dd>Requires the value to be an object.</dd>
+        <dt><code>sinon.match.func</code></dt>
+        <dd>Requires the value to be a function.</dd>
+        <dt><code>sinon.match.array</code></dt>
+        <dd>Requires the value to be an array.</dd>
+        <dt><code>sinon.match.regexp</code></dt>
+        <dd>Requires the value to be a regular expression.</dd>
+        <dt><code>sinon.match.date</code></dt>
+        <dd>Requires the value to be a date object.</dd>
+      </dl>
+      <h3 id="sinon-match">Custom matchers</h3>
+      <p>
+        Custom matchers are created with the <code>sinon.match</code> factory
+        which takes a test function and a message. The test function takes a
+        value as the only argument, returns <code>true</code> if the
+        value matches the expectation and <code>false</code> otherwise.
+        The message string is used to generate the error message in case the
+        the value does not match the expectation.
+      </p>
+      <pre class="sh_javascript"><code>var trueIsh = sinon.match(function (value) {
+    return !!value;
+}, "trueIsh");</code></pre>
     </div>
     <div class="section" id="sandbox">
       <h2>Sandboxes <a class="api" href="#sinon-sandbox">API reference</a></h2>
