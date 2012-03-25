@@ -1218,6 +1218,10 @@ jQuery.ajax.verify();</code></pre>
         <dd>Requires the value to be of type string and match the given regular expression.</dd>
         <dt><code>sinon.match.like(expectation)</code></dt>
         <dd>Requires the value to be an object and have at least the smae properties as <code>expectation</code>. This supports nested matchers.</dd>
+        <dt><code>sinon.match.has(property[, expectation])</code></dt>
+        <dd>Requires the value to define the given property. The property might be inherited via the prototype chain. If the optional expectation is given, the value of the property is deeply compared with the expectation. The expectation can be another matcher.</dd>
+        <dt><code>sinon.match.hasOwn(property[, expectation])</code></dt>
+        <dd>Same as <code>sinon.match.has</code> but the property must be defined by the value itself. Inherited properties are ignored.</dd>
         <dt><code>sinon.match.bool</code></dt>
         <dd>Requires the value to be a boolean.</dd>
         <dt><code>sinon.match.number</code></dt>
