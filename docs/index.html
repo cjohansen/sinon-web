@@ -310,6 +310,18 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>
           Resets the state of a spy.
         </dd>
+        <dt><code>spy.printf("format string", [arg1, arg2, ...])</code></dt>
+        <dd>
+          Returns the passed format string with the following replacements performed:
+          <ul>
+            <li><code>%n</code>: the name of the spy ("spy" by default)</li>
+            <li><code>%c</code>: the number of times the spy was called, in words ("once", "twice", etc.)</li>
+            <li><code>%C</code>: a list of string representations of the calls to the spy, with each call prefixed by a newline and four spaces</li>
+            <li><code>%t</code>: a comma-delimited list of <code>this</code> values the spy was called on</li>
+            <li><code>%<var>n</var></code>: the formatted value of the <var>n</var>th argument passed to <code>printf</code></li>
+            <li><code>%*</code>: a comma-delimited list of the (non-format string) arguments passed to <code>printf</code></li>
+          </ul>
+        </dd>
       </dl>
       <h3 id="spycall">Individual spy calls</h3>
       <dl>
