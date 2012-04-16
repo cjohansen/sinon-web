@@ -1188,6 +1188,7 @@ jQuery.ajax.verify();</code></pre>
       <h2>Matchers <a class="api" href="#sinon-match-api">API reference</a></h2>
       <ul class="nav">
         <li><a href="#sinon-match-api">Matcher API</a></li>
+        <li><a href="#sinon-match-andor">Combining matchers</a></li>
         <li><a href="#sinon-match">Custom matchers</a></li>
       </ul>
       <p>
@@ -1197,6 +1198,17 @@ jQuery.ajax.verify();</code></pre>
         <code>spy.withArgs</code>. Matchers allow to be either
         more fuzzy or more specific about the expected value.
       </p>
+      <pre class="sh_javascript"><code>"test should assert fuzzy": function () {
+    var book = {
+        pages: 42,
+        author: "cjno"
+    };
+    var spy = sinon.spy();
+    spy(book);
+
+    sinon.assert.calledWith(spy, sinon.match.like({ author: "cjno" }));
+    sinon.assert.calledWith(spy, sinon.match.has("pages", 42));
+}</code></pre>
       <pre class="sh_javascript"><code>"test should stub method differently based on argument types": function () {
     var callback = sinon.stub();
     callback.withArgs(sinon.match.string).returns(true);
@@ -1226,10 +1238,14 @@ jQuery.ajax.verify();</code></pre>
         </dd>
         <dt><code>sinon.match.instanceOf(type)</code></dt>
         <dd>Requires the value to be an instance of the given type.</dd>
-        <dt><code>sinon.match.re(expression)</code></dt>
-        <dd>Requires the value to be of type string and match the given regular expression.</dd>
-        <dt><code>sinon.match.like(expectation)</code></dt>
-        <dd>Requires the value to be an object and have at least the smae properties as <code>expectation</code>. This supports nested matchers.</dd>
+        <dt><code>sinon.match.like(boolean)</code></dt>
+        <dd>Requires the value to be true(ish) or false(ish).</dd>
+        <dt><code>sinon.match.like(string)</code></dt>
+        <dd>Requires the value to be a string and have the expectation as a substring.</dd>
+        <dt><code>sinon.match.like(regexp)</code></dt>
+        <dd>Requires the value to be a string and match the given regular expression.</dd>
+        <dt><code>sinon.match.like(object)</code></dt>
+        <dd>Requires the value to be not null or undefined and have at least the same properties as <code>expectation</code>. This supports nested matchers.</dd>
         <dt><code>sinon.match.has(property[, expectation])</code></dt>
         <dd>Requires the value to define the given property. The property might be inherited via the prototype chain. If the optional expectation is given, the value of the property is deeply compared with the expectation. The expectation can be another matcher.</dd>
         <dt><code>sinon.match.hasOwn(property[, expectation])</code></dt>
@@ -1251,6 +1267,16 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>sinon.match.date</code></dt>
         <dd>Requires the value to be a date object.</dd>
       </dl>
+      <h3 id="sinon-match-andor">Combining matchers</h3>
+      <p>
+        All matchers implement <code>and</code> and <code>or</code>. This
+        allows to logically combine mutliple matchers. The result is a new
+        matchers that requires both (and) or one of the matchers (or) to
+        return true.
+      </p>
+      <pre class="sh_javascript"><code>var stringOrNumber = sinon.match.string.or(sinon.match.number);
+
+var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has("pages"));</code></pre>
       <h3 id="sinon-match">Custom matchers</h3>
       <p>
         Custom matchers are created with the <code>sinon.match</code> factory
@@ -1258,7 +1284,7 @@ jQuery.ajax.verify();</code></pre>
         value as the only argument, returns <code>true</code> if the
         value matches the expectation and <code>false</code> otherwise.
         The message string is used to generate the error message in case the
-        the value does not match the expectation.
+        value does not match the expectation.
       </p>
       <pre class="sh_javascript"><code>var trueIsh = sinon.match(function (value) {
     return !!value;
