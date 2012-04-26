@@ -1,12 +1,11 @@
 /**
- * Sinon.JS 1.3.3, 2012/04/14
+ * Sinon.JS 1.3.3, 2012/04/16
  *
  * @author Christian Johansen (christian@cjohansen.no)
- * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
  *
  * (The BSD License)
  * 
- * Copyright (c) 2010-2012, Christian Johansen, christian@cjohansen.no
+ * Copyright (c) 2010-2011, Christian Johansen, christian@cjohansen.no
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification,
