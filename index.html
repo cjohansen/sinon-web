@@ -25,14 +25,15 @@
     <div class="examples" id="examples">
       <h2>What does Sinon.JS look like?</h2>
       <ul class="nav">
-        <li class="active"><a href="#spy_example">Test spies</a></li>
-        <li><a href="#stub_example">Test stubs</a></li>
+        <li class="active"><a href="#spy_example">Spies</a></li>
+        <li><a href="#stub_example">Stubs</a></li>
         <li><a href="#mock_example">Mocks</a></li>
         <li><a href="#timers_example">Fake timers</a></li>
         <li><a href="#xhr_example">Fake XHR</a></li>
         <li><a href="#server_example">Fake server</a></li>
         <li><a href="#sandbox_example">Sandboxing</a></li>
         <li><a href="#assertion_example">Assertions</a></li>
+        <li><a href="#matcher_example">Matchers</a></li>
       </ul>
       <div id="spy_example">
         <pre class="sh_javascript"><code>"test should call subscriber": function () {
@@ -191,6 +192,22 @@
 }</code></pre>
         <p><a href="docs/#assertions">Assertions documentation</a></p>
       </div>
+      <div id="matcher_example">
+        <pre class="sh_javascript"><code>"test should call subscriber": function () {
+    var spy = sinon.spy();
+
+    PubSub.subscribe("message", spy);
+    PubSub.publishSync("message", undefined);
+
+    assertTrue(spy.calledWith("message", sinon.match.func));
+    assertTrue(spy.calledWithMatch(/[a-z]+/));
+  }</code></pre>
+        <p>
+          <a href="docs/#matchers">Matcher documentation</a>.
+          Example is a modified test from Morgan Roderick's
+          <a href="https://github.com/mroderick/PubSubJS/">PubSubJS</a>.
+        </p>
+      </div>
     </div>
     <div class="docs-intro">
       <h2>Documentation</h2>
@@ -239,8 +256,8 @@
           <li class="ie"><span>Internet Explorer</span> 6.0+</li>
           <li class="ff"><span>Firefox</span> 2.0+</li>
           <li class="chrome"><span>Chrome</span> 7.0+</li>
-          <li class="opera"><span>Opera</span> 10.10+</</li>
-                                                        <li class="safari"><span>Safari</span> 3.2+</li>
+          <li class="opera"><span>Opera</span> 10.10+</li>
+          <li class="safari"><span>Safari</span> 3.2+</li>
           <li class="mobile-safari"><span>Mobile Safari</span> 3.2+</li>
           <li class="android-browser"><span>Android browser</span> 2.1+</li>
           <li class="node-js"><span>Node.js</span> 0.2.x+</li>
