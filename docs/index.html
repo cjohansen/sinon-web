@@ -1018,6 +1018,15 @@ jQuery.ajax.verify();</code></pre>
           <code>respondWith</code> will be called with those arguments before
           responding to requests.
         </dd>
+        <dt><code>server.autoRespond = true;</code></dt>
+        <dd>
+          If set, will call to <code>srv.respondWith</code> automatically after every request. 
+        </dd>
+        <dt><code>server.autoRespondAfter = ms;</code></dt>
+        <dd>
+          Causes the server to automatically respond to incoming requests after
+          a timeout. 
+        </dd>
         <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
         <dd>
           If set to <code>true</code>, server will find <code>_method</code>
