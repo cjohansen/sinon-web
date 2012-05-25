@@ -230,6 +230,18 @@
         <dd>
           Returns <code>true</code> if spy was always called with the exact provided arguments.
         </dd>
+        <dt><code>spy.calledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if spy was called with matching arguments
+          (and possibly others). This behaves the same as
+          <code>spy.calledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
+        <dt><code>spy.alwaysCalledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if spy was always called with matching arguments
+          (and possibly others). This behaves the same as
+          <code>spy.alwaysCalledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
         <dt><code>spy.calledWithNew();</code></dt>
         <dd>
           Returns <code>true</code> if spy/stub was called the <code>new</code>
@@ -247,6 +259,18 @@
         <dd>
           Returns <code>true</code> if the spy/stub was never called with
           the provided arguments.
+        </dd>
+        <dt><code>spy.notCalledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if the spy/stub was called at least once
+          with arguments not matching the provided ones. This behaves the same as
+          <code>spy.notCalledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
+        <dt><code>spy.neverCalledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>
+          Returns <code>true</code> if the spy/stub was never called with
+          matching arguments. This behaves the same as
+          <code>spy.neverCalledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.
         </dd>
         <dt><code>spy.threw();</code></dt>
         <dd>Returns <code>true</code> if spy threw an exception at least once.</dd>
@@ -344,6 +368,12 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>Returns <code>true</code> if call received provided arguments (and possibly others).</dd>
         <dt><code>spyCall.calledWithExactly(arg1, arg2, ...);</code></dt>
         <dd>Returns <code>true</code> if call received provided arguments and no others.</dd>
+        <dt><code>spyCall.calledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>Returns <code>true</code> if call received matching arguments (and possibly others). This behaves the same as <code>spyCall.calledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.</dd>
+        <dt><code>spyCall.notCalledWith(arg1, arg2, ...);</code></dt>
+        <dd>Returns <code>true</code> if call did not receive provided arguments.</dd>
+        <dt><code>spyCall.notCalledWithMatch(arg1, arg2, ...);</code></dt>
+        <dd>Returns <code>true</code> if call did not receive matching arguments. This behaves the same as <code>spyCall.notCalledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.</dd>
         <dt><code>spyCall.threw();</code></dt>
         <dd>Returns <code>true</code> if call threw an exception.</dd>
         <dt><code>spyCall.threw("TypeError");</code></dt>
@@ -1018,6 +1048,15 @@ jQuery.ajax.verify();</code></pre>
           <code>respondWith</code> will be called with those arguments before
           responding to requests.
         </dd>
+        <dt><code>server.autoRespond = true;</code></dt>
+        <dd>
+          If set, will call to <code>srv.respondWith</code> automatically after every request. 
+        </dd>
+        <dt><code>server.autoRespondAfter = ms;</code></dt>
+        <dd>
+          Causes the server to automatically respond to incoming requests after
+          a timeout. 
+        </dd>
         <dt>Boolean <code>server.fakeHTTPMethods</code></dt>
         <dd>
           If set to <code>true</code>, server will find <code>_method</code>
@@ -1149,6 +1188,21 @@ jQuery.ajax.verify();</code></pre>
           Passes if the spy was always called with the provided arguments and no
           others.
         </dd>
+        <dt><code>sinon.assert.calledWithMatch(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was called with matching arguments. This behaves
+          the same as <code>sinon.assert.calledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
+        <dt><code>sinon.assert.alwaysCalledWithMatch(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was always called with matching arguments. This behaves
+          the same as <code>sinon.assert.alwaysCalledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
+        <dt><code>sinon.assert.neverCalledWithMatch(spy, arg1, arg2, ...)</code></dt>
+        <dd>
+          Passes if the spy was never called with matching arguments. This behaves
+          the same as <code>sinon.assert.neverCalledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)</code>.
+        </dd>
         <dt><code>sinon.assert.threw(spy, exception)</code></dt>
         <dd>
           Passes if the spy threw the given exception. The exception can be a
@@ -1188,7 +1242,8 @@ jQuery.ajax.verify();</code></pre>
       <h2>Matchers <a class="api" href="#sinon-match-api">API reference</a></h2>
       <ul class="nav">
         <li><a href="#sinon-match-api">Matcher API</a></li>
-        <li><a href="#sinon-match">Custom matchers</a></li>
+        <li><a href="#sinon-match-andor">Combining matchers</a></li>
+        <li><a href="#sinon-match-custom">Custom matchers</a></li>
       </ul>
       <p>
         Matchers can be passed as arguments to <code>spy.calledWith</code>,
@@ -1197,6 +1252,18 @@ jQuery.ajax.verify();</code></pre>
         <code>spy.withArgs</code>. Matchers allow to be either
         more fuzzy or more specific about the expected value.
       </p>
+      <pre class="sh_javascript"><code>"test should assert fuzzy": function () {
+    var book = {
+        pages: 42,
+        author: "cjno"
+    };
+    var spy = sinon.spy();
+
+    spy(book);
+
+    sinon.assert.calledWith(spy, sinon.match({ author: "cjno" }));
+    sinon.assert.calledWith(spy, sinon.match.has("pages", 42));
+}</code></pre>
       <pre class="sh_javascript"><code>"test should stub method differently based on argument types": function () {
     var callback = sinon.stub();
     callback.withArgs(sinon.match.string).returns(true);
@@ -1207,8 +1274,40 @@ jQuery.ajax.verify();</code></pre>
 }</code></pre>
       <h3 id="sinon-match-api">Matchers API</h3>
       <dl>
+        <dt><code>sinon.match(number)</code></dt>
+        <dd>Requires the value to be == to the given number.</dd>
+        <dt><code>sinon.match(string)</code></dt>
+        <dd>Requires the value to be a string and have the expectation as a substring.</dd>
+        <dt><code>sinon.match(regexp)</code></dt>
+        <dd>Requires the value to be a string and match the given regular expression.</dd>
+        <dt><code>sinon.match(object)</code></dt>
+        <dd>Requires the value to be not null or undefined and have at least the same properties as <code>expectation</code>. This supports nested matchers.</dd>
+        <dt><code>sinon.match(function)</code></dt>
+        <dd>See <a href="#sinon-match-custom">custom matchers</a>.</dd>
         <dt><code>sinon.match.any</code></dt>
         <dd>Matches anything.</dd>
+        <dt><code>sinon.match.defined</code></dt>
+        <dd>Requires the value to be defined.</dd>
+        <dt><code>sinon.match.truthy</code></dt>
+        <dd>Requires the value to be truthy.</dd>
+        <dt><code>sinon.match.falsy</code></dt>
+        <dd>Requires the value to be falsy.</dd>
+        <dt><code>sinon.match.bool</code></dt>
+        <dd>Requires the value to be a boolean.</dd>
+        <dt><code>sinon.match.number</code></dt>
+        <dd>Requires the value to be a number.</dd>
+        <dt><code>sinon.match.string</code></dt>
+        <dd>Requires the value to be a string.</dd>
+        <dt><code>sinon.match.object</code></dt>
+        <dd>Requires the value to be an object.</dd>
+        <dt><code>sinon.match.func</code></dt>
+        <dd>Requires the value to be a function.</dd>
+        <dt><code>sinon.match.array</code></dt>
+        <dd>Requires the value to be an array.</dd>
+        <dt><code>sinon.match.regexp</code></dt>
+        <dd>Requires the value to be a regular expression.</dd>
+        <dt><code>sinon.match.date</code></dt>
+        <dd>Requires the value to be a date object.</dd>
         <dt><code>sinon.match.same(ref)</code></dt>
         <dd>Requires the value to strictly equal <code>ref</code>.</dd>
         <dt><code>sinon.match.typeOf(type)</code></dt>
@@ -1226,39 +1325,29 @@ jQuery.ajax.verify();</code></pre>
         </dd>
         <dt><code>sinon.match.instanceOf(type)</code></dt>
         <dd>Requires the value to be an instance of the given type.</dd>
-        <dt><code>sinon.match.re(expression)</code></dt>
-        <dd>Requires the value to be of type string and match the given regular expression.</dd>
-        <dt><code>sinon.match.like(expectation)</code></dt>
-        <dd>Requires the value to be an object and have at least the smae properties as <code>expectation</code>. This supports nested matchers.</dd>
         <dt><code>sinon.match.has(property[, expectation])</code></dt>
         <dd>Requires the value to define the given property. The property might be inherited via the prototype chain. If the optional expectation is given, the value of the property is deeply compared with the expectation. The expectation can be another matcher.</dd>
         <dt><code>sinon.match.hasOwn(property[, expectation])</code></dt>
         <dd>Same as <code>sinon.match.has</code> but the property must be defined by the value itself. Inherited properties are ignored.</dd>
-        <dt><code>sinon.match.bool</code></dt>
-        <dd>Requires the value to be a boolean.</dd>
-        <dt><code>sinon.match.number</code></dt>
-        <dd>Requires the value to be a number.</dd>
-        <dt><code>sinon.match.string</code></dt>
-        <dd>Requires the value to be a string.</dd>
-        <dt><code>sinon.match.object</code></dt>
-        <dd>Requires the value to be an object.</dd>
-        <dt><code>sinon.match.func</code></dt>
-        <dd>Requires the value to be a function.</dd>
-        <dt><code>sinon.match.array</code></dt>
-        <dd>Requires the value to be an array.</dd>
-        <dt><code>sinon.match.regexp</code></dt>
-        <dd>Requires the value to be a regular expression.</dd>
-        <dt><code>sinon.match.date</code></dt>
-        <dd>Requires the value to be a date object.</dd>
       </dl>
-      <h3 id="sinon-match">Custom matchers</h3>
+      <h3 id="sinon-match-andor">Combining matchers</h3>
+      <p>
+        All matchers implement <code>and</code> and <code>or</code>. This
+        allows to logically combine mutliple matchers. The result is a new
+        matchers that requires both (and) or one of the matchers (or) to
+        return true.
+      </p>
+      <pre class="sh_javascript"><code>var stringOrNumber = sinon.match.string.or(sinon.match.number);
+
+var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has("pages"));</code></pre>
+      <h3 id="sinon-match-custom">Custom matchers</h3>
       <p>
         Custom matchers are created with the <code>sinon.match</code> factory
-        which takes a test function and a message. The test function takes a
+        which takes a test function and an optional message. The test function takes a
         value as the only argument, returns <code>true</code> if the
         value matches the expectation and <code>false</code> otherwise.
         The message string is used to generate the error message in case the
-        the value does not match the expectation.
+        value does not match the expectation.
       </p>
       <pre class="sh_javascript"><code>var trueIsh = sinon.match(function (value) {
     return !!value;
