@@ -1,5 +1,5 @@
 /**
- * Sinon.JS 1.3.2, 2012/03/11
+ * Sinon.JS 1.3.4, 2012/04/16
  *
  * @author Christian Johansen (christian@cjohansen.no)
  *
@@ -119,9 +119,11 @@ if (typeof module == "object" && typeof require == "function") {
         }
     });
 }
+if (typeof buster === "undefined") {
+    var buster = {};
+}
 
-
-if (typeof require != "undefined") {
+if (typeof module === "object" && typeof require === "function") {
     buster = require("buster-core");
 }
 
@@ -130,6 +132,7 @@ buster.format.excludeConstructors = ["Object", /^.$/];
 buster.format.quoteStrings = true;
 
 buster.format.ascii = (function () {
+    
     function keys(object) {
         var k = Object.keys && Object.keys(object) || [];
 
@@ -175,7 +178,7 @@ buster.format.ascii = (function () {
         }
 
         if (Object.prototype.toString.call(object) == "[object Array]") {
-            return ascii.array(object);
+            return ascii.array.call(this, object);
         }
 
         if (!object) {
@@ -186,7 +189,8 @@ buster.format.ascii = (function () {
             return ascii.element(object);
         }
 
-        if (object.toString !== Object.prototype.toString) {
+        if (typeof object.toString == "function" &&
+            object.toString !== Object.prototype.toString) {
             return object.toString();
         }
 
@@ -203,7 +207,7 @@ buster.format.ascii = (function () {
         var pieces = [];
 
         for (var i = 0, l = array.length; i < l; ++i) {
-            pieces.push(ascii(array[i], processed));
+            pieces.push(ascii.call(this, array[i], processed));
         }
 
         return "[" + pieces.join(", ") + "]";
