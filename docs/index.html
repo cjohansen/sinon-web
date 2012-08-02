@@ -3,11 +3,18 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Sinon.JS - Documentation</title>
-    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?7">
+    <link rel="stylesheet" type="text/css" href="/design/css/sinon.min.css?8">
   </head>
   <body>
-    <h1><a href="../">Sinon.JS</a> Documentation</h1>
-    <ul class="nav">
+    <div class="payoff">
+      <h1><a href="/">Sinon.JS</a></h1>
+      <p>
+        Standalone test spies, stubs and mocks for JavaScript.<br>
+        No dependencies, works with any unit testing framework.
+      </p>
+    </div>
+    <ul class="nav main-nav">
+      <li><strong>Documentation</strong></li>
       <li><a href="#spies">Spies</a></li>
       <li><a href="#stubs">Stubs</a></li>
       <li><a href="#mocks">Mocks</a></li>
@@ -18,6 +25,7 @@
       <li><a href="#sandbox">Sandboxing</a></li>
       <li><a href="#utils">Utils</a></li>
     </ul>
+    <div class="docs">
     <p>
       This page contains the entire Sinon.JS API documentation along with brief
       introductions to the concepts Sinon implements. Please ask questions on
@@ -1598,6 +1606,7 @@ var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has("pages"));<
 };</code></pre>
         </dd>
       </dl>
+    </div>
     </div>
     <div class="aside">
       <p>Sinon uses <a href="http://semver.org/">Semantic versioning</a>.</p>

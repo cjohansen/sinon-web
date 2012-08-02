@@ -2,9 +2,8 @@
 body {
     background: #fff;
     font: 1em/1.5 Arial, Geneva, sans-serif;
-    margin: 0 auto;
-    padding: 1em 0 0;
-    width: 800px;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -56,19 +55,6 @@ a:visited {
 pre,
 p {
     margin: 0 0 1em;
-}
-
-/* h1 works as a page header on "normal" pages */
-h1 a {
-    color: #00f;
-    display: block;
-    font-size: .33em;
-}
-
-h1 a:before {
-    color: #000;
-    content: " ← ";
-    width: 2.5em;
 }
 
 /* Syntax highlighting */
@@ -140,39 +126,74 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
 
 /* Front page blurb */
 .payoff {
-    background: #f8fcff;
+    background: #333;
+
+    background: -moz-linear-gradient(
+        top center,
+        #333,
+        #3b3b3b 80%,
+        #555
+    );
 
     background: -webkit-gradient(
         linear,
         left top,
         left bottom,
-        from(#f8fcff),
-        to(#fafafa),
-        color-stop(0.8, #f2f9ff)
+        from(#333),
+        to(#555),
+        color-stop(0.8, #3b3b3b)
     );
 
-    border: 2px solid #ddd;
-    border-radius: 1em;
-    -moz-border-radius: 1em;
-    -webkit-border-radius: 1em;
-    margin: 2em -36px;
+    border-bottom: 2px solid #000;
+    margin: 0 0 2em;
     overflow: hidden;
-    padding: 6px 48px;
+    padding: 6px 2em;
+}
+
+.payoff h1 {
+    color: #fff;
+    float: left;
+    width: 4.5em;
+}
+
+.payoff h1 a {
+    color: #fff;
+    text-decoration: none;
 }
 
 .payoff p {
+    color: #ccc;
     font-size: 1.25em;
+    margin: 1em 0;
 }
 
-.download {
+.front .download .content {
     float: left;
-    margin-right: 2%;
-    width: 47%;
 }
 
 .download p {
     font-size: .8em;
     padding-left: 25px;
+}
+
+.browsers {
+    float: left;
+    width: 31em;
+}
+
+.download p {
+    clear: both;
+}
+
+/* Front page sections */
+.front .section {
+    clear: both;
+    margin: 0 0 2em;
+}
+
+.front .section .content {
+    margin: 0 2em;
+    max-width: 850px;
 }
 
 /* Examples */
@@ -200,32 +221,10 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
     text-decoration: none;
 }
 
-.examples pre {
-
-}
-
-/*
-.examples .stubs,
-.examples .mocks {
-    float: left;
-    margin-right: 20px;
-    width: 390px;
-}
-
-.examples .mocks {
-    margin-right: 0;
-}
-*/
-
 /* Support + docs intro */
 .browsers,
 .docs-intro {
     margin-bottom: 2em;
-}
-
-.sidebar {
-    float: right;
-    width: 250px;
 }
 
 .browsers ul {
@@ -279,22 +278,12 @@ pre.sh_sourceCode span.sh_type { color: #0700ff; }
 }
 
 .browsers .node-js {
-    width: 125px;
+    width: 93px;
 }
 
 .browsers .node-js span {
-    background: url(../images/nodejs-125x32.png);
-    width: 125px;
-}
-
-.docs-intro {
-    float: left;
-    width: 520px;
-}
-
-.docs-intro ul {
-    margin: 0 0 1em 15px;
-    padding: 0;
+    background: url(../images/nodejs-93x32.png);
+    width: 93px;
 }
 
 .browsers h2,
@@ -318,7 +307,35 @@ ul.nav li {
     padding: 0 1em 0 0;
 }
 
+/* Main menu */
+ul.main-nav {
+    background: #f3f3f3;
+
+    background: -moz-linear-gradient(
+        top center,
+        #eee,
+        #f3f3f3
+    );
+
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        from(#eee),
+        to(#f3f3f3)
+    );
+
+    border-bottom: 2px solid #ccc;
+    margin: -2em 0 2em;
+    padding: 0.5em 2em;
+}
+
 /* Docs */
+.docs {
+    max-width: 850px;
+    padding: 0 2em;
+}
+
 .section pre {
     background: #f8f6f4;
     padding: 18px;
@@ -378,28 +395,16 @@ h3 .api {
     right: 0;
 }
 
-/* .api:after { */
-/*     background: #fff; */
-/*     color: #000; */
-/*     content: " → "; */
-/* } */
-
 /* Footer */
 .aside {
     border-top: 3px solid #ccc;
     clear: both;
     font-size: .9em;
-    margin: 2em 0 0;
+    margin: 2em 2em 0;
     padding: 1em 0;
     position: relative;
 }
 
 .aside p {
     margin: 0 0 .2em;
-}
-
-.aside .tweet {
-    position: absolute;
-    right: -18px;
-    top: 1em;
 }

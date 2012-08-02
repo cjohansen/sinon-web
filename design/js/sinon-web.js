@@ -50,7 +50,7 @@ try {
 
             previousLink = this.parentNode;
             previousLink.className = "active";
-
+            this.blur();
             return false;
         };
 
