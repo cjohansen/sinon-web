@@ -434,7 +434,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
       </p>
       <pre class="sh_javascript"><code>"test should call all subscribers, even if there are exceptions" : function(){
     var message = 'an example message';
-    var error = 'an example message';
+    var error = 'an example error message';
     var stub = sinon.stub().throws();
     var spy1 = sinon.spy();
     var spy2 = sinon.spy();
