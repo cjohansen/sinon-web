@@ -120,7 +120,7 @@
         the spy was ever called with the provided arguments.
       </p>
       <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
-    var message = getUniqueString();
+    var message = 'an example message';
     var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);
@@ -133,7 +133,7 @@
         the first call. There are two ways of achieving this:
       </p>
       <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
-    var message = getUniqueString();
+    var message = 'an example message';
     var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);
@@ -142,7 +142,7 @@
     assertEquals(message, spy.args[0][0]);
 }</code></pre>
       <pre class="sh_javascript"><code>"test should call subscribers with message as first argument" : function () {
-    var message = getUniqueString();
+    var message = 'an example message';
     var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);
@@ -433,8 +433,8 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         exception when called.
       </p>
       <pre class="sh_javascript"><code>"test should call all subscribers, even if there are exceptions" : function(){
-    var message = getUniqueString();
-    var error = getUniqueString();
+    var message = 'an example message';
+    var error = 'an example error message';
     var stub = sinon.stub().throws();
     var spy1 = sinon.spy();
     var spy2 = sinon.spy();
@@ -1108,7 +1108,7 @@ jQuery.ajax.verify();</code></pre>
         The assertions can be used with either spies or stubs.
       </p>
       <pre class="sh_javascript mocks"><code>"test should call subscribers with message as first argument" : function () {
-    var message = getUniqueString();
+    var message = 'an example message';
     var spy = sinon.spy();
 
     PubSub.subscribe(message, spy);
