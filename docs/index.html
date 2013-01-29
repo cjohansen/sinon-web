@@ -258,21 +258,10 @@
           function's <code>prototype</code>, so it may give false positives if
           you actively return the right kind of object.
         </dd>
-        <dt><code>spy.notCalledWith(arg1, arg2, ...);</code></dt>
-        <dd>
-          Returns <code>true</code> if the spy/stub was called at least once
-          with arguments not matching the provided ones.
-        </dd>
         <dt><code>spy.neverCalledWith(arg1, arg2, ...);</code></dt>
         <dd>
           Returns <code>true</code> if the spy/stub was never called with
           the provided arguments.
-        </dd>
-        <dt><code>spy.notCalledWithMatch(arg1, arg2, ...);</code></dt>
-        <dd>
-          Returns <code>true</code> if the spy/stub was called at least once
-          with arguments not matching the provided ones. This behaves the same as
-          <code>spy.notCalledWith(sinon.match(arg1), sinon.match(arg2), ...)</code>.
         </dd>
         <dt><code>spy.neverCalledWithMatch(arg1, arg2, ...);</code></dt>
         <dd>
