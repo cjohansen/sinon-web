@@ -507,14 +507,14 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>
           Like above but with an additional parameter to pass the <code>this</code> context.
         </dd>
-        <dt>stub.yields([arg1, arg2, ...])</dt>
+        <dt><code>stub.yields([arg1, arg2, ...])</code></dt>
         <dd>
           Almost like <code>callsArg</code>. Causes the stub to call the first
           callback it receives with the provided arguments (if any). If a method
           accepts more than one callback, you need to use <code>callsArg</code>
           to have the stub invoke other callbacks than the first one.
         </dd>
-        <dt>stub.yieldsOn(context, [arg1, arg2, ...])</dt>
+        <dt><code>stub.yieldsOn(context, [arg1, arg2, ...])</code></dt>
         <dd>
           Like above but with an additional parameter to pass the <code>this</code> context.
         </dd>
