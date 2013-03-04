@@ -588,6 +588,15 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>
           Like <code>callArg</code>, but with arguments.
         </dd>
+        <dt><code>stub.callsArgAsync(index);</code></dt>
+        <dt><code>stub.callsArgOnAsync(index, context);</code></dt>
+        <dt><code>stub.callsArgWithAsync(index, arg1, arg2, ...);</code></dt>
+        <dt><code>stub.callsArgOnWithAsync(index, context, arg1, arg2, ...);</code></dt>
+        <dt><code>stub.yieldsAsync([arg1, arg2, ...])</code></dt>
+        <dt><code>stub.yieldsOnAsync(context, [arg1, arg2, ...])</code></dt>
+        <dt><code>stub.yieldsToAsync(property, [arg1, arg2, ...])</code></dt>
+        <dt><code>stub.yieldsToOnAsync(property, context, [arg1, arg2, ...])</code></dt>
+	<dd>Same as their corresponding non-Async counterparts, but with callback being deferred (executed not immediately but after short timeout and in another "thread")</dd>
       </dl>
     </div>
     <div class="section" id="mocks">
