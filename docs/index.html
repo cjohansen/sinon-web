@@ -596,7 +596,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dt><code>stub.yieldsOnAsync(context, [arg1, arg2, ...])</code></dt>
         <dt><code>stub.yieldsToAsync(property, [arg1, arg2, ...])</code></dt>
         <dt><code>stub.yieldsToOnAsync(property, context, [arg1, arg2, ...])</code></dt>
-	<dd>Same as their corresponding non-Async counterparts, but with callback being deferred (executed not immediately but after short timeout and in another "thread")</dd>
+        <dd>Same as their corresponding non-Async counterparts, but with callback being deferred (executed not immediately but after short timeout and in another "thread")</dd>
       </dl>
     </div>
     <div class="section" id="mocks">
@@ -1007,13 +1007,20 @@ jQuery.ajax.verify();</code></pre>
         <dt><code>server.respondWith(response);</code></dt>
         <dd>
           <p>
-            <code>response</code> is either a string - the response body, an array
-            with status, headers and response body, e.g.
-            <code>[200, { "Content-Type": "text/html", "Content-Length": 2 },
-            "OK"]</code> or a function. Default status is 200 and default headers
-            are none. Causes the server to respond to any request not matched by
-            another response with the provided data. The default catch-all
-            response is <code>[404, {} ""]</code>.
+            <code>response</code> can be on of three things:
+          </p>
+          <ol>
+            <li>A string representing the response body</li>
+            <li>
+              An array with status, headers and response body, e.g.
+              <code>[200, { "Content-Type": "text/html", "Content-Length": 2 }, "OK"]</code></li>
+            <li>A function.</li>
+          </ol>
+          <p>
+            Default status is 200 and default headers are none. Causes
+            the server to respond to any request not matched by
+            another response with the provided data. The default
+            catch-all response is <code>[404, {}, ""]</code>.
           </p>
           <p>
             When the response is a function, it will be passed the request
