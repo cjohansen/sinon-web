@@ -20,6 +20,7 @@
       <li><a href="#mocks">Mocks</a></li>
       <li><a href="#clock">Fake timers</a></li>
       <li><a href="#server">Fake <code>XHR</code> and server</a></li>
+      <li><a href="#json-p">JSON-P</a></li>
       <li><a href="#assertions">Assertions</a></li>
       <li><a href="#matchers">Matchers</a></li>
       <li><a href="#sandbox">Sandboxing</a></li>
@@ -972,6 +973,7 @@ jQuery.ajax.verify();</code></pre>
       <p>
         High-level API to manipulate <code>FakeXMLHttpRequest</code> instances.
       </p>
+      <p><small>For help with handling JSON-P please refer to our <a href="#json-p">notes below</a></small></p>
       <pre id="server_example" class="sh_javascript timers"><code>{
     setUp: function () {
         this.server = sinon.fakeServer.create();
@@ -1092,6 +1094,14 @@ jQuery.ajax.verify();</code></pre>
           Restores the native XHR constructor.
         </dd>
       </dl>
+    </div>
+    <div class="section" id="json-p">
+      <h2>JSON-P</h2>
+      <p>JSON-P doesn't use Ajax requests, which is what the fake server is concerned with. A JSON-P request actually creates a script element and inserts it into the document. There is no sensible/unobtrusive enough way to fake this automatically. Your best option is to simply stub jQuery in this case:</p>
+      <pre class="sh_javascript"><code>  sinon.stub(jQuery, "ajax");
+  sinon.assert.calledOnce(jQuery.ajax);
+</code></pre>
+      <p>Potentially we could of had the fake server detect jQuery and fake any calls to jQuery.ajax when JSON-P is used, but that felt like a compromise in the focus of the Sinon project compared to simply documenting the above work-around.</p>
     </div>
     <div class="section" id="assertions">
       <h2>Assertions <a class="api" href="#assertions-api">API reference</a></h2>
