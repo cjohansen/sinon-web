@@ -462,7 +462,13 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           can be used to restore the original method.
         </dd>
         <dt><code>var stub = sinon.stub(obj);</code></dt>
-        <dd>Stubs all the object's methods.</dd>
+        <dd>Stubs all the object's methods.  Note that it's usually better
+            practice to stub individual methods, particularly on
+            objects that you don't understand or control all the methods for
+            (e.g. library dependencies).  Stubbing individual methods tests
+            intent more precisely and is less susceptible to unexpected
+            behavior as the object's code evolves.
+        </dd>
         <dt><code>stub.withArgs(arg1[, arg2, ...]);</code></dt>
         <dd>
           Stubs the method only for the provided arguments. This is useful to be
