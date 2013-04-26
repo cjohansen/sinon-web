@@ -467,7 +467,11 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
             objects that you don't understand or control all the methods for
             (e.g. library dependencies).  Stubbing individual methods tests
             intent more precisely and is less susceptible to unexpected
-            behavior as the object's code evolves.
+            behavior as the object's code evolves.<br>
+            If you want to create a stub object of <code>MyConstructor</code>,
+            but don't want the constructor to be invoked, use this utility
+            function:
+            <pre><code>var stub = sinon.createStubInstance(MyConstructor)</code></pre>
         </dd>
         <dt><code>stub.withArgs(arg1[, arg2, ...]);</code></dt>
         <dd>
@@ -1601,6 +1605,12 @@ var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has("pages"));<
         part of the public API, and thus is subject to change.
       </p>
       <dl>
+        <dt><code>sinon.createStubInstance(constructor)</code></dt>
+        <dd>
+          Creates a new object with the given function as the protoype and
+          stubs all implemented functions. The given constructor function is
+          not invoked. See also the <a href="#stubs">stub API</a>.
+        </dd>
         <dt><code>sinon.format(object)</code></dt>
         <dd>
           Formats an object for pretty printing in error messages. Sinon < 1.3.0
