@@ -452,8 +452,9 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         <dd>
           Replaces <code>object.method</code> with a stub function. The original
           function can be restored by calling <code>object.method.restore();</code>
-          (or <code>stub.restore();</code>). An exception is thrown if the property
-          is not already a function, to help avoid typos when stubbing methods.
+          (or <code>stub.restore();</code> and <code>sinon.restore(stub);</code>).
+          An exception is thrown if the property is not already a function, to
+          help avoid typos when stubbing methods.
         </dd>
         <dt><code>var stub = sinon.stub(object, "method", func);</code></dt>
         <dd>
@@ -471,7 +472,8 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
             If you want to create a stub object of <code>MyConstructor</code>,
             but don't want the constructor to be invoked, use this utility
             function:
-            <pre><code>var stub = sinon.createStubInstance(MyConstructor)</code></pre>
+            <pre><code>var stub = sinon.createStubInstance(MyConstructor)</code></pre><br>
+            Stubbed objects can be restored by <code>sinon.restore(obj);</code>
         </dd>
         <dt><code>stub.withArgs(arg1[, arg2, ...]);</code></dt>
         <dd>
@@ -1610,6 +1612,11 @@ var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has("pages"));<
           Creates a new object with the given function as the protoype and
           stubs all implemented functions. The given constructor function is
           not invoked. See also the <a href="#stubs">stub API</a>.
+        </dd>
+        <dt><code>sinon.restore(obj)</code></dt>
+        <dd>
+          Restores the supplied stub, spy, or restoable methods of a stubbed
+          object.
         </dd>
         <dt><code>sinon.format(object)</code></dt>
         <dd>
