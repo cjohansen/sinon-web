@@ -231,7 +231,7 @@ it("calls callback with deserialized data", function () {
 before(function () { clock = sinon.useFakeTimers(); });
 after(function () { clock.restore(); });
 
-it("calls callback after 100ms": function () {
+it("calls callback after 100ms", function () {
     var callback = sinon.spy();
     var throttled = throttle(callback);
 
