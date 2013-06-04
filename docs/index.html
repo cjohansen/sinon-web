@@ -971,12 +971,18 @@ jQuery.ajax.verify();</code></pre>
           <code>statusText</code> properties. Status should be a number, the
           status text is looked up from <code>sinon.FakeXMLHttpRequest.statusCodes</code>.
         </dd>
-        <dt id="auto-respond"><code>request.autoRespond(ms);</code></dt>
+        <dt id="auto-respond"><code>request.autoRespond</code> (boolean)</dt>
         <dd>
-          Causes the server to automatically respond to incoming requests after
-          a timeout. The default timeout is 10ms but you can control it through
-          the <code>ms</code> argument. Note that this feature is intended to
-          help during mockup development, and is not suitable for use in tests.
+          When set to <code>true</code>, causes the server to automatically
+          respond to incoming requests after a timeout. The default timeout is
+          10ms but you can control it through the <code>autoRespondAfter</code>
+          property. Note that this feature is intended to help during mockup
+          development, and is not suitable for use in tests.
+        </dd>
+        <dt id="auto-respond-after"><code>request.autoRespondAfter</code> (number)</dt>
+        <dd>
+          When <code>autoRespond</code> is <code>true</code>, respond to
+          requests after this number of milliseconds. Default is 10.
         </dd>
       </dl>
       <h3 id="fakeServer">Fake server</h3>
