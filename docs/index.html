@@ -461,6 +461,11 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           in a <code>spy</code>. As usual, <code>object.method.restore();</code>
           can be used to restore the original method.
         </dd>
+        <dt><code>var stub = sinon.stub(object, "property", value);</code></dt>
+        <dd>
+          Makes <code>object.property</code> returning <code>value</code>. As usual, <code>object.method.restore();</code>
+          can be used to restore the original value.
+        </dd>
         <dt><code>var stub = sinon.stub(obj);</code></dt>
         <dd>Stubs all the object's methods.  Note that it's usually better
             practice to stub individual methods, particularly on
