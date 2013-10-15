@@ -303,12 +303,11 @@
           it after the first file.
         </p>
         <pre class="sh_javascript timers"><code>test("should animate element over 500ms", function () {
-    var clock = this.sandbox.useFakeTimers();
     var el = jQuery("&lt;div>&lt;/div>");
     el.appendTo(document.body);
 
     el.animate({ height: "200px", width: "200px" });
-    clock.tick(510);
+    this.clock.tick(510);
 
     equals("200px", el.css("height"));
     equals("200px", el.css("width"));
