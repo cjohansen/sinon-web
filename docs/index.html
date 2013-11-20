@@ -444,6 +444,21 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
         that all callbacks where called, and also that the exception throwing
         stub was called before one of the other callbacks.
       </p>
+      <h3>Defining stub behavior on consecutive calls</h3>
+      <p>
+        Calling behavior defining methods like <code>returns</code> or
+        <code>throws</code> multiple times overrides the behavior of the stub.
+        As of Sinon version 1.8, you can use the
+        <code><a href="#stub-onCall">onCall</a></code> method to make a
+        stub respond differently on consecutive calls.
+      </p>
+      <p>
+        Note that in Sinon version 1.5 to version 1.7, multiple calls to the
+        <code>yields*</code> and <code>callsArg*</code> family of methods define
+        a sequence of behaviors for consecutive calls. As of 1.8, this
+        functionality has been removed in favor of the
+        <code><a href="#stub-onCall">onCall</a></code> API.
+      </p>
       <h3 id="stubs-api">Stub API</h3>
       <dl>
         <dt><code>var stub = sinon.stub();</code></dt>
@@ -489,6 +504,50 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
     callback(1); // Throws TypeError
 }</code></pre>
         </dd>
+        <dt id="stub-onCall"><code>stub.onCall(n);</code></dt>
+        <dd>
+          <p><em>Added in Sinon.JS version 1.8.0.</em></p>
+          <p>Defines the behavior of the stub on the <em>nth</em>
+            call. Useful for testing sequential interactions.</p>
+          <pre class="sh_javascript"><code>"test should stub method differently on consecutive calls": function () {
+    var callback = sinon.stub();
+    callback.onCall(0).returns(1);
+    callback.onCall(1).returns(2);
+    callback.returns(3);
+
+    callback(); // Returns 1
+    callback(); // Returns 2
+    callback(); // All following calls return 3
+}</code></pre>
+          <p>There are methods <code>onFirstCall</code>, <code>onSecondCall</code>,
+            <code>onThirdCall</code> to make stub definitions read more naturally.</p>
+          <p><code>onCall</code> can be combined with all of the behavior defining
+            methods in this section.  In particular, it can be used together with
+            <code>withArgs</code>:</p>
+          <pre class="sh_javascript"><code>"test should stub method differently on consecutive calls with certain argument": function () {
+    var callback = sinon.stub();
+    callback.withArgs(42)
+              .onFirstCall().returns(1)
+              .onSecondCall().returns(2);
+    callback.returns(0);
+
+    callback(1); // Returns 0
+    callback(42); // Returns 1
+    callback(1); // Returns 0
+    callback(42); // Returns 2
+    callback(1); // Returns 0
+    callback(42); // Returns 0
+}</code></pre>
+          <p>Note how the behavior of the stub for argument <code>42</code>
+            falls back to the default behavior once no more calls have been
+            defined.</p>
+        </dd>
+        <dt><code>stub.onFirstCall();</code></dt>
+        <dd>Alias for <code>stub.onCall(0);</code></dd>
+        <dt><code>stub.onSecondCall();</code></dt>
+        <dd>Alias for <code>stub.onCall(1);</code></dd>
+        <dt><code>stub.onThirdCall();</code></dt>
+        <dd>Alias for <code>stub.onCall(2);</code></dd>
         <dt><code>stub.returns(obj);</code></dt>
         <dd>Makes the stub return the provided value.</dd>
         <dt><code>stub.returnsArg(index);</code></dt>
