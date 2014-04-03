@@ -555,6 +555,10 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
           Causes the stub to return the argument at the provided index.
           <code>stub.returnsArg(0);</code> causes the stub to return the first argument.
         </dd>
+        <dt><code>stub.returnsThis();</code></dt>
+        <dd>
+          Causes the stub to return its <code>this</code> value. Useful for stubbing jQuery-style fluent APIs.
+        </dd>
         <dt><code>stub.throws();</code></dt>
         <dd>Causes the stub to throw an exception (<code>Error</code>).</dd>
         <dt><code>stub.throws("TypeError");</code></dt>
