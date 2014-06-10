@@ -693,7 +693,7 @@ assertEquals("/stuffs", spyCall.args[0]);</code></pre>
       <p>
         Mocks come with built-in expectations that may fail your test. Thus,
         they enforce implementation details. The rule of thumb is: if you
-        wouldn't add an assertion for some call specific, don't mock it. Use a
+        wouldn't add an assertion for some specific call, don't mock it. Use a
         stub instead. In general you should never have more
         than <strong>one</strong> mock (possibly with several expectations) in a
         single test.
@@ -1120,7 +1120,7 @@ jQuery.ajax.verify();</code></pre>
         </dd>
         <dt><code>server.respondWith(urlRegExp, response);</code></dt>
         <dd>
-          URL may be a regular expression, e.g. <code>/\/post/\d+</code>
+          URL may be a regular expression, e.g. <code>/\/post\/\d+</code>
           If the response is a function, it will be passed any capture groups
           from the regular expression along with the XMLHttpRequest object:
           <pre class="sh_javascript"><code>server.respondWith(/\/todo-items\/(\d+)/, function (xhr, id) {
@@ -1414,16 +1414,16 @@ jQuery.ajax.verify();</code></pre>
         <dd>Requires the value to strictly equal <code>ref</code>.</dd>
         <dt><code>sinon.match.typeOf(type)</code></dt>
         <dd>Requires the value to be of the given type, where <code>type</code> can be one of
-          <code>&quot;undefined&quot;</code>,
-          <code>&quot;null&quot;</code>,
-          <code>&quot;boolean&quot;</code>,
-          <code>&quot;number&quot;</code>,
-          <code>&quot;string&quot;</code>,
-          <code>&quot;object&quot;</code>,
-          <code>&quot;function&quot;</code>,
-          <code>&quot;array&quot;</code>,
-          <code>&quot;regexp&quot;</code> or
-          <code>&quot;date&quot;</code>.
+          <code>"undefined"</code>,
+          <code>"null"</code>,
+          <code>"boolean"</code>,
+          <code>"number"</code>,
+          <code>"string"</code>,
+          <code>"object"</code>,
+          <code>"function"</code>,
+          <code>"array"</code>,
+          <code>"regexp"</code> or
+          <code>"date"</code>.
         </dd>
         <dt><code>sinon.match.instanceOf(type)</code></dt>
         <dd>Requires the value to be an instance of the given type.</dd>
