@@ -1071,7 +1071,7 @@ jQuery.ajax.verify();</code></pre>
         myLib.getCommentsFor("/some/article", callback);
         this.server.respond();
 
-        sinon.assert.calledWith(callback, [{ id: 12, comment: "Hey there" }]));
+        sinon.assert.calledWith(callback, [{ id: 12, comment: "Hey there" }]);
     }
 }</code></pre>
       <dl>
